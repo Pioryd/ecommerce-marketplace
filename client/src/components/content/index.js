@@ -1,11 +1,11 @@
 import React from "react";
 
-import "./index.css";
+import "./index.scss";
 
 function Content() {
   return (
     <div className="row">
-      <div className="col-3 col-s-3 menu">
+      <div className="categories">
         <ul>
           <li>The Flight</li>
           <li>The City</li>
@@ -14,7 +14,7 @@ function Content() {
         </ul>
       </div>
 
-      <div className="col-6 col-s-9">
+      <div className="products">
         <h1>The City</h1>
         <p>
           Chania is the capital of the Chania region on the island of Crete. The
@@ -22,7 +22,7 @@ function Content() {
         </p>
       </div>
 
-      <div className="col-3 col-s-12">
+      <div className="promotions">
         <div className="aside">
           <h2>What?</h2>
           <p>Chania is a city on the island of Crete.</p>
