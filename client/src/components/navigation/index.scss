@@ -1,9 +1,39 @@
 @import "../../variables";
 
+/* Smaller then Desktop*/
+.sidebar {
+  display: inline;
+  height: auto;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #000000;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+
+  a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    background-color: black;
+    color: white;
+    display: block;
+    transition: 0.3s;
+  }
+
+  a:hover {
+    background-color: white;
+    color: black;
+  }
+}
+
 .navbar {
+  text-align: left;
   clear: both;
-  display: flex;
-  align-items: center;
+  display: inline;
   justify-content: space-between;
   padding: 5px 5px;
   z-index: 1;
@@ -63,7 +93,15 @@
 }
 
 @media only screen and (min-width: 768px) {
+  /* Desktop */
+
+  .sidebar {
+    display: none;
+  }
+
   .navbar {
+    text-align: center;
+
     * {
       clear: both;
     }

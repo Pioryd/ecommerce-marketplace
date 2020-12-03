@@ -2,22 +2,37 @@ import React from "react";
 
 import "./index.scss";
 
+const ROUTE = { "#home": "Home", "#news": "News", "#contact": "Contact" };
+
 function Navigation() {
+  const [state_sidebar_visible, set_state_sidebar_visible] = React.useState(
+    false
+  );
+  const toggle_sidebar = () =>
+    set_state_sidebar_visible(!state_sidebar_visible);
+
   return (
-    <div className="navbar">
-      <button className="openbtn" onclick="openNav()">
-        ☰
-      </button>
-      <a href="#home" className="top_link">
-        Home
-      </a>
-      <a href="#news" className="top_link">
-        News
-      </a>
-      <a href="#contact" className="top_link">
-        Contact
-      </a>
-    </div>
+    <React.Fragment>
+      {state_sidebar_visible && (
+        <div className="sidebar">
+          {Object.keys(ROUTE).map((key) => (
+            <a key={key} href={key}>
+              {ROUTE[key]}
+            </a>
+          ))}
+        </div>
+      )}
+      <div className="navbar">
+        <button className="openbtn" onClick={toggle_sidebar}>
+          {state_sidebar_visible ? "X" : "☰"}
+        </button>
+        {Object.keys(ROUTE).map((key) => (
+          <a key={key} href={key} className="top_link">
+            {ROUTE[key]}
+          </a>
+        ))}
+      </div>
+    </React.Fragment>
   );
 }
 export default Navigation;
