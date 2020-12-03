@@ -1,10 +1,11 @@
 @import "../../variables";
 
 .navbar {
+  clear: both;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 2.5rem;
+  padding: 5px 5px;
   z-index: 1;
   width: 100%;
 
@@ -15,19 +16,68 @@
   box-shadow: 1px 1px 1px #222;
   animation: moveDown 0.5s ease-in-out;
   height: $app-header-height;
+
+  a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+  }
+
+  a:hover {
+    color: #f1f1f1;
+  }
 }
 
-.navbar a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+.navbar {
+  * {
+    clear: both;
+  }
+
+  .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+  }
+
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    left: 0;
+  }
+
+  .openbtn:hover {
+    background-color: #444;
+  }
+
+  .top_link {
+    display: none;
+  }
 }
 
-.navbar a:hover {
-  background: #ddd;
-  color: black;
+@media only screen and (min-width: 768px) {
+  .navbar {
+    * {
+      clear: both;
+    }
+
+    .closebtn {
+      display: none;
+    }
+
+    .openbtn {
+      display: none;
+    }
+
+    .top_link {
+      display: inline;
+    }
+  }
 }

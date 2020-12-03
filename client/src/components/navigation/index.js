@@ -5,9 +5,18 @@ import "./index.scss";
 function Navigation() {
   return (
     <div className="navbar">
-      <a href="#home">Home</a>
-      <a href="#news">News</a>
-      <a href="#contact">Contact</a>
+      <button className="openbtn" onclick="openNav()">
+        ☰
+      </button>
+      <a href="#home" className="top_link">
+        Home
+      </a>
+      <a href="#news" className="top_link">
+        News
+      </a>
+      <a href="#contact" className="top_link">
+        Contact
+      </a>
     </div>
   );
 }
