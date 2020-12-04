@@ -83,6 +83,7 @@
     left: 0;
     padding: 5px;
     margin: 5px 10px 0px 10px;
+    text-decoration: none;
     background-color: green;
     color: white;
   }
@@ -147,19 +148,20 @@
 
 .cart-btn {
   position: absolute;
-  top: 5px;
+  top: 0px;
   right: 20px;
   margin: 0;
   padding: 1px 5px 1px 10px;
   width: 90px;
-  height: 40px;
+  height: 50px;
 
   .stack[data-count]:after {
     position: absolute;
     content: attr(data-count);
     font-size: 15px;
-    top: 10px;
+    top: 20px;
     right: 10px;
+    padding: 0;
     padding: 0.1em 0.1em 0.1em 0.1em;
     margin: 0px;
     border-width: 2px;
@@ -173,11 +175,13 @@
   }
 
   .image {
+    position: absolute;
     background-image: url("./cart-white-128.png");
     background-repeat: no-repeat;
     background-size: 30px 30px;
     padding: 0;
     margin: 0;
+    top: 10px;
     height: 30px;
     width: 30px;
   }
