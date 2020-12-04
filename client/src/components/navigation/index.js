@@ -8,16 +8,10 @@ const ROUTE = {
   Gallery: "/gallery",
   Contact: "/contact"
 };
-
-// const ORDER_ONLINE_BUTTON = (
-//   <a href="/menu" className="order_online_link">
-//     ORDER ONLINE
-//   </a>
-// );
-
 const ORDER_ONLINE_BUTTON = (
-  <div className="order_online_link">ORDER ONLINE</div>
+  <div className="order-online-btn">ORDER ONLINE</div>
 );
+
 function Navigation() {
   const [state_sidebar_visible, set_state_sidebar_visible] = React.useState(
     false
@@ -31,7 +25,7 @@ function Navigation() {
         <div className="sidebar">
           {ORDER_ONLINE_BUTTON}
           {Object.keys(ROUTE).map((key) => (
-            <a key={key} href={ROUTE[key]}>
+            <a key={key} href={ROUTE[key]} className="link">
               {key}
             </a>
           ))}
@@ -39,14 +33,18 @@ function Navigation() {
       )}
       <div className="navbar">
         {!state_sidebar_visible && ORDER_ONLINE_BUTTON}
-        <button className="openbtn" onClick={toggle_sidebar}>
+        <button className="toggle-sidebar-btn" onClick={toggle_sidebar}>
           {state_sidebar_visible ? "X" : "☰"}
         </button>
         {Object.keys(ROUTE).map((key) => (
-          <a key={key} href={ROUTE[key]} className="top_link">
+          <a key={key} href={ROUTE[key]} className="link">
             {key}
           </a>
         ))}
+        <div className="cart-btn">
+          <div className="image" />
+          <span className="stack" data-count="5" />
+        </div>
       </div>
     </React.Fragment>
   );
