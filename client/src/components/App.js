@@ -4,11 +4,12 @@ import Navigation from "./navigation";
 import Content from "./content";
 import Footer from "./footer";
 
-import About from "../pages/about";
-import Contact from "../pages/contact";
-import Gallery from "../pages/gallery";
-import Menu from "../pages/menu";
-import Cart from "../pages/cart";
+import Account from "../pages/account";
+import AccountAuctions from "../pages/account_auctions";
+import AccountFallowed from "../pages/account_fallowed";
+import AccountNewAuction from "../pages/account_new_auction";
+import AccountSettings from "../pages/account_settings";
+import Auctions from "../pages/auctions";
 
 function App() {
   return (
@@ -17,22 +18,25 @@ function App() {
       <Content>
         <Switch>
           <Route exact path="/">
-            <About />
+            <Auctions />
           </Route>
-          <Route path="/about">
-            <About />
+          <Route path="/auctions">
+            <Auctions />
           </Route>
-          <Route path="/gallery">
-            <Gallery />
+          <Route path="/account">
+            <Account />
           </Route>
-          <Route path="/menu">
-            <Menu />
+          <Route path="/account-auctions">
+            <AccountAuctions />
           </Route>
-          <Route path="/contact">
-            <Contact />
+          <Route path="/account-fallowed">
+            <AccountFallowed />
           </Route>
-          <Route path="/cart">
-            <Cart />
+          <Route path="/account-new-auction">
+            <AccountNewAuction />
+          </Route>
+          <Route path="/account-settings">
+            <AccountSettings />
           </Route>
         </Switch>
       </Content>

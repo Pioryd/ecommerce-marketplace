@@ -2,7 +2,7 @@ import React from "react";
 
 import "./index.scss";
 
-function Menu() {
+function Auctions() {
   return (
     <div className="row">
       <div className="categories">
@@ -35,4 +35,4 @@ function Menu() {
     </div>
   );
 }
-export default Menu;
+export default Auctions;

@@ -2,11 +2,11 @@ import React from "react";
 
 import "./index.scss";
 
-function Cart() {
+function AccountAuctions() {
   return (
     <div>
-      <p>Cart</p>
+      <p>Account Auctions</p>
     </div>
   );
 }
-export default Cart;
+export default AccountAuctions;

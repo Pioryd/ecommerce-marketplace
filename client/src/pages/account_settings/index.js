@@ -2,11 +2,11 @@ import React from "react";
 
 import "./index.scss";
 
-function Contact() {
+function AccountSettings() {
   return (
     <div>
-      <p>Contact</p>
+      <p>AccountSettings</p>
     </div>
   );
 }
-export default Contact;
+export default AccountSettings;

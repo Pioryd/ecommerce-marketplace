@@ -2,11 +2,11 @@ import React from "react";
 
 import "./index.scss";
 
-function Gallery() {
+function AccountFallowed() {
   return (
     <div>
-      <p>Gallery</p>
+      <p>AccountFallowed</p>
     </div>
   );
 }
-export default Gallery;
+export default AccountFallowed;

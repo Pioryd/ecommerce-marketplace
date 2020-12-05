@@ -2,11 +2,11 @@ import React from "react";
 
 import "./index.scss";
 
-function About() {
+function Account() {
   return (
     <div>
-      <p>About</p>
+      <p>Account</p>
     </div>
   );
 }
-export default About;
+export default Account;
