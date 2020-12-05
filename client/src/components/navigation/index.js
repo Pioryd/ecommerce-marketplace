@@ -3,17 +3,23 @@ import { Link } from "react-router-dom";
 
 import "./index.scss";
 
-const ROUTE = {};
+const LOGO = "e-commerce";
+const LINKS = { Fallowing: "/account-fallowing", Account: "/account" };
 
 function Navigation() {
   return (
     <React.Fragment>
       <div className="navbar">
-        {Object.keys(ROUTE).map((key) => (
-          <Link key={key} to={ROUTE[key]} className="link">
-            {key}
-          </Link>
-        ))}
+        <Link className="logo" to="/">
+          {LOGO}
+        </Link>
+        <div className="links_block">
+          {Object.keys(LINKS).map((key) => (
+            <Link key={key} to={LINKS[key]} className="link">
+              {key}
+            </Link>
+          ))}
+        </div>
       </div>
     </React.Fragment>
   );

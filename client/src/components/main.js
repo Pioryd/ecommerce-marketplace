@@ -6,12 +6,12 @@ import Footer from "./footer";
 
 import Account from "../pages/account";
 import AccountAuctions from "../pages/account_auctions";
-import AccountFallowed from "../pages/account_fallowed";
+import AccountFallowing from "../pages/account_fallowing";
 import AccountNewAuction from "../pages/account_new_auction";
 import AccountSettings from "../pages/account_settings";
 import Auctions from "../pages/auctions";
 
-function App() {
+function Main() {
   return (
     <BrowserRouter>
       <Navigation />
@@ -29,8 +29,8 @@ function App() {
           <Route path="/account-auctions">
             <AccountAuctions />
           </Route>
-          <Route path="/account-fallowed">
-            <AccountFallowed />
+          <Route path="/account-fallowing">
+            <AccountFallowing />
           </Route>
           <Route path="/account-new-auction">
             <AccountNewAuction />
@@ -45,4 +45,4 @@ function App() {
   );
 }
 
-export default App;
+export default Main;

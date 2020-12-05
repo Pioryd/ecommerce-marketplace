@@ -5,7 +5,7 @@ import "./index.scss";
 function AccountSettings() {
   return (
     <div>
-      <p>AccountSettings</p>
+      <p>Account Settings</p>
     </div>
   );
 }

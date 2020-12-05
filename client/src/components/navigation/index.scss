@@ -16,20 +16,30 @@
   left: 0;
   animation: moveDown 0.5s ease-in-out;
   height: $app-header-height;
+  display: inline-block;
 
-  .link {
-    height: 100%;
-    padding: 12px 16px 12px 16px;
+  .logo {
+    position: absolute;
     text-decoration: none;
+    left: 20px;
     font-size: 25px;
-    background-color: black;
-    color: white;
-    transition: 0.3s;
+    color: green;
   }
 
-  .link:hover {
-    background-color: white;
-    color: black;
+  .links_block {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    height: $app-header-height;
+
+    .link {
+      line-height: $app-header-height;
+      position: relative;
+      padding-left: 20px;
+      text-decoration: none;
+      font-size: 14px;
+      color: white;
+    }
   }
 }
 
