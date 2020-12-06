@@ -1,1 +1,30 @@
 @import "../../variables";
+
+.group {
+  position: relative;
+  margin: auto;
+  width: auto;
+  max-width: 500px;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid black;
+  display: block;
+
+  label {
+    margin: 5px 10px 5px 0;
+  }
+
+  input {
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    border: 1px solid black;
+  }
+
+  button {
+    padding: 10px 20px;
+    border: 1px solid black;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+  }
+}
