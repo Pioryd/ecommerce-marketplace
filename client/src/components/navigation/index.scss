@@ -1,29 +1,21 @@
 @import "../../variables";
 
 .navbar {
-  * {
-    clear: both;
-  }
-
-  clear: both;
-  justify-content: space-between;
-  padding: 5px 5px;
   z-index: 1;
+  height: $app-header-height;
   width: 100%;
   background: black;
   position: fixed;
   top: 0;
   left: 0;
-  animation: moveDown 0.5s ease-in-out;
-  height: $app-header-height;
-  display: inline-block;
 
   .logo {
     position: absolute;
     text-decoration: none;
+    top: 5px;
     left: 20px;
     font-size: 25px;
-    color: green;
+    color: white;
   }
 
   .links_block {
