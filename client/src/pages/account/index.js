@@ -4,23 +4,24 @@ import Title from "../../components/title";
 
 import "./index.scss";
 
+const LINKS = {
+  "My auctions": "/account-auctions",
+  Fallowing: "/account-fallowing",
+  "Create new auction": "/account-new-auction",
+  Settings: "/account-settings",
+  Logout: "/"
+};
+
 function Account() {
   return (
-    <div className="account">
+    <React.Fragment>
       <Title name="Account" />
-      <p>
-        <Link to="account-auctions">My auctions</Link>
-      </p>
-      <p>
-        <Link to="account-fallowing">Fallowing</Link>
-      </p>
-      <p>
-        <Link to="account-new-auction">New auction</Link>
-      </p>
-      <p>
-        <Link to="account-settings">Settings</Link>
-      </p>
-    </div>
+      {Object.keys(LINKS).map((key) => (
+        <Link key={key} to={LINKS[key]} className="btn">
+          {key}
+        </Link>
+      ))}
+    </React.Fragment>
   );
 }
 export default Account;
