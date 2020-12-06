@@ -1,12 +1,13 @@
 import React from "react";
 import AuctionsView from "../../components/auctions_view";
+import Title from "../../components/title";
 
 import "./index.scss";
 
 function Auctions() {
   return (
     <React.Fragment>
-      <h3 style={{ textAlign: "center" }}>Auctions</h3>
+      <Title name="Auctions" />
       <AuctionsView />
     </React.Fragment>
   );

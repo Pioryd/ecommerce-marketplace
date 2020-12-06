@@ -1,12 +1,13 @@
 import React from "react";
 import AuctionsView from "../../components/auctions_view";
+import Title from "../../components/title";
 
 import "./index.scss";
 
 function AccountFallowing() {
   return (
     <React.Fragment>
-      <h3 style={{ textAlign: "center" }}>Account fallowing</h3>
+      <Title name="Fallowings" />
       <AuctionsView />
     </React.Fragment>
   );

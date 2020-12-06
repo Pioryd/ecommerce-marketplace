@@ -1,12 +1,13 @@
 import React from "react";
+import Title from "../../components/title";
 
 import "./index.scss";
 
 function AccountSettings() {
   return (
-    <div>
-      <p>Account Settings</p>
-    </div>
+    <React.Fragment>
+      <Title name="Account settings" />
+    </React.Fragment>
   );
 }
 export default AccountSettings;

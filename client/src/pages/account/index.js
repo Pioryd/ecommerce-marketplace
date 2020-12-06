@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Title from "../../components/title";
 
 import "./index.scss";
 
 function Account() {
   return (
     <div className="account">
-      <p>Account</p>
+      <Title name="Account" />
       <p>
         <Link to="account-auctions">My auctions</Link>
       </p>
