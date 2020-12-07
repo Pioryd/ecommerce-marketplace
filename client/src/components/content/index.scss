@@ -1,9 +1,9 @@
-@import "../../variables";
+@import "../../sass/variables";
 
 .content {
   position: relative;
   margin: 0;
-  padding-bottom: $app-footer-height;
+  padding-bottom: $app-footer-height + 20px;
   padding-top: $app-header-height;
   height: 100%;
   width: 100%;

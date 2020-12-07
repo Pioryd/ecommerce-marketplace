@@ -1,16 +1,22 @@
 import React from "react";
 import Title from "../../components/title";
 
-import "./index.scss";
+import "../../sass/form.scss";
 
 function AccountSettings() {
   return (
     <React.Fragment>
       <Title name="Account settings" />
-      <div className="group">
-        <label>Email</label>
-        <input type="email" id="email" name="email" placeholder="new email" />
-        <button>change</button>
+      <div className="a4t_group">
+        <label className="a4t_label">New email address</label>
+        <input
+          className="a4t_input"
+          type="email"
+          id="email"
+          name="email"
+          placeholder="new email"
+        />
+        <button className="a4t_button">change</button>
       </div>
     </React.Fragment>
   );
