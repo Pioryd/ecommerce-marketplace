@@ -1,8 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Title from "../../components/title";
-
-import "./index.scss";
+import { ButtonLink } from "../../components/controls";
 
 const LINKS = {
   Selling: "/account-selling",
@@ -16,10 +14,11 @@ function Account() {
   return (
     <React.Fragment>
       <Title name="Account" />
+
       {Object.keys(LINKS).map((key) => (
-        <Link key={key} to={LINKS[key]} className="btn">
+        <ButtonLink key={key} to={LINKS[key]}>
           {key}
-        </Link>
+        </ButtonLink>
       ))}
     </React.Fragment>
   );

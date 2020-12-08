@@ -1,37 +1,37 @@
 import React from "react";
 import Title from "../../components/title";
-
-import "../../sass/form.scss";
+import {
+  Group,
+  Label,
+  Input,
+  Textarea,
+  Button
+} from "../../components/controls";
 
 function AccountListItem() {
   return (
     <React.Fragment>
       <Title name="List item" />
-      <form className="a4t_group" onSubmit={() => {}}>
-        <label className="a4t_label">Title</label>
-        <input className="a4t_input" type="text" id="title" />
+      <Group>
+        <Label>Title</Label>
+        <Input type="text" id="title" />
 
-        <label className="a4t_label">Price</label>
-        <input className="a4t_input" type="number" id="price" />
+        <Label>Price</Label>
+        <Input type="number" id="price" />
 
-        <label className="a4t_label">Count</label>
-        <input className="a4t_input" type="number" id="count" />
+        <Label>Count</Label>
+        <Input type="number" id="count" />
 
-        <label className="a4t_label">Description</label>
-        <textarea
-          className="a4t_textarea"
-          type="text"
-          id="description"
-          rows={10}
-        />
+        <Label>Description</Label>
+        <Textarea type="text" id="description" rows={10} />
 
-        <label className="a4t_label">Image</label>
-        <input className="a4t_input" type="file" id="title" />
+        <Label>Image</Label>
+        <Input type="file" id="title" />
 
-        <button className="a4t_button" type="submit">
+        <Button className="a4t_button" type="submit">
           Create
-        </button>
-      </form>
+        </Button>
+      </Group>
     </React.Fragment>
   );
 }

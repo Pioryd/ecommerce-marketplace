@@ -1,0 +1,53 @@
+* {
+  box-sizing: border-box;
+}
+
+.a4t_group {
+  margin: auto;
+  width: auto;
+  max-width: 500px;
+  margin-top: 20px;
+  padding: 5px 20px 20px 20px;
+  border: 1px solid black;
+}
+
+.a4t_title {
+  padding: 5px 10px;
+  font-weight: bold;
+}
+
+.a4t_label,
+.a4t_input,
+.a4t_textarea {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.a4t_label {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.a4t_input,
+.a4t_textarea {
+  border: 1px solid black;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.a4t_button {
+  margin: auto;
+  margin-top: 20px;
+  width: 80%;
+  height: 50px;
+  max-width: 400px;
+  line-height: 50px;
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+}
