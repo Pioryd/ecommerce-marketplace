@@ -5,9 +5,9 @@ import Title from "../../components/title";
 import "./index.scss";
 
 const LINKS = {
-  "My auctions": "/account-auctions",
-  Fallowing: "/account-fallowing",
-  "Create new auction": "/account-new-auction",
+  Selling: "/account-selling",
+  Watchlist: "/account-watchlist",
+  "List item": "/account-list-item",
   Settings: "/account-settings",
   Logout: "/"
 };

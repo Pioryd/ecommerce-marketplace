@@ -3,10 +3,10 @@ import Title from "../../components/title";
 
 import "../../sass/form.scss";
 
-function AccountNewAuction() {
+function AccountListItem() {
   return (
     <React.Fragment>
-      <Title name="Create new auction" />
+      <Title name="List item" />
       <form className="a4t_group" onSubmit={() => {}}>
         <label className="a4t_label">Title</label>
         <input className="a4t_input" type="text" id="title" />
@@ -35,4 +35,4 @@ function AccountNewAuction() {
     </React.Fragment>
   );
 }
-export default AccountNewAuction;
+export default AccountListItem;

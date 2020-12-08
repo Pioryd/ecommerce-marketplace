@@ -5,11 +5,11 @@ import Content from "./content";
 import Footer from "./footer";
 
 import Account from "../pages/account";
-import AccountAuctions from "../pages/account_auctions";
-import AccountFallowing from "../pages/account_fallowing";
-import AccountNewAuction from "../pages/account_new_auction";
+import AccountItems from "../pages/account_selling";
+import AccountWatchlist from "../pages/account_watchlist";
+import AccountListItem from "../pages/account_list_item";
 import AccountSettings from "../pages/account_settings";
-import Auctions from "../pages/auctions";
+import Items from "../pages/items";
 
 function Main() {
   return (
@@ -18,22 +18,22 @@ function Main() {
       <Content>
         <Switch>
           <Route exact path="/">
-            <Auctions />
+            <Items />
           </Route>
-          <Route path="/auctions">
-            <Auctions />
+          <Route path="/items">
+            <Items />
           </Route>
           <Route path="/account">
             <Account />
           </Route>
-          <Route path="/account-auctions">
-            <AccountAuctions />
+          <Route path="/account-selling">
+            <AccountItems />
           </Route>
-          <Route path="/account-fallowing">
-            <AccountFallowing />
+          <Route path="/account-watchlist">
+            <AccountWatchlist />
           </Route>
-          <Route path="/account-new-auction">
-            <AccountNewAuction />
+          <Route path="/account-list-item">
+            <AccountListItem />
           </Route>
           <Route path="/account-settings">
             <AccountSettings />
