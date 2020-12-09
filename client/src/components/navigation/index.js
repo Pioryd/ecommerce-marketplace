@@ -13,7 +13,7 @@ function Navigation() {
           {LOGO}
         </Link>
         <div className="links_block">
-          <Link to="/account-watchlist" className="link">
+          <Link to="/account/watchlist" className="link">
             Watchlist
           </Link>
           <Link to="/account" className="link">

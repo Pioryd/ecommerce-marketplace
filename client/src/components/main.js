@@ -21,14 +21,27 @@ function Main() {
         <Switch>
           <Route exact path="/" component={Items} />
           <Route path="/items" component={Items} />
-          <AccountRoute path="/account" component={Account} />
-          <AccountRoute path="/account-selling" component={AccountSelling} />
+          <AccountRoute exact path="/account" component={Account} />
           <AccountRoute
-            path="/account-watchlist"
+            exact
+            path="/account/selling"
+            component={AccountSelling}
+          />
+          <AccountRoute
+            exact
+            path="/account/watchlist"
             component={AccountWatchlist}
           />
-          <AccountRoute path="/account-list-item" component={AccountListItem} />
-          <AccountRoute path="/account-settings" component={AccountSettings} />
+          <AccountRoute
+            exact
+            path="/account/list-item"
+            component={AccountListItem}
+          />
+          <AccountRoute
+            exact
+            path="/account/settings"
+            component={AccountSettings}
+          />
         </Switch>
       </Content>
       <Footer />
