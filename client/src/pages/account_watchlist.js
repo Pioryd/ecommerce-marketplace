@@ -1,6 +1,6 @@
 import React from "react";
-import ItemsView from "../../components/items_view";
-import Title from "../../components/title";
+import ItemsView from "../components/items_view";
+import Title from "../components/title";
 
 function AccountWatchlist() {
   return (

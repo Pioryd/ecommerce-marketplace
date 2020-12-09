@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 
-import Title from "../../components/title";
-import { ButtonLink } from "../../components/controls";
+import Title from "../components/title";
+import { ButtonLink } from "../components/controls";
 
-import * as AccountActions from "../../redux/modules/account/actions";
+import * as AccountActions from "../redux/modules/account/actions";
 
 function Account() {
   const dispatch = useDispatch();

@@ -1,12 +1,6 @@
 import React from "react";
-import Title from "../../components/title";
-import {
-  Group,
-  Label,
-  Input,
-  Textarea,
-  Button
-} from "../../components/controls";
+import Title from "../components/title";
+import { Group, Label, Input, Textarea, Button } from "../components/controls";
 
 function AccountListItem() {
   return (
