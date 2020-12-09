@@ -1,9 +1,16 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+
 import Title from "../../components/title";
 import { ButtonLink } from "../../components/controls";
 
+import * as AccountActions from "../../redux/modules/account/actions";
 
 function Account() {
+  const dispatch = useDispatch();
+
+  const sign_out = () => dispatch(AccountActions.sign_out());
+
   return (
     <React.Fragment>
       <Title name="Account" />
