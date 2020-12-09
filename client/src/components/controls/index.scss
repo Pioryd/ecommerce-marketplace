@@ -39,6 +39,7 @@
 .a4t_button {
   margin: auto;
   margin-top: 20px;
+
   width: 80%;
   height: 50px;
   max-width: 400px;
@@ -50,4 +51,8 @@
   display: block;
   text-decoration: none;
   text-align: center;
+}
+
+.a4t_button:focus {
+  outline: none;
 }

@@ -46,7 +46,7 @@ export function Button(props) {
 export function ButtonLink(props) {
   return (
     <Link className="a4t_button" {...props}>
-      {props.children}
+      {props.text}
     </Link>
   );
 }
