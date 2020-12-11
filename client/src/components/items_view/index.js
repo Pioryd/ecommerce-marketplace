@@ -19,28 +19,11 @@ function Item(props) {
   );
 }
 
-function ItemsView() {
-  const [state_items, set_state_items] = React.useState({});
-
-  React.useEffect(() => {
-    const items = {};
-    for (let i = 0; i < 10; i++) {
-      items[`item_${i}`] = {
-        image: "",
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
-        price: 23.34,
-        watching: false,
-        date: "26.06.2021"
-      };
-    }
-    set_state_items(items);
-  }, []);
-
+function ItemsView(props) {
   return (
     <div className="auctions">
-      {Object.keys(state_items).map((key) => (
-        <Item key={key} data={state_items[key]} />
+      {Object.keys(props.list).map((key) => (
+        <Item key={key} data={props.list[key]} />
       ))}
     </div>
   );

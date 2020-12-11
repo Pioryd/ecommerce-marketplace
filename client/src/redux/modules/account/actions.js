@@ -1,6 +1,12 @@
 export const create = ({ name, login, password }) => async (dispatch) => {
   try {
-    dispatch({ type: "ACCOUNT_UPDATE", payload: { name, login, password } });
+    const selling = [2, 3, 4];
+    const watchlist = [6, 7, 8];
+
+    dispatch({
+      type: "ACCOUNT_UPDATE",
+      payload: { name, login, password, selling, watchlist }
+    });
   } catch (error) {
     console.log(error);
   }
@@ -24,8 +30,14 @@ export const remove = ({ login }) => async (dispatch) => {
 
 export const sign_in = ({ login, password }) => async (dispatch) => {
   try {
+    const selling = [2, 3, 4];
+    const watchlist = [6, 7, 8];
+
     const name = "test";
-    dispatch({ type: "ACCOUNT_UPDATE", payload: { name, login, password } });
+    dispatch({
+      type: "ACCOUNT_UPDATE",
+      payload: { name, login, password, selling, watchlist }
+    });
   } catch (error) {
     console.log(error);
   }

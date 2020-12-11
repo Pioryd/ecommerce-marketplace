@@ -7,7 +7,6 @@ const reducer = (state = {}, { type, payload }) =>
         draft = payload;
         break;
       default:
-        return draft;
     }
     return draft;
   });
