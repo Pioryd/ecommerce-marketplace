@@ -14,6 +14,12 @@ mongoose.connect(process.env.DB_URL, {
   useUnifiedTopology: true,
   useCreateIndex: true
 });
+// TODO
+// Do tego chyba musi bys asyn await, by nie było ze nie zdąży sie podłączyć?
+mongoose.connection.on(
+  "error",
+  console.error.bind(console, "MongoDB connection error:")
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
