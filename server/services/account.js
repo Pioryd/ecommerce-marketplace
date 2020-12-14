@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 const AccountModel = require("../models/account");
 
 exports.create = async (data) => {
@@ -19,6 +21,12 @@ exports.update = async (data) => {};
 
 exports.remove = async (data) => {};
 
-exports.sign_in = async (data) => {};
+exports.sign_in = async (data) => {
+  return {
+    token: jwt.sign({ name: data.name }, process.env.JWT_SECRET, {
+      expiresIn: "1800s"
+    })
+  };
+};
 
 exports.sign_out = async (data) => {};

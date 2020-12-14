@@ -13,9 +13,7 @@ exports.remove = async (req, res) => {
 };
 
 exports.sign_in = async (req, res) => {
-  AccountService.sign_in(req.body).then((data) =>
-    res.json({ text: "signed in" })
-  );
+  AccountService.sign_in(req.body).then(({ token }) => res.json({ token }));
 };
 
 exports.sign_out = async (req, res) => {
