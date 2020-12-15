@@ -5,9 +5,9 @@ async function pbkdf2(salt, password) {
     crypto.pbkdf2(
       password,
       salt,
-      Number(process.env.PBKDF2_HASH_ITERATIONS),
-      Number(process.env.PBKDF2_HASH_BYTES),
-      process.env.PBKDF2_HASH_DIGEST,
+      Number(process.env.PASSWORD_HASH_ITERATIONS),
+      Number(process.env.PASSWORD_HASH_BYTES),
+      process.env.PASSWORD_HASH_DIGEST,
       (err, hash) => {
         if (err) reject("Unable to create hash.");
         else resolve(hash.toString("hex"));
@@ -18,7 +18,7 @@ async function pbkdf2(salt, password) {
 
 exports.encrypt = async (password) => {
   const salt = crypto
-    .randomBytes(Number(process.env.PBKDF2_SALT_BYTES))
+    .randomBytes(Number(process.env.PASSWORD_SALT_BYTES))
     .toString("hex");
   const hash = await pbkdf2(password, salt);
 
