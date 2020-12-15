@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const Token = require("../framework/token");
 const Password = require("../framework/password");
 
 const AccountModel = require("../models/account");
@@ -25,11 +25,7 @@ exports.sign_in = async ({ name, password }) => {
 
   await Password.verify(password, account.salt, account.hash);
 
-  return {
-    token: jwt.sign({ name }, process.env.JWT_SECRET, {
-      expiresIn: "1800s"
-    })
-  };
+  return { token: Token.generate({ name }, { expiresIn: "1800s" }) };
 };
 
 exports.sign_out = async (data) => {};
