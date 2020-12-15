@@ -1,29 +1,32 @@
 const jwt = require("jsonwebtoken");
+const Password = require("../framework/password");
 
 const AccountModel = require("../models/account");
 
-exports.create = async (data) => {
-  await AccountModel.find()
-    .then((result) => {
-      AccountModel.create(data)
-        .then(() => {})
-        .catch((error) => console.log("found error"));
+exports.create = async ({ name, password }) => {
+  const result = await AccountModel.find({ name });
+  if (result.length > 0) throw new Error("Account already created.");
+  console.log({ name, password });
 
-      for (const doc of result) {
-        const { name, password } = doc;
-        console.log({ name, password });
-      }
-    })
-    .catch((error) => console.log("found error"));
+  const { salt, hash } = await Password.encrypt(password);
+
+  console.log({ name, salt, hash });
+  await AccountModel.create({ name, salt, hash });
 };
 
 exports.update = async (data) => {};
 
 exports.remove = async (data) => {};
 
-exports.sign_in = async (data) => {
+exports.sign_in = async ({ name, password }) => {
+  const result = await AccountModel.find({ name });
+  const account = result[0];
+  if (account == null) throw new Error("Account does not exist.");
+
+  await Password.verify(password, account.salt, account.hash);
+
   return {
-    token: jwt.sign({ name: data.name }, process.env.JWT_SECRET, {
+    token: jwt.sign({ name }, process.env.JWT_SECRET, {
       expiresIn: "1800s"
     })
   };
