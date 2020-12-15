@@ -19,9 +19,6 @@ function AccountListItem() {
         <Label>Description</Label>
         <Textarea type="text" id="description" rows={10} />
 
-        <Label>Image</Label>
-        <Input type="file" id="title" />
-
         <Button className="a4t_button" type="submit">
           Create
         </Button>
