@@ -17,9 +17,6 @@ mongoose.connect(process.env.DB_URL, {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// TODO czy na pewno to?
-// czy na pewno taka ścieżka ? zy nie build? a reszta w src ?
-app.use(express.static(__dirname + "/uploads"));
 
 app.use(routes);
 

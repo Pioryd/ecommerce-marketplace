@@ -1,19 +1,24 @@
 const mongoose = require("mongoose");
 
-const AccountSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true
+const AccountSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    hash: {
+      type: String,
+      required: true
+    },
+    salt: {
+      type: String,
+      required: true
+    },
+    items_watching: [{ type: mongoose.Schema.Types.ObjectId }],
+    items_selling: [{ type: mongoose.Schema.Types.ObjectId }]
   },
-  hash: {
-    type: String,
-    required: true
-  },
-  salt: {
-    type: String,
-    required: true
-  }
-});
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Account", AccountSchema);

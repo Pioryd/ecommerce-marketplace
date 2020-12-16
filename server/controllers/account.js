@@ -12,12 +12,12 @@ exports.remove = async (req, res) => {
   AccountService.remove(req.body).then((data) => res.json({ text: "removed" }));
 };
 
-exports.sign_in = async (req, res) => {
-  AccountService.sign_in(req.body).then(({ token }) => res.json({ token }));
+exports.signIn = async (req, res) => {
+  AccountService.signIn(req.body).then(({ token }) => res.json({ token }));
 };
 
-exports.sign_out = async (req, res) => {
-  AccountService.sign_out(req.body).then((data) =>
+exports.signOut = async (req, res) => {
+  AccountService.signOut(req.body).then((data) =>
     res.json({ text: "signed out" })
   );
 };

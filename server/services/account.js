@@ -1,5 +1,5 @@
-const Token = require("../framework/token");
-const Password = require("../framework/password");
+const Token = require("../util/token");
+const Password = require("../util/password");
 
 const AccountModel = require("../models/account");
 
@@ -18,7 +18,7 @@ exports.update = async (data) => {};
 
 exports.remove = async (data) => {};
 
-exports.sign_in = async ({ name, password }) => {
+exports.signIn = async ({ name, password }) => {
   const result = await AccountModel.find({ name });
   const account = result[0];
   if (account == null) throw new Error("Account does not exist.");
@@ -28,4 +28,4 @@ exports.sign_in = async ({ name, password }) => {
   return { token: Token.generate({ name }, { expiresIn: "1800s" }) };
 };
 
-exports.sign_out = async (data) => {};
+exports.signOut = async (data) => {};

@@ -26,7 +26,7 @@ exports.encrypt = async (password) => {
 };
 
 exports.verify = async (password, salt, hash) => {
-  const compare_hash = await pbkdf2(password, salt);
+  const compareHash = await pbkdf2(password, salt);
 
-  if (hash != compare_hash) throw new Error("Wrong password.");
+  if (hash != compareHash) throw new Error("Wrong password.");
 };

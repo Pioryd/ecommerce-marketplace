@@ -1,6 +1,6 @@
-const Token = require("../framework/token");
+const Token = require("../util/token");
 
-exports.is_auth = async (req, res, next) => {
+exports.isAuth = async (req, res, next) => {
   const { token } = req.body;
   if (token == null) return res.sendStatus(401);
 
@@ -12,6 +12,6 @@ exports.is_auth = async (req, res, next) => {
   }
 };
 
-exports.is_admin = async (req, res, next) => {
+exports.isAdmin = async (req, res, next) => {
   return next();
 };
