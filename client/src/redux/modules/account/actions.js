@@ -28,7 +28,7 @@ export const remove = ({ login }) => async (dispatch) => {
   }
 };
 
-export const sign_in = ({ login, password }) => async (dispatch) => {
+export const signIn = ({ login, password }) => async (dispatch) => {
   try {
     const selling = [2, 3, 4];
     const watchlist = [6, 7, 8];
@@ -43,7 +43,7 @@ export const sign_in = ({ login, password }) => async (dispatch) => {
   }
 };
 
-export const sign_out = () => async (dispatch) => {
+export const signOut = () => async (dispatch) => {
   try {
     dispatch({ type: "ACCOUNT_UPDATE", payload: {} });
   } catch (error) {

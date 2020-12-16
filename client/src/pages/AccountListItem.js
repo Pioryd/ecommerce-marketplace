@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Title from "../components/title";
 import { Group, Label, Input, Textarea, Button } from "../components/controls";
 
 function AccountListItem() {
   return (
-    <React.Fragment>
+    <Fragment>
       <Title name="List item" />
       <Group>
         <Label>Title</Label>
@@ -19,11 +19,9 @@ function AccountListItem() {
         <Label>Description</Label>
         <Textarea type="text" id="description" rows={10} />
 
-        <Button className="a4t_button" type="submit">
-          Create
-        </Button>
+        <Button>Create</Button>
       </Group>
-    </React.Fragment>
+    </Fragment>
   );
 }
 export default AccountListItem;

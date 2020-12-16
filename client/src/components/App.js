@@ -6,12 +6,12 @@ import Navigation from "./navigation";
 import Content from "./content";
 import Footer from "./footer";
 
-import Account from "../pages/account";
-import AccountSelling from "../pages/account_selling";
-import AccountWatchlist from "../pages/account_watchlist";
-import AccountListItem from "../pages/account_list_item";
-import AccountSettings from "../pages/account_settings";
-import Items from "../pages/items";
+import Account from "../pages/Account";
+import AccountSelling from "../pages/AccountSelling";
+import AccountWatchlist from "../pages/AccountWatchlist";
+import AccountListItem from "../pages/AccountListItem";
+import AccountSettings from "../pages/AccountSettings";
+import Items from "../pages/Items";
 
 function Main() {
   return (

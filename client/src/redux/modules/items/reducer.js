@@ -1,8 +1,8 @@
 import produce from "immer";
 
-import { temp_init } from "./temp_init";
+import { tempInit } from "./tempInit";
 
-const reducer = (state = { list: temp_init }, { type, payload }) =>
+const reducer = (state = { list: tempInit }, { type, payload }) =>
   produce(state, (draft) => {
     switch (type) {
       case "ITEMS_UPDATE_DETAILS":

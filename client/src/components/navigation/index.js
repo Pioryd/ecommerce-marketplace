@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 
 import "./index.scss";
@@ -7,12 +7,12 @@ const LOGO = "e-commerce";
 
 function Navigation() {
   return (
-    <React.Fragment>
+    <Fragment>
       <div className="navbar">
         <Link className="logo" to="/">
           {LOGO}
         </Link>
-        <div className="links_block">
+        <div className="links-block">
           <Link to="/account/watchlist" className="link">
             Watchlist
           </Link>
@@ -21,7 +21,7 @@ function Navigation() {
           </Link>
         </div>
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 }
 export default Navigation;

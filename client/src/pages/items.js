@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 
 import ItemsView from "../components/items_view";
@@ -10,10 +10,10 @@ function Items() {
   const list = useSelector(ItemsSelector.getList([...Array(8).keys()]));
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Title name="Items" />
       <ItemsView list={list} />
-    </React.Fragment>
+    </Fragment>
   );
 }
 export default Items;

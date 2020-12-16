@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Title from "../components/title";
 import { Group, Legend, Label, Input, Button } from "../components/controls";
 
 function AccountSettings() {
   return (
-    <React.Fragment>
+    <Fragment>
       <Title name="Account settings" />
       <Group>
         <Legend>Login(email):</Legend>
@@ -14,8 +14,8 @@ function AccountSettings() {
         <Legend>User name</Legend>
         <Input
           type="text"
-          id="user_name"
-          name="user_name"
+          id=""
+          name="userName"
           placeholder=""
           value="Some user name"
         />
@@ -41,7 +41,7 @@ function AccountSettings() {
         />
         <Button>change</Button>
       </Group>
-    </React.Fragment>
+    </Fragment>
   );
 }
 export default AccountSettings;

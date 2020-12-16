@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, Fragment } from "react";
 import { useDispatch } from "react-redux";
 
 import Title from "../components/title";
@@ -9,20 +9,20 @@ import * as AccountActions from "../redux/modules/account/actions";
 export default function AccountSignIn() {
   const dispatch = useDispatch();
 
-  const [state_login, set_state_login] = React.useState("");
-  const [state_password, set_state_password] = React.useState("");
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [state_create_name, set_state_create_name] = React.useState("");
-  const [state_create_login, set_state_create_login] = React.useState("");
-  const [state_create_password, set_state_create_password] = React.useState("");
+  const [createName, setCreateName] = useState("");
+  const [createLogin, setCreateLogin] = useState("");
+  const [createPassword, setCreatePassword] = useState("");
 
-  const [state_recover_login, set_state_recover_login] = React.useState("");
+  const [recoverLogin, setRecoverLogin] = useState("");
 
-  const sign_in = () => {
+  const signIn = () => {
     dispatch(
-      AccountActions.sign_in({
-        login: state_login,
-        password: state_password
+      AccountActions.signIn({
+        login: login,
+        password: password
       })
     );
   };
@@ -30,9 +30,9 @@ export default function AccountSignIn() {
   const create = () => {
     dispatch(
       AccountActions.create({
-        name: state_create_name,
-        login: state_create_name,
-        password: state_create_password
+        name: createName,
+        login: createName,
+        password: createPassword
       })
     );
   };
@@ -40,13 +40,13 @@ export default function AccountSignIn() {
   const recover = () => {
     dispatch(
       AccountActions.recover({
-        login: state_recover_login
+        login: recoverLogin
       })
     );
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Title name="Account - sign in" />
 
       <Group>
@@ -56,18 +56,18 @@ export default function AccountSignIn() {
           type="email"
           id="login"
           name="login"
-          value={state_login}
-          onChange={(e) => set_state_login(e.target.value)}
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
         />
         <Label>Password</Label>
         <Input
           type="password"
           id="password"
           name="password"
-          value={state_password}
-          onChange={(e) => set_state_password(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <Button onClick={sign_in}>sign in</Button>
+        <Button onClick={signIn}>sign in</Button>
         <Label>
           <a href="#account-recovery">Forgot password?</a>
         </Label>
@@ -80,24 +80,24 @@ export default function AccountSignIn() {
           type="text"
           id="name"
           name="name"
-          value={state_create_name}
-          onChange={(e) => set_state_create_name(e.target.value)}
+          value={createName}
+          onChange={(e) => setCreateName(e.target.value)}
         />
         <Label>Login(email)</Label>
         <Input
           type="email"
           id="login"
           name="login"
-          value={state_create_login}
-          onChange={(e) => set_state_create_login(e.target.value)}
+          value={createLogin}
+          onChange={(e) => setCreateLogin(e.target.value)}
         />
         <Label>Password</Label>
         <Input
           type="password"
           id="password"
           name="password"
-          value={state_create_password}
-          onChange={(e) => set_state_create_password(e.target.value)}
+          value={createPassword}
+          onChange={(e) => setCreatePassword(e.target.value)}
         />
         <Button onClick={create}>create account</Button>
       </Group>
@@ -109,8 +109,8 @@ export default function AccountSignIn() {
           type="email"
           id="recover"
           name="recover"
-          value={state_recover_login}
-          onChange={(e) => set_state_recover_login(e.target.value)}
+          value={recoverLogin}
+          onChange={(e) => setRecoverLogin(e.target.value)}
         />
         <Label>
           The new password will be sent to your email(login) and will be
@@ -118,6 +118,6 @@ export default function AccountSignIn() {
         </Label>
         <Button onClick={recover}>recover</Button>
       </Group>
-    </React.Fragment>
+    </Fragment>
   );
 }
