@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import { useDispatch } from "react-redux";
 
-import Title from "../components/title";
-import { ButtonLink } from "../components/controls";
+import Title from "../components/Title";
+import { ButtonLink } from "../components/Controls";
 
 import * as AccountActions from "../redux/modules/account/actions";
 

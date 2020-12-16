@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import Title from "../components/title";
-import { Group, Legend, Label, Input, Button } from "../components/controls";
+import Title from "../components/Title";
+import { Group, Legend, Label, Input, Button } from "../components/Controls";
 
 function AccountSettings() {
   return (

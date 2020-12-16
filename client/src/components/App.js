@@ -1,10 +1,10 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import AccountRoute from "../components/routes/account";
+import AccountRoute from "./Routes/Account";
 
-import Navigation from "./navigation";
-import Content from "./content";
-import Footer from "./footer";
+import Navigation from "./Navigation";
+import Content from "./Content";
+import Footer from "./Footer";
 
 import Account from "../pages/Account";
 import AccountSelling from "../pages/AccountSelling";

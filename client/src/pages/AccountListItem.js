@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import Title from "../components/title";
-import { Group, Label, Input, Textarea, Button } from "../components/controls";
+import Title from "../components/Title";
+import { Group, Label, Input, Textarea, Button } from "../components/Controls";
 
 function AccountListItem() {
   return (

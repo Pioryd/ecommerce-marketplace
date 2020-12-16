@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 
-import ItemsView from "../components/items_view";
-import Title from "../components/title";
+import ItemsView from "../components/ItemsView";
+import Title from "../components/Title";
 
 import * as ItemsSelector from "../redux/modules/items/selectors";
 import * as AccountSelector from "../redux/modules/account/selectors";

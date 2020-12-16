@@ -1,8 +1,8 @@
 import { useState, Fragment } from "react";
 import { useDispatch } from "react-redux";
 
-import Title from "../components/title";
-import { Group, Legend, Label, Input, Button } from "../components/controls";
+import Title from "../components/Title";
+import { Group, Legend, Label, Input, Button } from "../components/Controls";
 
 import * as AccountActions from "../redux/modules/account/actions";
 
