@@ -5,26 +5,29 @@ const authMiddleware = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.post("/accounts", accountController.create);
-router.post("/accounts/sign-in", accountController.signIn);
+const use = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
+
+router.post("/accounts", use(accountController.create));
+router.post("/accounts/sign-in", use(accountController.signIn));
 router.delete(
   "/accounts/sign-out",
   authMiddleware.isAuth,
-  accountController.signOut
+  use(accountController.signOut)
 );
-router.put("/accounts", authMiddleware.isAuth, accountController.update);
+router.put("/accounts", authMiddleware.isAuth, use(accountController.update));
 
 router.put(
   "/accounts/:id",
   authMiddleware.isAuth,
   authMiddleware.isAdmin,
-  accountController.update
+  use(accountController.update)
 );
 router.delete(
   "/accounts/:id",
   authMiddleware.isAuth,
   authMiddleware.isAdmin,
-  accountController.remove
+  use(accountController.remove)
 );
 
 module.exports = router;

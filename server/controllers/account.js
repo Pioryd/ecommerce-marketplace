@@ -1,23 +1,26 @@
 const AccountService = require("../services/account");
 
 exports.create = async (req, res) => {
-  AccountService.create(req.body).then((data) => res.json({ text: "created" }));
+  const data = await AccountService.create(req.body);
+  res.json({ text: "created" });
 };
 
 exports.update = async (req, res) => {
-  AccountService.update(req.body).then((data) => res.json({ text: "updated" }));
+  const data = await AccountService.update(req.body);
+  res.json({ text: "updated" });
 };
 
 exports.remove = async (req, res) => {
-  AccountService.remove(req.body).then((data) => res.json({ text: "removed" }));
+  const data = await AccountService.remove(req.body);
+  res.json({ text: "removed" });
 };
 
 exports.signIn = async (req, res) => {
-  AccountService.signIn(req.body).then(({ token }) => res.json({ token }));
+  const { token } = await AccountService.signIn(req.body);
+  res.json({ token });
 };
 
 exports.signOut = async (req, res) => {
-  AccountService.signOut(req.body).then((data) =>
-    res.json({ text: "signed out" })
-  );
+  const data = await AccountService.signOut(req.body);
+  res.json({ text: "signed out" });
 };

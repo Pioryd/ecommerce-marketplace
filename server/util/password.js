@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 
-async function pbkdf2(salt, password) {
-  return await new Promise((resolve, reject) => {
+function pbkdf2(salt, password) {
+  return new Promise((resolve, reject) => {
     crypto.pbkdf2(
       password,
       salt,
