@@ -1,31 +1,61 @@
+const isEmail = require("validator/lib/isEmail");
+const isStrongPassword = require("validator/lib/isEmail");
 const Token = require("../util/token");
 const Password = require("../util/password");
 
 const AccountModel = require("../models/account");
 
-exports.create = async ({ name, password }) => {
-  const result = await AccountModel.find({ name });
-  if (result.length > 0) throw new Error("Account already created.");
-  console.log({ name, password });
+exports.create = async ({ email, password }) => {
+  try {
+    validLoginData({ email, password });
 
-  const { salt, hash } = await Password.encrypt(password);
+    if ((await AccountModel.findOne({ email })) != null)
+      throw new Error("Account already created.");
 
-  console.log({ name, salt, hash });
-  await AccountModel.create({ name, salt, hash });
+    const { salt, hash } = await Password.encrypt(password);
+
+    await AccountModel.create({ email, salt, hash });
+  } catch (err) {
+    throw new Error("Unable to create account.");
+  }
 };
 
-exports.update = async (data) => {};
+exports.remove = async (data) => {
+  try {
+    validLoginData({ email, password });
 
-exports.remove = async (data) => {};
+    const account = await AccountModel.findOne({ email });
+    if (account == null) throw new Error("Account does not exist.");
 
-exports.signIn = async ({ name, password }) => {
-  const result = await AccountModel.find({ name });
-  const account = result[0];
-  if (account == null) throw new Error("Account does not exist.");
+    await Password.verify(password, account.salt, account.hash);
 
-  await Password.verify(password, account.salt, account.hash);
-
-  return { token: Token.generate({ name }, { expiresIn: "1800s" }) };
+    if ((await AccountModel.deleteOne({ email })).deletedCount == null)
+      throw new Error("No account is deleted.");
+  } catch (err) {
+    throw new Error("Unable to remove account.");
+  }
 };
 
-exports.signOut = async (data) => {};
+exports.signIn = async ({ email, password }) => {
+  try {
+    validLoginData({ email, password });
+
+    const account = await AccountModel.findOne({ email });
+    if (account == null) throw new Error("Account does not exist.");
+
+    await Password.verify(password, account.salt, account.hash);
+
+    return { token: Token.generate({ email }, "1800s") };
+  } catch (err) {
+    throw new Error("Unable to sign in.");
+  }
+};
+
+function validLoginData({ email, password }) {
+  if (email == null || !isEmail(email)) {
+    throw new Error("Wrong email.");
+  }
+  if (password == null || isStrongPassword(password, { minLength: 8 })) {
+    throw new Error("Wrong password.");
+  }
+}

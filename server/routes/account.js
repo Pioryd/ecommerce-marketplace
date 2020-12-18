@@ -11,22 +11,8 @@ const use = (fn) => (req, res, next) =>
 router.post("/accounts", use(accountController.create));
 router.post("/accounts/sign-in", use(accountController.signIn));
 router.delete(
-  "/accounts/sign-out",
+  "/accounts",
   authMiddleware.isAuth,
-  use(accountController.signOut)
-);
-router.put("/accounts", authMiddleware.isAuth, use(accountController.update));
-
-router.put(
-  "/accounts/:id",
-  authMiddleware.isAuth,
-  authMiddleware.isAdmin,
-  use(accountController.update)
-);
-router.delete(
-  "/accounts/:id",
-  authMiddleware.isAuth,
-  authMiddleware.isAdmin,
   use(accountController.remove)
 );
 

@@ -1,8 +1,9 @@
 const AccountService = require("../services/account");
 
 exports.create = async (req, res) => {
-  const data = await AccountService.create(req.body);
-  res.json({ text: "created" });
+  await AccountService.create(req.body);
+  const { token } = await AccountService.signIn(req.body);
+  res.json({ token });
 };
 
 exports.update = async (req, res) => {
