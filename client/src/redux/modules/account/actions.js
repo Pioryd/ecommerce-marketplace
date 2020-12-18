@@ -1,60 +1,112 @@
-export const create = ({ name, login, password }) => async (dispatch) => {
+import isEmail from "validator/lib/isEmail";
+import isStrongPassword from "validator/lib/isStrongPassword";
+
+export const create = ({ email, password }) => async (dispatch) => {
   try {
-    const selling = [2, 3, 4];
-    const watchlist = [6, 7, 8];
+    validLoginData({ email, password });
+
+    const accountDetails = (
+      await fetch(process.env.REACT_APP_API_URL + "/accounts", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-type": "application/json" }
+      })
+    ).json();
+
+    localStorage.setItem("token", accountDetails.token);
 
     dispatch({
       type: "ACCOUNT_UPDATE",
-      payload: { name, login, password, selling, watchlist }
+      payload: accountDetails
     });
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.error(err);
+    return;
   }
 };
 
-export const update = ({ name, login, password }) => async (dispatch) => {
-  try {
-    dispatch({ type: "ACCOUNT_UPDATE", payload: { name, login, password } });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const update = ({ password }) => async (dispatch) => {};
 
-export const remove = ({ login }) => async (dispatch) => {
+export const remove = ({ password }) => async (dispatch) => {
   try {
-    dispatch({ type: "ACCOUNT_UPDATE", payload: {} });
-  } catch (error) {
-    console.log(error);
-  }
-};
+    await fetch(process.env.REACT_APP_API_URL + "/accounts", {
+      method: "DELETE",
+      body: JSON.stringify({ password }),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    });
 
-export const signIn = ({ login, password }) => async (dispatch) => {
-  try {
-    const selling = [2, 3, 4];
-    const watchlist = [6, 7, 8];
+    localStorage.removeItem("token");
 
-    const name = "test";
     dispatch({
       type: "ACCOUNT_UPDATE",
-      payload: { name, login, password, selling, watchlist }
+      payload: {}
     });
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const signIn = ({ email, password }) => async (dispatch) => {
+  try {
+    validLoginData({ email, password });
+
+    const accountDetails = (
+      await fetch(process.env.REACT_APP_API_URL + "/accounts/sign-in", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-type": "application/json" }
+      })
+    ).json();
+
+    localStorage.setItem("token", accountDetails.token);
+
+    dispatch({
+      type: "ACCOUNT_UPDATE",
+      payload: accountDetails
+    });
+  } catch (err) {
+    console.error(err);
+    return;
   }
 };
 
 export const signOut = () => async (dispatch) => {
   try {
+    localStorage.removeItem("token");
+
     dispatch({ type: "ACCOUNT_UPDATE", payload: {} });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const recover = () => async (dispatch) => {
+export const recover = ({ email }) => async (dispatch) => {
   try {
-    dispatch({ type: "ACCOUNT_UPDATE", payload: {} });
-  } catch (error) {
-    console.log(error);
+    validLoginData({ email });
+
+    await fetch(process.env.REACT_APP_API_URL + "/accounts/recover", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+      headers: { "Content-type": "application/json" }
+    });
+
+    // TODO
+    // recover stuff
+    // wiadomość zwrotna ze został wysłany
+  } catch (err) {
+    console.error(err);
+    return;
   }
 };
+
+function validLoginData({ email, password }) {
+  if (email == null || !isEmail(email)) {
+    throw new Error("Wrong email.");
+  }
+  if (password == null || isStrongPassword(password, { minLength: 8 })) {
+    throw new Error("Wrong password.");
+  }
+}

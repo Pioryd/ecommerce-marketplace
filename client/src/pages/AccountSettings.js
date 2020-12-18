@@ -11,18 +11,6 @@ function AccountSettings() {
         <Label>some.email@email.com</Label>
       </Group>
       <Group>
-        <Legend>User name</Legend>
-        <Input
-          type="text"
-          id=""
-          name="userName"
-          placeholder=""
-          value="Some user name"
-        />
-
-        <Button>change</Button>
-      </Group>
-      <Group>
         <Legend>Password</Legend>
         <Label>New password</Label>
         <Input

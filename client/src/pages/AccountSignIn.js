@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { useDispatch } from "react-redux";
 
 import Title from "../components/Title";
@@ -9,29 +9,21 @@ import * as AccountActions from "../redux/modules/account/actions";
 export default function AccountSignIn() {
   const dispatch = useDispatch();
 
-  const [login, setLogin] = useState("");
+  const [email, setMail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [createName, setCreateName] = useState("");
-  const [createLogin, setCreateLogin] = useState("");
+  const [createEmail, setCreateEmail] = useState("");
   const [createPassword, setCreatePassword] = useState("");
+  const [createRepeatPassword, setCreateRepeatPassword] = useState("");
 
-  const [recoverLogin, setRecoverLogin] = useState("");
+  const [recoverEmail, setRecoverEmail] = useState("");
 
-  const signIn = () => {
-    dispatch(
-      AccountActions.signIn({
-        login: login,
-        password: password
-      })
-    );
-  };
+  const signIn = () => dispatch(AccountActions.signIn({ email, password }));
 
   const create = () => {
     dispatch(
       AccountActions.create({
-        name: createName,
-        login: createName,
+        email: createEmail,
         password: createPassword
       })
     );
@@ -40,7 +32,7 @@ export default function AccountSignIn() {
   const recover = () => {
     dispatch(
       AccountActions.recover({
-        login: recoverLogin
+        email: recoverEmail
       })
     );
   };
@@ -54,10 +46,10 @@ export default function AccountSignIn() {
         <Label>Login(email)</Label>
         <Input
           type="email"
-          id="login"
-          name="login"
-          value={login}
-          onChange={(e) => setLogin(e.target.value)}
+          id="email"
+          name="email"
+          value={email}
+          onChange={(e) => setMail(e.target.value)}
         />
         <Label>Password</Label>
         <Input
@@ -76,28 +68,29 @@ export default function AccountSignIn() {
       <Group>
         <Legend>Create account</Legend>
         <Label>Name</Label>
-        <Input
-          type="text"
-          id="name"
-          name="name"
-          value={createName}
-          onChange={(e) => setCreateName(e.target.value)}
-        />
         <Label>Login(email)</Label>
         <Input
           type="email"
-          id="login"
-          name="login"
-          value={createLogin}
-          onChange={(e) => setCreateLogin(e.target.value)}
+          id="createEmail"
+          name="createEmail"
+          value={createEmail}
+          onChange={(e) => setCreateEmail(e.target.value)}
         />
         <Label>Password</Label>
         <Input
           type="password"
-          id="password"
-          name="password"
+          id="createPassword"
+          name="createPassword"
           value={createPassword}
           onChange={(e) => setCreatePassword(e.target.value)}
+        />
+        <Label>Repeat password</Label>
+        <Input
+          type="password"
+          id="repeatPassword"
+          name="repeatPassword"
+          value={createRepeatPassword}
+          onChange={(e) => setCreateRepeatPassword(e.target.value)}
         />
         <Button onClick={create}>create account</Button>
       </Group>
@@ -107,10 +100,10 @@ export default function AccountSignIn() {
         <Label>Login(email)</Label>
         <Input
           type="email"
-          id="recover"
-          name="recover"
-          value={recoverLogin}
-          onChange={(e) => setRecoverLogin(e.target.value)}
+          id="recoverEmail"
+          name="recoverEmail"
+          value={recoverEmail}
+          onChange={(e) => setRecoverEmail(e.target.value)}
         />
         <Label>
           The new password will be sent to your email(login) and will be
