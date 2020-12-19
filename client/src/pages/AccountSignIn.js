@@ -2,39 +2,82 @@ import React, { useState, Fragment } from "react";
 import { useDispatch } from "react-redux";
 
 import Title from "../components/Title";
-import { Group, Legend, Label, Input, Button } from "../components/Controls";
+import {
+  Group,
+  Legend,
+  Label,
+  Input,
+  Button,
+  ButtonDisabled,
+  Info
+} from "../components/Controls";
 
 import * as AccountActions from "../redux/modules/account/actions";
+
+const Processing = () => <ButtonDisabled>Processing...</ButtonDisabled>;
 
 export default function AccountSignIn() {
   const dispatch = useDispatch();
 
-  const [email, setMail] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailOfSignIn, setEmailOfSignIn] = useState("");
+  const [passwordOfSignIn, setPasswordOfSignIn] = useState("");
+  const [messageOfSignIn, setMessageOfSignIn] = useState(null);
+  const [processingOfSignIn, setProcessingOfSignIn] = useState(false);
 
-  const [createEmail, setCreateEmail] = useState("");
-  const [createPassword, setCreatePassword] = useState("");
-  const [createRepeatPassword, setCreateRepeatPassword] = useState("");
+  const [emailOfCreate, setEmailOfCreate] = useState("");
+  const [passwordOfCreate, setPasswordOfCreate] = useState("");
+  const [passwordRepeatOfCreate, setPasswordRepeatOfCreate] = useState("");
+  const [messageOfCreate, setMessageOfCreate] = useState(null);
+  const [processingOfCreate, setProcessingOfCreate] = useState(false);
 
-  const [recoverEmail, setRecoverEmail] = useState("");
+  const [emailOfRecover, setEmailOfRecover] = useState("");
+  const [messageOfRecover, setMessageOfRecover] = useState(null);
+  const [processingOfRecover, setProcessingOfRecover] = useState(false);
 
-  const signIn = () => dispatch(AccountActions.signIn({ email, password }));
-
-  const create = () => {
-    dispatch(
-      AccountActions.create({
-        email: createEmail,
-        password: createPassword
+  const signIn = async () => {
+    setMessageOfSignIn(null);
+    setProcessingOfSignIn(true);
+    const error = await dispatch(
+      AccountActions.signIn({
+        email: emailOfSignIn,
+        password: passwordOfSignIn
       })
     );
+    const successMessage = "Account has been signed in.";
+    setMessageOfSignIn(error || successMessage);
+    setProcessingOfSignIn(false);
   };
 
-  const recover = () => {
-    dispatch(
-      AccountActions.recover({
-        email: recoverEmail
+  const create = async () => {
+    if (passwordOfCreate !== passwordRepeatOfCreate) {
+      setMessageOfCreate("Passwords must be the same.");
+      return;
+    }
+
+    setMessageOfCreate(null);
+    setProcessingOfCreate(true);
+    const error = await dispatch(
+      AccountActions.create({
+        email: emailOfCreate,
+        password: passwordOfCreate
       })
     );
+    const successMessage = "Account has been created.";
+    setMessageOfCreate(error || successMessage);
+    setProcessingOfCreate(false);
+  };
+
+  const recover = async () => {
+    setMessageOfRecover(null);
+    setProcessingOfRecover(true);
+    const error = await dispatch(
+      AccountActions.recover({
+        email: emailOfRecover
+      })
+    );
+    const successMessage = "New password has been sent.";
+    setMessageOfRecover(error || successMessage);
+    setProcessingOfRecover(false);
   };
 
   return (
@@ -43,23 +86,28 @@ export default function AccountSignIn() {
 
       <Group>
         <Legend>Sign in</Legend>
-        <Label>Login(email)</Label>
+        {messageOfSignIn != null && <Info>{messageOfSignIn}</Info>}
+        <Label>Email</Label>
         <Input
           type="email"
           id="email"
           name="email"
-          value={email}
-          onChange={(e) => setMail(e.target.value)}
+          value={emailOfSignIn}
+          onChange={(e) => setEmailOfSignIn(e.target.value)}
         />
         <Label>Password</Label>
         <Input
           type="password"
           id="password"
           name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={passwordOfSignIn}
+          onChange={(e) => setPasswordOfSignIn(e.target.value)}
         />
-        <Button onClick={signIn}>sign in</Button>
+        {processingOfSignIn === true ? (
+          <Processing />
+        ) : (
+          <Button onClick={signIn}>sign in</Button>
+        )}
         <Label>
           <a href="#account-recovery">Forgot password?</a>
         </Label>
@@ -67,49 +115,58 @@ export default function AccountSignIn() {
 
       <Group>
         <Legend>Create account</Legend>
-        <Label>Name</Label>
-        <Label>Login(email)</Label>
+        {messageOfCreate != null && <Info>{messageOfCreate}</Info>}
+        <Label>Email</Label>
         <Input
           type="email"
-          id="createEmail"
-          name="createEmail"
-          value={createEmail}
-          onChange={(e) => setCreateEmail(e.target.value)}
+          id="emailOfCreate"
+          name="emailOfCreate"
+          value={emailOfCreate}
+          onChange={(e) => setEmailOfCreate(e.target.value)}
         />
         <Label>Password</Label>
         <Input
           type="password"
-          id="createPassword"
-          name="createPassword"
-          value={createPassword}
-          onChange={(e) => setCreatePassword(e.target.value)}
+          id="passwordOfCreate"
+          name="passwordOfCreate"
+          value={passwordOfCreate}
+          onChange={(e) => setPasswordOfCreate(e.target.value)}
         />
         <Label>Repeat password</Label>
         <Input
           type="password"
           id="repeatPassword"
           name="repeatPassword"
-          value={createRepeatPassword}
-          onChange={(e) => setCreateRepeatPassword(e.target.value)}
+          value={passwordRepeatOfCreate}
+          onChange={(e) => setPasswordRepeatOfCreate(e.target.value)}
         />
-        <Button onClick={create}>create account</Button>
+        {processingOfCreate === true ? (
+          <Processing />
+        ) : (
+          <Button onClick={create}>create account</Button>
+        )}
       </Group>
 
       <Group id="account-recovery">
+        {messageOfRecover != null && <Info>{messageOfRecover}</Info>}
         <Legend>Account recovery</Legend>
-        <Label>Login(email)</Label>
+        <Label>Email</Label>
         <Input
           type="email"
-          id="recoverEmail"
-          name="recoverEmail"
-          value={recoverEmail}
-          onChange={(e) => setRecoverEmail(e.target.value)}
+          id="emailOfRecover"
+          name="emailOfRecover"
+          value={emailOfRecover}
+          onChange={(e) => setEmailOfRecover(e.target.value)}
         />
         <Label>
           The new password will be sent to your email(login) and will be
           activated after first use during the sign in.
         </Label>
-        <Button onClick={recover}>recover</Button>
+        {processingOfRecover === true ? (
+          <Processing />
+        ) : (
+          <Button onClick={recover}>recover</Button>
+        )}
       </Group>
     </Fragment>
   );

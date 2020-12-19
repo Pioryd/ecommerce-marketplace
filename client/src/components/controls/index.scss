@@ -17,6 +17,7 @@
 }
 
 .a4t_label,
+.a4t_info,
 .a4t_input,
 .a4t_textarea {
   width: 100%;
@@ -55,4 +56,15 @@
 
 .a4t_button:focus {
   outline: none;
+}
+
+.a4t_button-disabled {
+  cursor: none;
+}
+
+.a4t_info {
+  background-color: black;
+  color: white;
+  padding: 5px;
+  padding-bottom: 10px;
 }

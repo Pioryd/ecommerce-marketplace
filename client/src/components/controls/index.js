@@ -3,50 +3,16 @@ import { Link } from "react-router-dom";
 
 import "./index.scss";
 
-export function Group(props) {
-  return (
-    <fieldset className="a4t_group" {...props}>
-      {props.children}
-    </fieldset>
-  );
-}
-
-export function Legend(props) {
-  return (
-    <legend className="a4t_legend" {...props}>
-      {props.children}
-    </legend>
-  );
-}
-
-export function Label(props) {
-  return (
-    <label className="a4t_label" {...props}>
-      {props.children}
-    </label>
-  );
-}
-
-export function Input(props) {
-  return <input className="a4t_input" {...props} />;
-}
-
-export function Textarea(props) {
-  return <textarea className="a4t_textarea" {...props} />;
-}
-
-export function Button(props) {
-  return (
-    <button className="a4t_button" {...props}>
-      {props.children}
-    </button>
-  );
-}
-
-export function ButtonLink(props) {
-  return (
-    <Link className="a4t_button" {...props}>
-      {props.text}
-    </Link>
-  );
-}
+export const Group = (props) => <fieldset className="a4t_group" {...props} />;
+export const Legend = (props) => <legend className="a4t_legend" {...props} />;
+export const Label = (props) => <label className="a4t_label" {...props} />;
+export const Input = (props) => <input className="a4t_input" {...props} />;
+export const Textarea = (props) => (
+  <textarea className="a4t_textarea" {...props} />
+);
+export const Button = (props) => <button className="a4t_button" {...props} />;
+export const ButtonDisabled = (props) => (
+  <button className="a4t_button a4t_button-disabled" {...props} />
+);
+export const ButtonLink = (props) => <Link className="a4t_button" {...props} />;
+export const Info = (props) => <label className="a4t_info" {...props} />;
