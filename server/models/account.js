@@ -15,6 +15,9 @@ const AccountSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    recover_password: {
+      type: String
+    },
     items_watching: [{ type: mongoose.Schema.Types.ObjectId }],
     items_selling: [{ type: mongoose.Schema.Types.ObjectId }]
   },

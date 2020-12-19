@@ -10,6 +10,7 @@ const use = (fn) => (req, res, next) =>
 
 router.post("/accounts", use(accountController.create));
 router.post("/accounts/sign-in", use(accountController.signIn));
+router.post("/accounts/recover", use(accountController.recover));
 router.delete(
   "/accounts",
   authMiddleware.isAuth,

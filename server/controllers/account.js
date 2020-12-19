@@ -2,8 +2,8 @@ const AccountService = require("../services/account");
 
 exports.create = async (req, res) => {
   await AccountService.create(req.body);
-  const { token } = await AccountService.signIn(req.body);
-  res.json({ token });
+  const { email, token } = await AccountService.signIn(req.body);
+  res.json({ email, token });
 };
 
 exports.update = async (req, res) => {
@@ -16,9 +16,14 @@ exports.remove = async (req, res) => {
   res.json({ text: "removed" });
 };
 
+exports.recover = async (req, res) => {
+  await AccountService.recover(req.body);
+  res.json({});
+};
+
 exports.signIn = async (req, res) => {
-  const { token } = await AccountService.signIn(req.body);
-  res.json({ token });
+  const { email, token } = await AccountService.signIn(req.body);
+  res.json({ token, email });
 };
 
 exports.signOut = async (req, res) => {
