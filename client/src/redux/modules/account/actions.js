@@ -3,9 +3,7 @@ import isStrongPassword from "validator/lib/isStrongPassword";
 
 export const create = ({ email, password }) => async (dispatch, getState) => {
   try {
-    if (getState().account.fetching === true)
-      throw new Error("The server is busy, please try again.");
-    await dispatch({ type: "ACCOUNT_UPDATE", payload: { fetching: true } });
+    await canFetch(getState, dispatch);
 
     validLoginData({ email, password });
 
@@ -24,7 +22,7 @@ export const create = ({ email, password }) => async (dispatch, getState) => {
 
     await dispatch({
       type: "ACCOUNT_OVERRIDE",
-      payload: { email: receivedData.email }
+      payload: receivedData
     });
   } catch (err) {
     console.error(err);
@@ -37,13 +35,9 @@ export const create = ({ email, password }) => async (dispatch, getState) => {
   }
 };
 
-export const update = ({ password }) => async (dispatch) => {};
-
 export const remove = ({ password }) => async (dispatch, getState) => {
   try {
-    if (getState().account.fetching === true)
-      throw new Error("The server is busy, please try again.");
-    await dispatch({ type: "ACCOUNT_UPDATE", payload: { fetching: true } });
+    await canFetch(getState, dispatch);
 
     validLoginData({ password });
 
@@ -73,11 +67,46 @@ export const remove = ({ password }) => async (dispatch, getState) => {
   }
 };
 
+export const update = (data) => async (dispatch, getState) => {
+  try {
+    await canFetch(getState, dispatch);
+
+    if ("password" in data) validLoginData({ password: data.password });
+    if ("oldPassword" in data) validLoginData({ password: data.oldPassword });
+    if ("newPassword" in data) validLoginData({ password: data.newPassword });
+
+    const respons = await fetch(process.env.REACT_APP_API_URL + "/accounts", {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    });
+    if (!respons.ok) throw new Error(await respons.text());
+    const receivedData = await respons.json();
+
+    if (getState().account.fetching !== true) return;
+    if (getState().account.email != null) return;
+
+    await dispatch({
+      type: "ACCOUNT_UPDATE",
+      payload: receivedData
+    });
+  } catch (err) {
+    console.error(err);
+    return err.toString();
+  } finally {
+    await dispatch({
+      type: "ACCOUNT_UPDATE",
+      payload: { fetching: false }
+    });
+  }
+};
+
 export const signIn = ({ email, password }) => async (dispatch, getState) => {
   try {
-    if (getState().account.fetching === true)
-      throw new Error("The server is busy, please try again.");
-    await dispatch({ type: "ACCOUNT_UPDATE", payload: { fetching: true } });
+    await canFetch(getState, dispatch);
 
     validLoginData({ email, password });
 
@@ -99,7 +128,7 @@ export const signIn = ({ email, password }) => async (dispatch, getState) => {
 
     await dispatch({
       type: "ACCOUNT_OVERRIDE",
-      payload: { email: receivedData.email }
+      payload: receivedData
     });
   } catch (err) {
     console.error(err);
@@ -124,9 +153,7 @@ export const signOut = () => async (dispatch) => {
 
 export const recover = ({ email }) => async (dispatch, getState) => {
   try {
-    if (getState().account.fetching === true)
-      throw new Error("The server is busy, please try again.");
-    await dispatch({ type: "ACCOUNT_UPDATE", payload: { fetching: true } });
+    await canFetch(getState, dispatch);
 
     validLoginData({ email });
 
@@ -149,6 +176,12 @@ export const recover = ({ email }) => async (dispatch, getState) => {
     });
   }
 };
+
+async function canFetch(getState, dispatch) {
+  if (getState().account.fetching === true)
+    throw new Error("The server is busy, please try again.");
+  await dispatch({ type: "ACCOUNT_UPDATE", payload: { fetching: true } });
+}
 
 function validLoginData(dataToValid) {
   const { email, password } = dataToValid;

@@ -43,8 +43,10 @@ export default function AccountSignIn() {
         password: passwordOfSignIn
       })
     );
-    const successMessage = "Account has been signed in.";
-    setMessageOfSignIn(error || successMessage);
+
+    if (error == null) return; // Redirect
+
+    setMessageOfSignIn(error);
     setProcessingOfSignIn(false);
   };
 
@@ -56,25 +58,32 @@ export default function AccountSignIn() {
 
     setMessageOfCreate(null);
     setProcessingOfCreate(true);
+
     const error = await dispatch(
       AccountActions.create({
         email: emailOfCreate,
         password: passwordOfCreate
       })
     );
-    const successMessage = "Account has been created.";
-    setMessageOfCreate(error || successMessage);
+
+    if (error == null) return; // Redirect
+
+    setMessageOfCreate(error);
     setProcessingOfCreate(false);
   };
 
   const recover = async () => {
     setMessageOfRecover(null);
     setProcessingOfRecover(true);
+
     const error = await dispatch(
       AccountActions.recover({
         email: emailOfRecover
       })
     );
+
+    setEmailOfRecover("");
+
     const successMessage = "New password has been sent.";
     setMessageOfRecover(error || successMessage);
     setProcessingOfRecover(false);
