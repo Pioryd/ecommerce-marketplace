@@ -23,7 +23,7 @@ exports.create = async ({ email, password }) => {
   }
 };
 
-exports.remove = async (data) => {
+exports.remove = async ({ email, password }) => {
   try {
     validLoginData({ email, password });
 
@@ -39,16 +39,31 @@ exports.remove = async (data) => {
   }
 };
 
+exports.changePassword = async ({ email, oldPassword, newPassword }) => {
+  try {
+    validLoginData({ password: oldPassword });
+    validLoginData({ password: newPassword });
+
+    const { salt, hash } = await Password.encrypt(newPassword);
+
+    const { n } = await AccountModel.updateOne({ email }, { salt, hash });
+    if (n === 0) throw new Error("Account does not exist.");
+  } catch (err) {
+    console.log(err);
+    throw new Error("Unable to change password.");
+  }
+};
+
 exports.recover = async ({ email }) => {
   try {
     validLoginData({ email });
 
     const recoverPassword = mongoose.mongo.ObjectId().toHexString();
-    const account = await AccountModel.findOneAndUpdate(
+    const { n } = await AccountModel.updateOne(
       { email },
       { recover_password: recoverPassword }
     );
-    if (account == null) throw new Error("Account does not exist.");
+    if (n === 0) throw new Error("Account does not exist.");
 
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_SERVICE_HOST,
@@ -82,16 +97,18 @@ exports.signIn = async ({ email, password }) => {
     if (password === account.recover_password) {
       const { salt, hash } = await Password.encrypt(account.recover_password);
 
-      account = await AccountModel.findOneAndUpdate(
+      const { n } = await AccountModel.updateOne(
         { email },
         { salt, hash, recover_password: "" }
       );
+      if (n === 0) throw new Error("Account does not exist.");
     } else {
       if (account.recover_password != "") {
-        account = await AccountModel.findOneAndUpdate(
+        const { n } = await AccountModel.updateOne(
           { email },
           { recover_password: "" }
         );
+        if (n === 0) throw new Error("Account does not exist.");
       }
 
       await Password.verify(password, account.salt, account.hash);

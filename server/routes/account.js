@@ -16,5 +16,6 @@ router.delete(
   authMiddleware.isAuth,
   use(accountController.remove)
 );
+router.put("/accounts", authMiddleware.isAuth, use(accountController.update));
 
 module.exports = router;

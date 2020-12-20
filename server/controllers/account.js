@@ -7,13 +7,15 @@ exports.create = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const data = await AccountService.update(req.body);
-  res.json({ text: "updated" });
+  if ("newPassword" in req.body && "oldPassword" in req.body) {
+    await AccountService.changePassword(req.body);
+    res.json({});
+  }
 };
 
 exports.remove = async (req, res) => {
-  const data = await AccountService.remove(req.body);
-  res.json({ text: "removed" });
+  await AccountService.remove(req.body);
+  res.json({});
 };
 
 exports.recover = async (req, res) => {

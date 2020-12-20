@@ -1,11 +1,12 @@
 const Token = require("../util/token");
 
 exports.isAuth = async (req, res, next) => {
-  const { token } = req.get("Authorization").split(" ")[1];
-  if (token == null) return res.sendStatus(401);
-
   try {
-    await Token.verify(token);
+    const token = req.get("Authorization").split(" ")[1];
+    if (token == null) return res.sendStatus(401);
+
+    const { email } = await Token.verify(token);
+    req.body.email = email;
     return next();
   } catch {
     return res.sendStatus(403);
@@ -13,5 +14,9 @@ exports.isAuth = async (req, res, next) => {
 };
 
 exports.isAdmin = async (req, res, next) => {
-  return next();
+  try {
+    return next();
+  } catch {
+    return res.sendStatus(403);
+  }
 };
