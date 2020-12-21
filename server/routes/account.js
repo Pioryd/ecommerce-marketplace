@@ -17,5 +17,11 @@ router.delete(
   use(accountController.remove)
 );
 router.put("/accounts", authMiddleware.isAuth, use(accountController.update));
+router.get("/accounts", authMiddleware.isAuth, use(accountController.get));
+router.post(
+  "/accounts/refresh-token",
+  authMiddleware.isAuth,
+  use(accountController.refreshToken)
+);
 
 module.exports = router;

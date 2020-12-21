@@ -13,6 +13,13 @@ exports.update = async (req, res) => {
   }
 };
 
+exports.get = async (req, res) => {
+  const { email, itemsWatching, itemsSelling } = await AccountService.get(
+    req.body
+  );
+  res.json({ email, itemsWatching, itemsSelling });
+};
+
 exports.remove = async (req, res) => {
   await AccountService.remove(req.body);
   res.json({});
@@ -25,10 +32,11 @@ exports.recover = async (req, res) => {
 
 exports.signIn = async (req, res) => {
   const { email, token } = await AccountService.signIn(req.body);
-  res.json({ token, email });
+  res.json({ email, token });
 };
 
 exports.signOut = async (req, res) => {
-  const data = await AccountService.signOut(req.body);
-  res.json({ text: "signed out" });
+  await AccountService.signOut(req.body);
+  res.json({});
+};
 };

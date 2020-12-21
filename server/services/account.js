@@ -35,7 +35,24 @@ exports.remove = async ({ email, password }) => {
     if ((await AccountModel.deleteOne({ email })).deletedCount == null)
       throw new Error("No account is deleted.");
   } catch (err) {
+    console.error(err);
     throw new Error("Unable to remove account.");
+  }
+};
+
+exports.get = async ({ email }) => {
+  try {
+    const account = await AccountModel.findOne({ email });
+    if (account == null) throw new Error("Account does not exist.");
+    console.log({ account });
+    return {
+      email: account.email,
+      itemsWatching: account.items_watching || [],
+      itemsSelling: account.items_selling || []
+    };
+  } catch (err) {
+    console.log(err);
+    throw new Error("Unable to get data.");
   }
 };
 
@@ -83,6 +100,7 @@ exports.recover = async ({ email }) => {
       html: `<b>Recover password: ${recoverPassword}</b>`
     });
   } catch (err) {
+    console.error(err);
     throw new Error("Unable to recover.");
   }
 };
@@ -114,7 +132,15 @@ exports.signIn = async ({ email, password }) => {
       await Password.verify(password, account.salt, account.hash);
     }
 
-    return { email, token: Token.generate({ email }, "1800s") };
+    return {
+      email,
+      token: Token.generate({ email }, process.env.TOKEN_EXPIRES_IN)
+    };
+  } catch (err) {
+    console.error(err);
+    throw new Error("Unable to sign in.");
+  }
+};
   } catch (err) {
     throw new Error("Unable to sign in.");
   }
