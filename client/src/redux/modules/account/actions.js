@@ -104,6 +104,37 @@ export const update = (data) => async (dispatch, getState) => {
   }
 };
 
+export const get = () => async (dispatch, getState) => {
+  try {
+    // await canFetch(getState, dispatch);
+
+    const respons = await fetch(process.env.REACT_APP_API_URL + "/accounts", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    });
+    if (!respons.ok) throw new Error(await respons.text());
+    const receivedData = await respons.json();
+    console.log({ receivedData });
+    if (getState().account.fetching !== true) return;
+    if (getState().account.email != null) return;
+
+    await dispatch({
+      type: "ACCOUNT_UPDATE",
+      payload: receivedData
+    });
+  } catch (err) {
+    console.error(err);
+    return err.toString();
+  } finally {
+    await dispatch({
+      type: "ACCOUNT_UPDATE",
+      payload: { fetching: false }
+    });
+  }
+};
+
 export const signIn = ({ email, password }) => async (dispatch, getState) => {
   try {
     await canFetch(getState, dispatch);

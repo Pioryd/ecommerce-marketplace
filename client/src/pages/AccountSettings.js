@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Title from "../components/Title";
@@ -74,12 +74,27 @@ function AccountSettings() {
     setProcessingOfRemove(false);
   };
 
+  useEffect(() => dispatch(AccountActions.get()), []);
+  useEffect(() => console.log({ account }), [account]);
+
   return (
     <Fragment>
       <Title name="Account settings" />
       <Group>
-        <Legend>Email:</Legend>
-        <Label>{account.email}</Label>
+        <Legend>Details:</Legend>
+        <Label>Email: {account.email}</Label>
+        <Label>
+          Watching:{" "}
+          {account.itemsWatching == null
+            ? "loading..."
+            : account.itemsWatching.length}
+        </Label>
+        <Label>
+          Selling:{" "}
+          {account.itemsSelling == null
+            ? "loading..."
+            : account.itemsSelling.length}
+        </Label>
       </Group>
       <Group>
         <Legend>Change password</Legend>
