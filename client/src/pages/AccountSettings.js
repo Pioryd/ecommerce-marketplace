@@ -62,9 +62,7 @@ function AccountSettings() {
     setMessageOfRemove(null);
     setProcessingOfRemove(true);
     const error = await dispatch(
-      AccountActions.remove({
-        password: passwordOfRemove
-      })
+      AccountActions.remove({ password: passwordOfRemove })
     );
 
     setPasswordOfRemove("");

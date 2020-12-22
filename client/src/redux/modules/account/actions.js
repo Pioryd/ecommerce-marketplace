@@ -1,27 +1,23 @@
 import isEmail from "validator/lib/isEmail";
 import isStrongPassword from "validator/lib/isStrongPassword";
 
+import handleRespons from "../../util/handleRespons";
+
 export const signIn = ({ email, password }) => async (dispatch, getState) => {
   try {
     validLoginData({ email, password });
 
-    const respons = await fetch(
-      process.env.REACT_APP_API_URL + "/accounts/sign-in",
-      {
+    const receivedData = await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/accounts/sign-in", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: { "Content-type": "application/json" }
-      }
+      })
     );
-    if (!respons.ok) throw new Error(await respons.text());
-    const receivedData = await respons.json();
 
     localStorage.setItem("token", receivedData.token);
-
-    await dispatch({
-      type: "ACCOUNT_OVERRIDE",
-      payload: receivedData
-    });
+    await dispatch({ type: "ACCOUNT_OVERRIDE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -32,20 +28,17 @@ export const create = ({ email, password }) => async (dispatch, getState) => {
   try {
     validLoginData({ email, password });
 
-    const respons = await fetch(process.env.REACT_APP_API_URL + "/accounts", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: { "Content-type": "application/json" }
-    });
-    if (!respons.ok) throw new Error(await respons.text());
-    const receivedData = await respons.json();
+    const receivedData = await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/accounts", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: { "Content-type": "application/json" }
+      })
+    );
 
     localStorage.setItem("token", receivedData.token);
-
-    await dispatch({
-      type: "ACCOUNT_OVERRIDE",
-      payload: receivedData
-    });
+    await dispatch({ type: "ACCOUNT_OVERRIDE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -56,15 +49,14 @@ export const recover = ({ email }) => async (dispatch, getState) => {
   try {
     validLoginData({ email });
 
-    const respons = await fetch(
-      process.env.REACT_APP_API_URL + "/accounts/recover",
-      {
+    await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/accounts/recover", {
         method: "POST",
         body: JSON.stringify({ email }),
         headers: { "Content-type": "application/json" }
-      }
+      })
     );
-    if (!respons.ok) throw new Error(await respons.text());
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -77,18 +69,19 @@ export const remove = ({ password }) => async (dispatch, getState) => {
 
     validLoginData({ password });
 
-    const respons = await fetch(process.env.REACT_APP_API_URL + "/accounts", {
-      method: "DELETE",
-      body: JSON.stringify({ password }),
-      headers: {
-        "Content-type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token")
-      }
-    });
-    if (!respons.ok) throw new Error(await respons.text());
+    await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/accounts", {
+        method: "DELETE",
+        body: JSON.stringify({ password }),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+    );
 
     localStorage.removeItem("token");
-
     await dispatch({ type: "ACCOUNT_RESET" });
   } catch (err) {
     console.error(err);
@@ -104,21 +97,19 @@ export const update = (data) => async (dispatch, getState) => {
     if ("oldPassword" in data) validLoginData({ password: data.oldPassword });
     if ("newPassword" in data) validLoginData({ password: data.newPassword });
 
-    const respons = await fetch(process.env.REACT_APP_API_URL + "/accounts", {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token")
-      }
-    });
-    if (!respons.ok) throw new Error(await respons.text());
-    const receivedData = await respons.json();
+    const receivedData = await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/accounts", {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+    );
 
-    await dispatch({
-      type: "ACCOUNT_UPDATE",
-      payload: receivedData
-    });
+    await dispatch({ type: "ACCOUNT_UPDATE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -129,19 +120,17 @@ export const get = () => async (dispatch, getState) => {
   try {
     await checkSignedIn(getState, dispatch);
 
-    const respons = await fetch(process.env.REACT_APP_API_URL + "/accounts", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token")
-      }
-    });
-    if (!respons.ok) throw new Error(await respons.text());
-    const receivedData = await respons.json();
+    const receivedData = await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/accounts", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+    );
 
-    await dispatch({
-      type: "ACCOUNT_UPDATE",
-      payload: receivedData
-    });
+    await dispatch({ type: "ACCOUNT_UPDATE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -162,24 +151,19 @@ export const refreshToken = () => async (dispatch, getState) => {
   try {
     await checkSignedIn(getState, dispatch);
 
-    const respons = await fetch(
-      process.env.REACT_APP_API_URL + "/accounts/refresh-token",
-      {
+    const receivedData = await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/accounts/refresh-token", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }
-      }
+      })
     );
-    if (!respons.ok) throw new Error(await respons.text());
-    const receivedData = await respons.json();
 
     localStorage.setItem("token", receivedData.token);
 
-    await dispatch({
-      type: "ACCOUNT_UPDATE",
-      payload: receivedData
-    });
+    await dispatch({ type: "ACCOUNT_UPDATE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
