@@ -13,7 +13,7 @@ import AccountListItem from "../pages/AccountListItem";
 import AccountSettings from "../pages/AccountSettings";
 import Items from "../pages/Items";
 
-function Main() {
+function App() {
   return (
     <BrowserRouter>
       <Navigation />
@@ -49,4 +49,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default App;

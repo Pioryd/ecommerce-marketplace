@@ -75,26 +75,23 @@ function AccountSettings() {
   };
 
   useEffect(() => dispatch(AccountActions.get()), []);
-  useEffect(() => console.log({ account }), [account]);
 
   return (
     <Fragment>
       <Title name="Account settings" />
       <Group>
         <Legend>Details:</Legend>
-        <Label>Email: {account.email}</Label>
-        <Label>
-          Watching:{" "}
-          {account.itemsWatching == null
-            ? "loading..."
-            : account.itemsWatching.length}
-        </Label>
-        <Label>
-          Selling:{" "}
-          {account.itemsSelling == null
-            ? "loading..."
-            : account.itemsSelling.length}
-        </Label>
+        {account.email == null ||
+        account.itemsWatching == null ||
+        account.itemsSelling == null ? (
+          "loading..."
+        ) : (
+          <Fragment>
+            <Label>{"Email: " + account.email}</Label>
+            <Label>{"Watching: " + account.itemsWatching.length}</Label>
+            <Label>{"Selling: " + account.itemsSelling.length}</Label>
+          </Fragment>
+        )}
       </Group>
       <Group>
         <Legend>Change password</Legend>
