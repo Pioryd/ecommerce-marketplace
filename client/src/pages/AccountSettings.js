@@ -76,7 +76,7 @@ function AccountSettings() {
 
   return (
     <Fragment>
-      <Title name="Account settings" />
+      <Title name="Account - settings" />
       <Group>
         <Legend>Details:</Legend>
         {account.email == null ||

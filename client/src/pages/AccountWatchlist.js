@@ -13,7 +13,7 @@ function AccountWatchlist() {
 
   return (
     <Fragment>
-      <Title name="Watchlist" />
+      <Title name="Account - watchlist" />
       <ItemsView list={list} />
     </Fragment>
   );

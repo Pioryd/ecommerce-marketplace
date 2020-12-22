@@ -5,7 +5,7 @@ import { Group, Label, Input, Textarea, Button } from "../components/Controls";
 function AccountListItem() {
   return (
     <Fragment>
-      <Title name="List item" />
+      <Title name="Account - list item" />
       <Group>
         <Label>Title</Label>
         <Input type="text" id="title" />

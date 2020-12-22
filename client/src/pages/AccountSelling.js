@@ -13,7 +13,7 @@ function AccountSelling() {
 
   return (
     <Fragment>
-      <Title name="Selling" />
+      <Title name="Account - selling" />
       <ItemsView list={list} />
     </Fragment>
   );
