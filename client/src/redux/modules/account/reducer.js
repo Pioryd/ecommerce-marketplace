@@ -1,8 +1,6 @@
 import produce from "immer";
 
-const initialState = {};
-
-const reducer = (state = initialState, { type, payload }) =>
+const reducer = (state = getInitialState(), { type, payload }) =>
   produce(state, (draft) => {
     switch (type) {
       case "ACCOUNT_OVERRIDE":
@@ -12,11 +10,15 @@ const reducer = (state = initialState, { type, payload }) =>
         draft = Object.assign({}, draft, payload);
         break;
       case "ACCOUNT_RESET":
-        draft = initialState;
+        draft = getInitialState();
         break;
       default:
     }
     return draft;
   });
+
+function getInitialState() {
+  return { token: localStorage.getItem("token") };
+}
 
 export default reducer;

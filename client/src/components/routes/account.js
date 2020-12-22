@@ -8,5 +8,5 @@ import AccountSignIn from "../../pages/AccountSignIn";
 export default function Account(props) {
   const account = useSelector(AccountSelector.get());
 
-  return account.email == null ? <AccountSignIn /> : <Route {...props} />;
+  return account.token == null ? <AccountSignIn /> : <Route {...props} />;
 }
