@@ -7,7 +7,7 @@ exports.generate = (data, expiresIn) => {
 exports.verify = async (token) => {
   return await new Promise((resolve, reject) => {
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-      if (err) reject("Unable to verify token.");
+      if (err) reject("Unable to verify token. " + err);
       else resolve(decoded);
     });
   });

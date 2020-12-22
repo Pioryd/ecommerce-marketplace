@@ -39,4 +39,8 @@ exports.signOut = async (req, res) => {
   await AccountService.signOut(req.body);
   res.json({});
 };
+
+exports.refreshToken = async (req, res) => {
+  const { token } = await AccountService.refreshToken(req.body);
+  res.json({ token });
 };

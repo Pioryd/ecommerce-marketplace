@@ -8,7 +8,8 @@ exports.isAuth = async (req, res, next) => {
     const { email } = await Token.verify(token);
     req.body.email = email;
     return next();
-  } catch {
+  } catch (err) {
+    console.error(err);
     return res.sendStatus(403);
   }
 };
@@ -16,7 +17,8 @@ exports.isAuth = async (req, res, next) => {
 exports.isAdmin = async (req, res, next) => {
   try {
     return next();
-  } catch {
+  } catch (err) {
+    console.error(err);
     return res.sendStatus(403);
   }
 };

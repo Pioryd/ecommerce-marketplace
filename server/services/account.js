@@ -44,7 +44,7 @@ exports.get = async ({ email }) => {
   try {
     const account = await AccountModel.findOne({ email });
     if (account == null) throw new Error("Account does not exist.");
-    console.log({ account });
+
     return {
       email: account.email,
       itemsWatching: account.items_watching || [],
@@ -141,7 +141,14 @@ exports.signIn = async ({ email, password }) => {
     throw new Error("Unable to sign in.");
   }
 };
+
+exports.refreshToken = async ({ email }) => {
+  try {
+    return {
+      token: Token.generate({ email }, process.env.TOKEN_EXPIRES_IN)
+    };
   } catch (err) {
+    console.error(err);
     throw new Error("Unable to sign in.");
   }
 };
