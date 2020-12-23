@@ -14,5 +14,8 @@ export const Button = (props) => <button className="a4t_button" {...props} />;
 export const ButtonDisabled = (props) => (
   <button className="a4t_button a4t_button-disabled" {...props} />
 );
+export const ButtonProcessing = (props) => (
+  <ButtonDisabled {...props}>Processing...</ButtonDisabled>
+);
 export const ButtonLink = (props) => <Link className="a4t_button" {...props} />;
 export const Info = (props) => <label className="a4t_info" {...props} />;

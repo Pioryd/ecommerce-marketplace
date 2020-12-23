@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Title from "../components/Title";
@@ -8,17 +8,17 @@ import {
   Label,
   Input,
   Button,
-  Info,
-  ButtonDisabled
+  ButtonProcessing,
+  Info
 } from "../components/Controls";
 
 import * as AccountSelector from "../redux/modules/account/selectors";
 import * as AccountActions from "../redux/modules/account/actions";
 
-const Processing = () => <ButtonDisabled>Processing...</ButtonDisabled>;
-
 function AccountSettings() {
   const dispatch = useDispatch();
+
+  const mounted = useRef(false);
 
   const account = useSelector(AccountSelector.get());
 
@@ -42,12 +42,15 @@ function AccountSettings() {
 
     setMessageOfChange(null);
     setProcessingOfChange(true);
+
     const error = await dispatch(
       AccountActions.update({
         newPassword: passwordNewOfChange,
         oldPassword: passwordOldChange
       })
     );
+
+    if (mounted.current !== true) return;
 
     setPasswordNewOfChange("");
     setPasswordNewRepeatOfChange("");
@@ -61,9 +64,12 @@ function AccountSettings() {
   const remove = async () => {
     setMessageOfRemove(null);
     setProcessingOfRemove(true);
+
     const error = await dispatch(
       AccountActions.remove({ password: passwordOfRemove })
     );
+
+    if (mounted.current !== true) return;
 
     setPasswordOfRemove("");
 
@@ -73,6 +79,11 @@ function AccountSettings() {
   };
 
   useEffect(() => dispatch(AccountActions.get()), []);
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => (mounted.current = false);
+  });
 
   return (
     <Fragment>
@@ -119,7 +130,7 @@ function AccountSettings() {
           onChange={(e) => setPasswordNewRepeatOfChange(e.target.value)}
         />
         {processingOfChange === true ? (
-          <Processing />
+          <ButtonProcessing />
         ) : (
           <Button onClick={change}>change</Button>
         )}
@@ -137,7 +148,7 @@ function AccountSettings() {
           onChange={(e) => setPasswordOfRemove(e.target.value)}
         />
         {processingOfRemove === true ? (
-          <Processing />
+          <ButtonProcessing />
         ) : (
           <Button onClick={remove}>remove</Button>
         )}

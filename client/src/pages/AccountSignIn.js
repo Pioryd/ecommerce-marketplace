@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import { useDispatch } from "react-redux";
 
 import Title from "../components/Title";
@@ -8,16 +8,16 @@ import {
   Label,
   Input,
   Button,
-  ButtonDisabled,
+  ButtonProcessing,
   Info
 } from "../components/Controls";
 
 import * as AccountActions from "../redux/modules/account/actions";
 
-const Processing = () => <ButtonDisabled>Processing...</ButtonDisabled>;
-
 export default function AccountSignIn() {
   const dispatch = useDispatch();
+
+  const mounted = useRef(false);
 
   const [emailOfSignIn, setEmailOfSignIn] = useState("");
   const [passwordOfSignIn, setPasswordOfSignIn] = useState("");
@@ -44,6 +44,7 @@ export default function AccountSignIn() {
       })
     );
 
+    if (mounted.current !== true) return;
     if (error == null) return; // Redirect
 
     setMessageOfSignIn(error);
@@ -66,6 +67,7 @@ export default function AccountSignIn() {
       })
     );
 
+    if (mounted.current !== true) return;
     if (error == null) return; // Redirect
 
     setMessageOfCreate(error);
@@ -82,12 +84,19 @@ export default function AccountSignIn() {
       })
     );
 
+    if (mounted.current !== true) return;
+
     setEmailOfRecover("");
 
     const successMessage = "New password has been sent.";
     setMessageOfRecover(error || successMessage);
     setProcessingOfRecover(false);
   };
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => (mounted.current = false);
+  });
 
   return (
     <Fragment>
@@ -113,7 +122,7 @@ export default function AccountSignIn() {
           onChange={(e) => setPasswordOfSignIn(e.target.value)}
         />
         {processingOfSignIn === true ? (
-          <Processing />
+          <ButtonProcessing />
         ) : (
           <Button onClick={signIn}>sign in</Button>
         )}
@@ -150,7 +159,7 @@ export default function AccountSignIn() {
           onChange={(e) => setPasswordRepeatOfCreate(e.target.value)}
         />
         {processingOfCreate === true ? (
-          <Processing />
+          <ButtonProcessing />
         ) : (
           <Button onClick={create}>create account</Button>
         )}
@@ -172,7 +181,7 @@ export default function AccountSignIn() {
           activated after first use during the sign in.
         </Label>
         {processingOfRecover === true ? (
-          <Processing />
+          <ButtonProcessing />
         ) : (
           <Button onClick={recover}>recover</Button>
         )}
