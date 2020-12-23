@@ -1,16 +1,25 @@
 const ItemService = require("../services/item");
+const AccountService = require("../services/account");
 
-exports.create = async (req, res) => {
-  const data = await ItemService.create(req.body);
-  res.json({ text: "created" });
+exports.list = async (req, res) => {
+  await ItemService.list(req.body);
+  res.json({});
 };
 
-exports.update = async (req, res) => {
-  const data = await ItemService.update(req.body);
-  res.json({ text: "updated" });
+exports.getSelected = async (req, res) => {
+  const { selected } = req.body;
+  const { items } = await ItemService.get({ ids: selected });
+  res.json({ items });
 };
 
-exports.remove = async (req, res) => {
-  const data = await ItemService.remove(req.body);
-  res.json({ text: "removed" });
+exports.getSelling = async (req, res) => {
+  const { itemsSelling } = await AccountService.get(req.body);
+  const { items } = await ItemService.get({ ids: itemsSelling });
+  res.json({ items });
+};
+
+exports.getWatching = async (req, res) => {
+  const { itemsWatching } = await AccountService.get(req.body);
+  const { items } = await ItemService.get({ ids: itemsWatching });
+  res.json({ items });
 };

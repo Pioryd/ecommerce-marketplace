@@ -8,10 +8,23 @@ const router = express.Router();
 const use = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
-router.post("/items", use(itemController.create));
+router.post("/items", authMiddleware.isAuth, use(itemController.list));
+router.post(
+  "/items/selected",
+  authMiddleware.isAuth,
+  use(itemController.getSelected)
+);
+router.get(
+  "/items/selling",
+  authMiddleware.isAuth,
+  use(itemController.getSelling)
+);
+router.get(
+  "/items/watching",
+  authMiddleware.isAuth,
+  use(itemController.getWatching)
+);
+
 router.delete("/items", authMiddleware.isAuth, use(itemController.remove));
-router.delete("/items/:id", authMiddleware.isAuth, use(itemController.remove));
-router.put("/items", authMiddleware.isAuth, use(itemController.update));
-router.put("/items/:id", authMiddleware.isAuth, use(itemController.update));
 
 module.exports = router;

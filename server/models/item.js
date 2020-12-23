@@ -2,10 +2,14 @@ const mongoose = require("mongoose");
 
 const ItemSchema = new mongoose.Schema(
   {
-    title: {
+    id: {
       type: String,
       required: true,
       unique: true
+    },
+    title: {
+      type: String,
+      required: true
     },
     description: {
       type: String,
@@ -17,10 +21,6 @@ const ItemSchema = new mongoose.Schema(
       default: Date.now
     },
     price: {
-      type: Number,
-      required: true
-    },
-    count: {
       type: Number,
       required: true
     }
