@@ -1,14 +1,16 @@
 import React from "react";
 
+import { Label } from "../Controls";
+
 import "./index.scss";
 
 function Item(props) {
-  const { description, price, watching, date } = props.data;
+  const { title, price, description, watching, expiration_date } = props.data;
 
   return (
     <div className="item">
       <div className="description">{description}</div>
-      <div className="date">{date}</div>
+      <div className="expiration_date">{expiration_date}</div>
 
       <div className="price">{price}zł</div>
       <div className="watching">
@@ -21,9 +23,13 @@ function Item(props) {
 function ItemsView(props) {
   return (
     <div className="auctions">
-      {Object.keys(props.list).map((key) => (
-        <Item key={key} data={props.list[key]} />
-      ))}
+      {props.items == null ? (
+        <Label style={{ textAlign: "center" }}>loading...</Label>
+      ) : (
+        Object.keys(props.items).map((key) => (
+          <Item key={key} data={props.items[key]} />
+        ))
+      )}
     </div>
   );
 }

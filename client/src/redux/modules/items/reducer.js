@@ -1,19 +1,24 @@
 import produce from "immer";
 
-import { tempInit } from "./tempInit";
-
-const reducer = (state = { list: tempInit }, { type, payload }) =>
+const reducer = (state = getInitialState(), { type, payload }) =>
   produce(state, (draft) => {
     switch (type) {
-      case "ITEMS_UPDATE_DETAILS":
-        draft.details = payload;
+      case "ITEMS_OVERRIDE":
+        draft = payload;
         break;
-      case "ITEMS_UPDATE_LIST":
-        draft.list = payload;
+      case "ITEMS_UPDATE":
+        draft = Object.assign({}, draft, payload);
+        break;
+      case "ITEMS_RESET":
+        draft = getInitialState();
         break;
       default:
     }
     return draft;
   });
+
+function getInitialState() {
+  return {};
+}
 
 export default reducer;

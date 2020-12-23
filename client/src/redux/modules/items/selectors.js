@@ -1,12 +1,12 @@
-export const getDetails = () => ({ items }) => items.details;
+export const get = (ids = []) => ({ items }) => {
+  if (items.items == null) return null;
+  if (ids.length === 0) return items.items;
 
-export const getList = (ids = []) => ({ items }) => {
-  let list = {};
-
+  const selected_items = {};
   for (const id of ids) {
-    if (items.list[id] == null) continue;
-    list[id] = items.list[id];
+    if (items.items[id] == null) continue;
+    selected_items[id] = items.items[id];
   }
 
-  return list;
+  return selected_items;
 };
