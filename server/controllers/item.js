@@ -6,6 +6,11 @@ exports.list = async (req, res) => {
   res.json({});
 };
 
+exports.setWatch = async (req, res) => {
+  await ItemService.setWatch(req.body);
+  res.json({});
+};
+
 exports.getSelected = async (req, res) => {
   const { selected } = req.body;
   const { items } = await ItemService.get({ ids: selected });

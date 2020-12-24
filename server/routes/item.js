@@ -10,6 +10,11 @@ const use = (fn) => (req, res, next) =>
 
 router.post("/items", authMiddleware.isAuth, use(itemController.list));
 router.post(
+  "/items/watch",
+  authMiddleware.isAuth,
+  use(itemController.setWatch)
+);
+router.post(
   "/items/selected",
   authMiddleware.isAuth,
   use(itemController.getSelected)

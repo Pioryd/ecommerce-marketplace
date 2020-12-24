@@ -24,6 +24,29 @@ export const list = ({ title, price, description }) => async (
   }
 };
 
+export const toggleWatch = ({ id }) => async (dispatch, getState) => {
+  try {
+    if (getState().account.itemsWatching == null) return;
+
+    const watching = !getState().account.itemsWatching.includes(id);
+
+    await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/items/watch", {
+        method: "POST",
+        body: JSON.stringify({ id, watching }),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+    );
+  } catch (err) {
+    console.error(err);
+    return err.toString();
+  }
+};
+
 export const getSelected = ({ selected }) => async (dispatch, getState) => {
   try {
     const receivedData = await handleRespons(
