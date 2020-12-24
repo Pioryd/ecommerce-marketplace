@@ -9,7 +9,7 @@ import {
   Button,
   ButtonProcessing,
   Info
-} from "../components/Controls";
+} from "../components/Layout/Controls";
 
 import * as ItemsActions from "../redux/modules/items/actions";
 

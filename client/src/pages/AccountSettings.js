@@ -10,7 +10,7 @@ import {
   Button,
   ButtonProcessing,
   Info
-} from "../components/Controls";
+} from "../components/Layout/Controls";
 
 import * as AccountSelector from "../redux/modules/account/selectors";
 import * as AccountActions from "../redux/modules/account/actions";

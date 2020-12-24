@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Label } from "../Controls";
+import { Label } from "../Layout/Controls";
 
 import * as ItemsActions from "../../redux/modules/items/actions";
 import * as AccountActions from "../../redux/modules/account/actions";

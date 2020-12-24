@@ -2,9 +2,9 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import AccountRoute from "./Routes/Account";
 
-import Navigation from "./Navigation";
-import Content from "./Content";
-import Footer from "./Footer";
+import Navigation from "./Layout/Navigation";
+import Content from "./Layout/Content";
+import Footer from "./Layout/Footer";
 
 import Account from "../pages/Account";
 import AccountSelling from "../pages/AccountSelling";
