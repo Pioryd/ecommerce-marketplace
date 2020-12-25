@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { Label, ButtonLink } from "../Layout/Controls";
 
@@ -10,23 +11,25 @@ import * as AccountSelector from "../../redux/modules/account/selectors";
 import "./index.scss";
 
 function Item(props) {
-  const { id, title, price, watching, expiration_date } = props.item;
+  const { id, title, price, watching, expiration_date, route } = props.item;
 
   return (
-    <div className="q7l_item">
-      <div className="q7l_title">{title}</div>
-      <div className="q7l_expiration_date">{expiration_date}</div>
-      <div className="q7l_price">{price}zł</div>
-      <button className="q7l_watching" onClick={() => props.toggleWatch(id)}>
-        {watching == null ? (
-          <ButtonLink>Add to watchlist</ButtonLink>
-        ) : watching ? (
-          "Watching"
-        ) : (
-          "Add to watchlist"
-        )}
-      </button>
-    </div>
+    <Link style={{ clear: "both" }} to={route}>
+      <div className="q7l_item">
+        <div className="q7l_title">{title}</div>
+        <div className="q7l_expiration_date">{expiration_date}</div>
+        <div className="q7l_price">{price}zł</div>
+        <button className="q7l_watching" onClick={() => props.toggleWatch(id)}>
+          {watching == null ? (
+            <ButtonLink>Add to watchlist</ButtonLink>
+          ) : watching ? (
+            "Watching"
+          ) : (
+            "Add to watchlist"
+          )}
+        </button>
+      </div>
+    </Link>
   );
 }
 
@@ -51,6 +54,7 @@ function ItemsView(props) {
       for (const item of Object.values(props.items))
         list.push({
           ...item,
+          route: `/item/${item.id}/`,
           watching:
             account.itemsWatching == null
               ? null
@@ -73,4 +77,5 @@ function ItemsView(props) {
     </div>
   );
 }
+
 export default ItemsView;
