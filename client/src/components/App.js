@@ -12,6 +12,7 @@ import AccountWatchlist from "../pages/AccountWatchlist";
 import AccountListItem from "../pages/AccountListItem";
 import AccountSettings from "../pages/AccountSettings";
 import Items from "../pages/Items";
+import Item from "../pages/Item";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Items} />
           <Route path="/items" component={Items} />
+          <Route path="/item" component={Item} />
           <AccountRoute exact path="/account" component={Account} />
           <AccountRoute
             exact
