@@ -4,20 +4,20 @@
   box-sizing: border-box;
 }
 
-.auctions {
+.q7l_auctions {
   position: relative;
   height: 100%;
   width: 100%;
 
   $item-height: 125px;
-  .item {
+  .q7l_item {
     position: relative;
     height: $item-height;
     width: auto;
     border: 2px solid black;
     margin: 10px 3px 20px 3px;
 
-    .title {
+    .q7l_title {
       position: absolute;
       overflow: hidden;
       display: inline-block;
@@ -29,14 +29,14 @@
       width: calc(100% - 30px);
     }
 
-    .expiration_date {
+    .q7l_expiration_date {
       position: absolute;
       bottom: 30px;
       left: 10px;
       font-size: 12px;
     }
 
-    .price {
+    .q7l_price {
       position: absolute;
       bottom: 5px;
       left: 10px;
@@ -44,7 +44,11 @@
       font-weight: bold;
     }
 
-    .watching {
+    .q7l_watching {
+      background-color: white;
+      color: black;
+      cursor: pointer;
+      border: none;
       position: absolute;
       bottom: 15px;
       right: 10px;
@@ -54,8 +58,8 @@
 }
 
 @media only screen and (min-width: 768px) {
-  .auctions {
-    .item {
+  .q7l_auctions {
+    .q7l_item {
       margin: 10px 150px 20px 150px;
     }
   }

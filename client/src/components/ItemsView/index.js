@@ -13,11 +13,11 @@ function Item(props) {
   const { id, title, price, watching, expiration_date } = props.item;
 
   return (
-    <div className="item">
-      <div className="title">{title}</div>
-      <div className="expiration_date">{expiration_date}</div>
-      <div className="price">{price}zł</div>
-      <button className="watching" onClick={() => props.toggleWatch(id)}>
+    <div className="q7l_item">
+      <div className="q7l_title">{title}</div>
+      <div className="q7l_expiration_date">{expiration_date}</div>
+      <div className="q7l_price">{price}zł</div>
+      <button className="q7l_watching" onClick={() => props.toggleWatch(id)}>
         {watching ? "Watching" : "Add to watchlist"}
       </button>
     </div>
@@ -53,7 +53,7 @@ function ItemsView(props) {
   }, [props.items, account]);
 
   return (
-    <div className="auctions">
+    <div className="q7l_auctions">
       {props.items == null && (
         <Label style={{ textAlign: "center" }}>loading...</Label>
       )}
