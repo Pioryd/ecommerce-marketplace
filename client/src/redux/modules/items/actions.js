@@ -13,8 +13,7 @@ export const list = ({ title, price, description }) => async (
         method: "POST",
         body: JSON.stringify({ title, price, description }),
         headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token")
+          "Content-type": "application/json"
         }
       })
     );

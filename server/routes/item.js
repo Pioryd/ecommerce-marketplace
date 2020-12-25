@@ -14,11 +14,7 @@ router.post(
   authMiddleware.isAuth,
   use(itemController.setWatch)
 );
-router.post(
-  "/items/selected",
-  authMiddleware.isAuth,
-  use(itemController.getSelected)
-);
+router.post("/items/selected", use(itemController.getSelected));
 router.get(
   "/items/selling",
   authMiddleware.isAuth,
