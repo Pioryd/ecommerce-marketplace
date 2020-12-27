@@ -14,6 +14,7 @@ import AccountSettings from "../pages/AccountSettings";
 import Items from "../pages/Items";
 import Item from "../pages/Item";
 import NotFound from "../pages/NotFound";
+import AccountSignIn from "../pages/AccountSignIn";
 
 function App() {
   return (
@@ -25,6 +26,11 @@ function App() {
           <Route path="/items" component={Items} />
           <Route path="/item/:id" component={Item} />
           <AccountRoute exact path="/account" component={Account} />
+          <AccountRoute
+            exact
+            path="/account/sign-in"
+            component={AccountSignIn}
+          />
           <AccountRoute
             exact
             path="/account/selling"

@@ -15,19 +15,11 @@ function Account() {
     <Fragment>
       <Title name="Account" />
 
-      <ButtonLink to="/account/selling" text="Selling">
-        Selling
-      </ButtonLink>
-      <ButtonLink to="/account/watchlist" text="Watchlist">
-        Watchlist
-      </ButtonLink>
-      <ButtonLink to="/account/list-item" text="List item">
-        List item
-      </ButtonLink>
-      <ButtonLink to="/account/settings" text="Settings">
-        Settings
-      </ButtonLink>
-      <ButtonLink to="/" text="Sign out" onClick={signOut}>
+      <ButtonLink to="/account/selling">Selling</ButtonLink>
+      <ButtonLink to="/account/watchlist">Watchlist</ButtonLink>
+      <ButtonLink to="/account/list-item">List item</ButtonLink>
+      <ButtonLink to="/account/settings">Settings</ButtonLink>
+      <ButtonLink to="/" onClick={signOut}>
         Sign out
       </ButtonLink>
     </Fragment>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Group,
@@ -12,9 +13,12 @@ import {
 } from "../../components/Layout/Controls";
 
 import * as AccountActions from "../../redux/modules/account/actions";
+import * as AccountSelector from "../../redux/modules/account/selectors";
 
 export default function SignIn() {
   const dispatch = useDispatch();
+
+  const account = useSelector(AccountSelector.get());
 
   const mounted = useRef(false);
 
@@ -44,6 +48,10 @@ export default function SignIn() {
     mounted.current = true;
     return () => (mounted.current = false);
   });
+
+  if (account.token != null) {
+    return <Redirect to="/account" exact />;
+  }
 
   return (
     <Group>
