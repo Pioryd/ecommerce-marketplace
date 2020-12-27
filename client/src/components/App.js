@@ -13,6 +13,7 @@ import AccountListItem from "../pages/AccountListItem";
 import AccountSettings from "../pages/AccountSettings";
 import Items from "../pages/Items";
 import Item from "../pages/Item";
+import NotFound from "../pages/NotFound";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             path="/account/settings"
             component={AccountSettings}
           />
+          <Route component={NotFound} />
         </Switch>
       </Content>
       <Footer />
