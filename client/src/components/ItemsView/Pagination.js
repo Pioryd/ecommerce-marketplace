@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Group, ButtonLink, ButtonDisabled } from "../Layout/Controls";
+import { Group, Button, ButtonDisabled } from "../Layout/Controls";
 
-const MIN_PAGE_NUMER = 1;
+const MIN_PAGE = 1;
 
-function Pagination({ route, currentPage = MIN_PAGE_NUMER, totalPages }) {
-  const [routeMin, setRouteMin] = useState(route);
-  const [routeMax, setRouteMax] = useState(route);
-  const [routePrev, setRoutePrev] = useState(route);
-  const [routeNext, setRouteNext] = useState(route);
+export default function Pagination({ onPageChange, currentPage, totalPages }) {
+  const [pagePrev, setPagePrev] = useState(MIN_PAGE);
+  const [pageNext, setPageNext] = useState(MIN_PAGE);
 
   useEffect(() => {
-    setRouteMin(route + "/" + MIN_PAGE_NUMER);
-    setRouteMax(route + "/" + totalPages);
-    setRoutePrev(route + "/" + Math.max(1, Number(currentPage) - 1));
-    setRouteNext(route + "/" + Math.min(totalPages, Number(currentPage) + 1));
-  }, [route, currentPage, totalPages]);
+    setPagePrev(Math.max(1, Number(currentPage) - 1));
+    setPageNext(Math.min(totalPages, Number(currentPage) + 1));
+  }, [currentPage, totalPages]);
 
   return (
     <Group style={{ display: "flex" }}>
-      <ButtonLink to={routePrev}>prev</ButtonLink>
-      <ButtonLink to={routeMin}>{MIN_PAGE_NUMER}</ButtonLink>
+      <Button onClick={() => onPageChange(pagePrev)}>prev</Button>
+      <Button onClick={() => onPageChange(MIN_PAGE)}>{MIN_PAGE}</Button>
       <ButtonDisabled style={{ fontWeight: "bold" }}>
         {currentPage}
       </ButtonDisabled>
-      <ButtonLink to={routeMax}>{totalPages}</ButtonLink>
-      <ButtonLink to={routeNext}>next</ButtonLink>
+      <Button onClick={() => onPageChange(totalPages)}>{totalPages}</Button>
+      <Button onClick={() => onPageChange(pageNext)}>next</Button>
     </Group>
   );
 }
-
-export default Pagination;

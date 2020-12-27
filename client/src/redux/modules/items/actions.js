@@ -47,13 +47,13 @@ export const toggleWatch = ({ id }) => async (dispatch, getState) => {
   }
 };
 
-export const getSearch = ({ page }) => async (dispatch, getState) => {
+export const getSearch = ({ page, sort }) => async (dispatch, getState) => {
   try {
     const receivedData = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items/search", {
         method: "POST",
-        body: JSON.stringify({ page }),
+        body: JSON.stringify({ page, sort }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -68,13 +68,13 @@ export const getSearch = ({ page }) => async (dispatch, getState) => {
   }
 };
 
-export const getSelling = ({ page }) => async (dispatch, getState) => {
+export const getSelling = ({ page, sort }) => async (dispatch, getState) => {
   try {
     const receivedData = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items/selling", {
         method: "POST",
-        body: JSON.stringify({ page }),
+        body: JSON.stringify({ page, sort }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -89,13 +89,13 @@ export const getSelling = ({ page }) => async (dispatch, getState) => {
   }
 };
 
-export const getWatching = ({ page }) => async (dispatch, getState) => {
+export const getWatching = ({ page, sort }) => async (dispatch, getState) => {
   try {
     const receivedData = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items/watching", {
         method: "POST",
-        body: JSON.stringify({ page }),
+        body: JSON.stringify({ page, sort }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")

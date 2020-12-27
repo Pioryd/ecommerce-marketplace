@@ -10,9 +10,10 @@ exports.list = async ({ email, title, price, description }) => {
     const account = await AccountModel.findOne({ email });
     if (account == null) throw new Error("Account does not exist.");
 
-    const days = 30;
     const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + days);
+    expirationDate.setDate(
+      expirationDate.getDate() + process.env.DAYS_TO_EXPIRE
+    );
 
     const item = await ItemModel.create({
       id: mongoose.Types.ObjectId().toString(),
@@ -58,7 +59,7 @@ exports.setWatch = async ({ email, id, watching }) => {
   }
 };
 
-exports.get = async ({ ids, page = 1 }) => {
+exports.get = async ({ ids, page = 1, sort }) => {
   try {
     let totalItems = 0;
 
@@ -72,8 +73,16 @@ exports.get = async ({ ids, page = 1 }) => {
 
     const currentPage = Math.max(1, Math.min(totalPages, Number(page)));
 
-    // const results = await ItemModel.find({ id: { $in: ids } }, { _id: 0 });
+    const sortTypes = {
+      priceAsc: { price: 1 },
+      priceDesc: { price: -1 },
+      dateAsc: { expiration_date: 1 },
+      dateDesc: { expiration_date: -1 }
+    };
+    if (sortTypes[sort] == null) sort = "dateAsc";
+
     const results = await ItemModel.find()
+      .sort(sortTypes[sort])
       .limit(Number(process.env.ITEMS_PER_PAGE))
       .skip(Number(process.env.ITEMS_PER_PAGE * (currentPage - 1)))
       .exec();
@@ -93,7 +102,8 @@ exports.get = async ({ ids, page = 1 }) => {
       items,
       totalItems,
       totalPages,
-      currentPage
+      currentPage,
+      sort
     };
   } catch (err) {
     console.log(err);
