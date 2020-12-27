@@ -1,42 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import {
-  Group,
-  Legend,
-  Label,
-  Input,
-  Button,
-  ButtonProcessing,
-  Info
-} from "../components/Layout/Controls";
+import NotFound from "../components/NotFound";
+import { Group, Label, Button } from "../components/Layout/Controls";
 
-const ITEM = {
-  id: "145354453445",
-  title: "Some title title title title title title",
-  description: "Some description description description",
-  price: "12",
-  watching: false,
-  expiration_date: "12:32 02-12.2022"
-};
+import * as ItemsActions from "../redux/modules/items/actions";
+import * as ItemsSelector from "../redux/modules/items/selectors";
 
 function Item(props) {
-  // const {
-  //   id,
-  //   title,
-  //   description,
-  //   price,
-  //   watching,
-  //   expiration_date
-  // } = props.item;
+  const { id } = useParams();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(ItemsActions.getSearch({ ids: [id] }));
+    return () => dispatch(ItemsActions.clear());
+  }, []);
+
+  const item = useSelector(ItemsSelector.getItem(id));
+
+  if (item == null) return <NotFound />;
 
   return (
     <Group>
-      <Label>{ITEM.title}</Label>
-      <Label>{ITEM.watching ? "Watching" : "Add to watching"}</Label>
-      <Label>Price: {ITEM.price}</Label>
-      <Label>Expiration: {ITEM.expiration_date}</Label>
-      <Label>{ITEM.description}</Label>
-      <Label>ID: {ITEM.id}</Label>
+      <Label>{item.title}</Label>
+      <Label>{item.watching ? "Watching" : "Add to watching"}</Label>
+      <Label>Price: {item.price}</Label>
+      <Label>Expiration: {item.expiration_date}</Label>
+      <Label>{item.description}</Label>
+      <Label>ID: {item.id}</Label>
       <Button>buy</Button>
     </Group>
   );

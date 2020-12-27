@@ -12,30 +12,7 @@ import * as AccountSelector from "../../redux/modules/account/selectors";
 
 import "./index.scss";
 
-function Item({ data, toggleWatch }) {
-  const history = useHistory();
-
-  const onClick = (e) => {
-    e.preventDefault();
-    if (data.watching === true) toggleWatch(data.id);
-    else history.push("/account");
-  };
-
-  return (
-    <Link style={{ clear: "both" }} to={data.route}>
-      <div className="q7l_item">
-        <div className="q7l_title">{data.title}</div>
-        <div className="q7l_expiration_date">{data.expiration_date}</div>
-        <div className="q7l_price">{data.price}zł</div>
-        <button className="q7l_watching" onClick={onClick}>
-          {data.watching === true ? "Watching" : "Add to watchlist"}
-        </button>
-      </div>
-    </Link>
-  );
-}
-
-function ItemsView(props) {
+export default function ItemsView(props) {
   const { page } = useParams();
 
   const dispatch = useDispatch();
@@ -93,4 +70,25 @@ function ItemsView(props) {
   );
 }
 
-export default ItemsView;
+function Item({ data, toggleWatch }) {
+  const history = useHistory();
+
+  const onClick = (e) => {
+    e.preventDefault();
+    if (data.watching === true) toggleWatch(data.id);
+    else history.push("/account");
+  };
+
+  return (
+    <Link style={{ clear: "both" }} to={data.route}>
+      <div className="q7l_item">
+        <div className="q7l_title">{data.title}</div>
+        <div className="q7l_expiration_date">{data.expiration_date}</div>
+        <div className="q7l_price">{data.price}zł</div>
+        <button className="q7l_watching" onClick={onClick}>
+          {data.watching === true ? "Watching" : "Add to watchlist"}
+        </button>
+      </div>
+    </Link>
+  );
+}
