@@ -6,6 +6,8 @@ import Navigation from "./Layout/Navigation";
 import Content from "./Layout/Content";
 import Footer from "./Layout/Footer";
 
+import NotFound from "../components/NotFound";
+
 import Account from "../pages/Account";
 import AccountSelling from "../pages/AccountSelling";
 import AccountWatchlist from "../pages/AccountWatchlist";
@@ -13,7 +15,6 @@ import AccountListItem from "../pages/AccountListItem";
 import AccountSettings from "../pages/AccountSettings";
 import Items from "../pages/Items";
 import Item from "../pages/Item";
-import NotFound from "../pages/NotFound";
 import AccountSignIn from "../pages/AccountSignIn";
 
 function App() {
@@ -52,7 +53,7 @@ function App() {
             path="/account/settings"
             component={AccountSettings}
           />
-          <Route component={NotFound} />
+          <Route path="*" component={NotFound} />
         </Switch>
       </Content>
       <Footer />
