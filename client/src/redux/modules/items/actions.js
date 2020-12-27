@@ -13,7 +13,8 @@ export const list = ({ title, price, description }) => async (
         method: "POST",
         body: JSON.stringify({ title, price, description }),
         headers: {
-          "Content-type": "application/json"
+          "Content-type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token")
         }
       })
     );
@@ -46,13 +47,13 @@ export const toggleWatch = ({ id }) => async (dispatch, getState) => {
   }
 };
 
-export const getSelected = ({ selected }) => async (dispatch, getState) => {
+export const getSearch = ({ page }) => async (dispatch, getState) => {
   try {
     const receivedData = await handleRespons(
       dispatch,
-      await fetch(process.env.REACT_APP_API_URL + "/items/selected", {
+      await fetch(process.env.REACT_APP_API_URL + "/items/search", {
         method: "POST",
-        body: JSON.stringify({ selected }),
+        body: JSON.stringify({ page }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -67,13 +68,15 @@ export const getSelected = ({ selected }) => async (dispatch, getState) => {
   }
 };
 
-export const getSelling = () => async (dispatch, getState) => {
+export const getSelling = ({ page }) => async (dispatch, getState) => {
   try {
     const receivedData = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items/selling", {
-        method: "GET",
+        method: "POST",
+        body: JSON.stringify({ page }),
         headers: {
+          "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
         }
       })
@@ -86,13 +89,15 @@ export const getSelling = () => async (dispatch, getState) => {
   }
 };
 
-export const getWatching = () => async (dispatch, getState) => {
+export const getWatching = ({ page }) => async (dispatch, getState) => {
   try {
     const receivedData = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items/watching", {
-        method: "GET",
+        method: "POST",
+        body: JSON.stringify({ page }),
         headers: {
+          "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
         }
       })

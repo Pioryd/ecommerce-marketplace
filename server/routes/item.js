@@ -14,13 +14,13 @@ router.post(
   authMiddleware.isAuth,
   use(itemController.setWatch)
 );
-router.post("/items/selected", use(itemController.getSelected));
-router.get(
+router.post("/items/search", use(itemController.getSearch));
+router.post(
   "/items/selling",
   authMiddleware.isAuth,
   use(itemController.getSelling)
 );
-router.get(
+router.post(
   "/items/watching",
   authMiddleware.isAuth,
   use(itemController.getWatching)

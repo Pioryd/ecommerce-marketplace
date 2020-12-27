@@ -58,9 +58,25 @@ exports.setWatch = async ({ email, id, watching }) => {
   }
 };
 
-exports.get = async ({ ids }) => {
+exports.get = async ({ ids, page = 1 }) => {
   try {
-    const results = await ItemModel.find({ id: { $in: ids } }, { _id: 0 });
+    let totalItems = 0;
+
+    if (ids == null) {
+      totalItems = await ItemModel.countDocuments().exec();
+    } else {
+      totalItems = ids.length;
+    }
+
+    const totalPages = Math.ceil(totalItems / process.env.ITEMS_PER_PAGE);
+
+    const currentPage = Math.max(1, Math.min(totalPages, Number(page)));
+
+    // const results = await ItemModel.find({ id: { $in: ids } }, { _id: 0 });
+    const results = await ItemModel.find()
+      .limit(Number(process.env.ITEMS_PER_PAGE))
+      .skip(Number(process.env.ITEMS_PER_PAGE * (currentPage - 1)))
+      .exec();
 
     const items = {};
     for (const result of results) {
@@ -74,7 +90,10 @@ exports.get = async ({ ids }) => {
     }
 
     return {
-      items
+      items,
+      totalItems,
+      totalPages,
+      currentPage
     };
   } catch (err) {
     console.log(err);

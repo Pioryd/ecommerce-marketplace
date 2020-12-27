@@ -10,18 +10,10 @@ import * as ItemsActions from "../redux/modules/items/actions";
 function Items() {
   const dispatch = useDispatch();
 
-  const items = useSelector(ItemsSelector.get());
+  const items = useSelector(ItemsSelector.getItems());
 
   useEffect(() => {
-    dispatch(
-      ItemsActions.getSelected({
-        selected: [
-          "5fe3487cf7948d64e4e1b3d0",
-          "5fe3487cf7948d64e4e1b3d2",
-          "5fe3487cf7948d64e4e1b3d4"
-        ]
-      })
-    );
+    dispatch(ItemsActions.getSearch({}));
     return () => dispatch(ItemsActions.clear());
   }, []);
 

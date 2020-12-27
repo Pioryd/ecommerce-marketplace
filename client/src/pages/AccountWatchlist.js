@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Label } from "../components/Layout/Controls";
 import ItemsView from "../components/ItemsView";
 import Title from "../components/Title";
 
@@ -11,7 +10,7 @@ import * as ItemsActions from "../redux/modules/items/actions";
 function AccountWatchlist() {
   const dispatch = useDispatch();
 
-  const items = useSelector(ItemsSelector.get());
+  const items = useSelector(ItemsSelector.getItems());
 
   useEffect(() => {
     dispatch(ItemsActions.getWatching());

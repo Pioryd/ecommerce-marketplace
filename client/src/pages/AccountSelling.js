@@ -10,7 +10,7 @@ import * as ItemsActions from "../redux/modules/items/actions";
 function AccountSelling() {
   const dispatch = useDispatch();
 
-  const items = useSelector(ItemsSelector.get());
+  const items = useSelector(ItemsSelector.getItems());
 
   useEffect(() => {
     dispatch(ItemsActions.getSelling());

@@ -1,4 +1,8 @@
-export const get = (ids = []) => ({ items }) => {
+export const get = () => ({ items }) => {
+  return items;
+};
+
+export const getItems = (ids = []) => ({ items }) => {
   if (items.items == null) return null;
   if (ids.length === 0) return items.items;
 
@@ -9,4 +13,9 @@ export const get = (ids = []) => ({ items }) => {
   }
 
   return selected_items;
+};
+
+export const getPagination = () => ({ items }) => {
+  const { totalItems, currentPage, totalPages } = items;
+  return { totalItems, currentPage, totalPages };
 };
