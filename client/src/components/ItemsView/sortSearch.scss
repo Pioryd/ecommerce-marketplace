@@ -1,0 +1,62 @@
+@import "../../sass/variables";
+
+* {
+  box-sizing: border-box;
+}
+
+.z2h_main-content {
+  position: relative;
+  display: block;
+  height: 100px;
+  width: auto;
+  margin: 10px 0px 0px 0px;
+
+  .z2h_search {
+    position: relative;
+    border: none;
+    height: 40px;
+    width: 100%;
+
+    .z2h_input {
+      height: 100%;
+      width: calc(100% - 70px);
+    }
+    .z2h_button {
+      height: 100%;
+      width: 70px;
+      border: 1px solid black;
+      margin: 0;
+      padding: 0;
+      background-color: white;
+      color: black;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+    .z2h_button:focus {
+      outline: none;
+    }
+  }
+
+  .z2h_sort {
+    position: relative;
+    border: none;
+    height: 40px;
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .z2h_main-content {
+    display: flex;
+    height: 40px;
+    margin: 10px 150px 20px 150px;
+
+    .z2h_search {
+      width: 70%;
+    }
+    .z2h_sort {
+      width: 30%;
+    }
+  }
+}

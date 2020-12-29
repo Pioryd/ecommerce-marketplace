@@ -59,17 +59,29 @@ exports.setWatch = async ({ email, id, watching }) => {
   }
 };
 
-exports.get = async ({ ids, page = 1, sort }) => {
+exports.get = async ({ ids, page, sort, searchText }) => {
   try {
-    let totalItems = 0;
+    page = Number(page) || 1;
 
-    if (ids == null) {
-      totalItems = await ItemModel.countDocuments().exec();
-    } else {
-      totalItems = ids.length;
+    if (searchText != null && searchText != "") {
+      const results = await ItemModel.find(
+        { $text: { $search: searchText } },
+        { id: 1, _id: 0 }
+      );
+      if (!Array.isArray(ids)) ids = [];
+      for (const result of results) ids.push(result.id);
     }
 
-    const totalPages = Math.ceil(totalItems / process.env.ITEMS_PER_PAGE);
+    const totalItems = Array.isArray(ids)
+      ? ids.length
+      : await ItemModel.countDocuments().exec();
+
+    const findConditions = Array.isArray(ids) ? { id: { $in: ids } } : {};
+
+    const totalPages = Math.max(
+      1,
+      Math.ceil(totalItems / process.env.ITEMS_PER_PAGE)
+    );
 
     const currentPage = Math.max(1, Math.min(totalPages, Number(page)));
 
@@ -81,7 +93,7 @@ exports.get = async ({ ids, page = 1, sort }) => {
     };
     if (sortTypes[sort] == null) sort = "dateAsc";
 
-    const results = await ItemModel.find()
+    const results = await ItemModel.find(findConditions)
       .sort(sortTypes[sort])
       .limit(Number(process.env.ITEMS_PER_PAGE))
       .skip(Number(process.env.ITEMS_PER_PAGE * (currentPage - 1)))

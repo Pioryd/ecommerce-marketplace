@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
-import { Group, Select, Legend, Label } from "../Layout/Controls";
+import { Label } from "../Layout/Controls";
 
 import useQuery from "../../hooks/useQuery";
 
@@ -12,17 +12,20 @@ import * as ItemsSelector from "../../redux/modules/items/selectors";
 import * as AccountActions from "../../redux/modules/account/actions";
 import * as AccountSelector from "../../redux/modules/account/selectors";
 
+import SortSearch from "./SortSearch";
 import Pagination from "./Pagination";
 
 import "./index.scss";
 
-export default function ItemsView(props) {
+export default function ItemsView({ searchType }) {
   const query = useQuery();
   const history = useHistory();
+  const location = useLocation();
 
   const dispatch = useDispatch();
 
   const account = useSelector(AccountSelector.get());
+  const items = useSelector(ItemsSelector.getItems());
   const { totalPages, currentPage } = useSelector(
     ItemsSelector.getPagination()
   );
@@ -31,22 +34,41 @@ export default function ItemsView(props) {
 
   const [sort, setSort] = useState("priceAsc");
   const [page, setPage] = useState(1);
+  const [searchText, setSearchText] = useState("");
+
+  const reload = () => {
+    const actions = {
+      general: "getSearch",
+      selling: "getSelling",
+      watching: "getWatching"
+    };
+
+    dispatch(ItemsActions.clear());
+    dispatch(ItemsActions[actions[searchType]]({ page, sort, searchText }));
+    dispatch(AccountActions.get());
+
+    history.push(`${location.pathname}?sort=${sort}&page=${page}`);
+  };
 
   const toggleWatch = async (id) => {
-    await dispatch(ItemsActions.toggleWatch({ id }));
-    dispatch(AccountActions.get());
+    if (account.token == null) {
+      history.push("/account");
+    } else {
+      await dispatch(ItemsActions.toggleWatch({ id }));
+      reload();
+    }
   };
 
   const updateItemsList = () => {
     const list = [];
 
-    if (props.items != null) {
-      for (const item of Object.values(props.items)) {
+    if (items != null) {
+      for (const item of Object.values(items)) {
         list.push({
           ...item,
           watching:
             account.itemsWatching == null
-              ? null
+              ? false
               : account.itemsWatching.includes(item.id)
         });
       }
@@ -56,33 +78,19 @@ export default function ItemsView(props) {
   };
 
   useEffect(() => {
-    dispatch(ItemsActions.clear());
-    dispatch(ItemsActions.getSearch({ page, sort }));
-
-    history.push(`/items?sort=${sort}&page=${page}`);
-  }, [history, dispatch, page, sort]);
-
-  useEffect(() => {
     setPage(query.get("page") || 1);
     setSort(query.get("sort") || "dateAsc");
   }, [query]);
 
-  useEffect(() => updateItemsList(), [props.items, account]);
+  useEffect(() => reload(), [history, dispatch, page, sort]);
+
+  useEffect(() => updateItemsList(), [items, account]);
 
   return (
     <div className="q7l_auctions">
-      <Group>
-        <Legend>Sort</Legend>
-        <Select value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value="">Select sort</option>
-          <option value="priceAsc">Price: low to hight</option>
-          <option value="priceDesc">Price: hight to low</option>
-          <option value="dateAsc">Date: old to new</option>
-          <option value="dateDesc">Date: new to old</option>
-        </Select>
-      </Group>
+      <SortSearch sort={sort} onSortChange={setSort} onSearch={setSearchText} />
 
-      {props.items == null && (
+      {totalPages == null && (
         <Label style={{ textAlign: "center" }}>loading...</Label>
       )}
       {itemsList.map((item) => (
@@ -99,12 +107,9 @@ export default function ItemsView(props) {
 }
 
 function Item({ data, toggleWatch }) {
-  const history = useHistory();
-
   const onClick = (e) => {
     e.preventDefault();
-    if (data.watching === true) toggleWatch(data.id);
-    else history.push("/account");
+    toggleWatch(data.id);
   };
 
   return (

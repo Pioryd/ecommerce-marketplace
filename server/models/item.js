@@ -27,5 +27,8 @@ const ItemSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+ItemSchema.index(
+  { title: "text", description: "text" },
+  { weights: { title: 2, description: 1 } }
+);
 module.exports = mongoose.model("Item", ItemSchema);

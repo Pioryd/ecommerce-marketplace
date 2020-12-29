@@ -47,13 +47,16 @@ export const toggleWatch = ({ id }) => async (dispatch, getState) => {
   }
 };
 
-export const getSearch = ({ page, sort }) => async (dispatch, getState) => {
+export const getSearch = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
   try {
     const receivedData = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items/search", {
         method: "POST",
-        body: JSON.stringify({ page, sort }),
+        body: JSON.stringify({ page, sort, searchText }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -68,13 +71,16 @@ export const getSearch = ({ page, sort }) => async (dispatch, getState) => {
   }
 };
 
-export const getSelling = ({ page, sort }) => async (dispatch, getState) => {
+export const getSelling = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
   try {
     const receivedData = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items/selling", {
         method: "POST",
-        body: JSON.stringify({ page, sort }),
+        body: JSON.stringify({ page, sort, searchText }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -89,13 +95,16 @@ export const getSelling = ({ page, sort }) => async (dispatch, getState) => {
   }
 };
 
-export const getWatching = ({ page, sort }) => async (dispatch, getState) => {
+export const getWatching = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
   try {
     const receivedData = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items/watching", {
         method: "POST",
-        body: JSON.stringify({ page, sort }),
+        body: JSON.stringify({ page, sort, searchText }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
