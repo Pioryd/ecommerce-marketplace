@@ -23,6 +23,14 @@ const ItemSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true
+    },
+    account_id: {
+      type: String,
+      required: true
+    },
+    stock: {
+      type: Number,
+      required: true
     }
   },
   { timestamps: true }

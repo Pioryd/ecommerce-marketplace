@@ -11,12 +11,12 @@ exports.create = async ({ email, password }) => {
   try {
     validLoginData({ email, password });
 
-    if ((await AccountModel.findOne({ email })) != null)
+    if ((await AccountModel.findOne({ id: email })) != null)
       throw new Error("Account already created.");
 
     const { salt, hash } = await Password.encrypt(password);
 
-    await AccountModel.create({ email, salt, hash });
+    await AccountModel.create({ id: email, salt, hash });
   } catch (err) {
     console.log(err);
     throw new Error("Unable to create account.");
@@ -27,12 +27,12 @@ exports.remove = async ({ email, password }) => {
   try {
     validLoginData({ email, password });
 
-    const account = await AccountModel.findOne({ email });
+    const account = await AccountModel.findOne({ id: email });
     if (account == null) throw new Error("Account does not exist.");
 
     await Password.verify(password, account.salt, account.hash);
 
-    if ((await AccountModel.deleteOne({ email })).deletedCount == null)
+    if ((await AccountModel.deleteOne({ id: email })).deletedCount == null)
       throw new Error("No account is deleted.");
   } catch (err) {
     console.error(err);
@@ -42,7 +42,7 @@ exports.remove = async ({ email, password }) => {
 
 exports.get = async ({ email }) => {
   try {
-    const account = await AccountModel.findOne({ email });
+    const account = await AccountModel.findOne({ id: email });
     if (account == null) throw new Error("Account does not exist.");
 
     return {
@@ -63,7 +63,7 @@ exports.changePassword = async ({ email, oldPassword, newPassword }) => {
 
     const { salt, hash } = await Password.encrypt(newPassword);
 
-    const { n } = await AccountModel.updateOne({ email }, { salt, hash });
+    const { n } = await AccountModel.updateOne({ id: email }, { salt, hash });
     if (n === 0) throw new Error("Account does not exist.");
   } catch (err) {
     console.log(err);
@@ -77,7 +77,7 @@ exports.recover = async ({ email }) => {
 
     const recoverPassword = mongoose.mongo.ObjectId().toHexString();
     const { n } = await AccountModel.updateOne(
-      { email },
+      { id: email },
       { recover_password: recoverPassword }
     );
     if (n === 0) throw new Error("Account does not exist.");
@@ -109,21 +109,21 @@ exports.signIn = async ({ email, password }) => {
   try {
     validLoginData({ email, password });
 
-    let account = await AccountModel.findOne({ email });
+    let account = await AccountModel.findOne({ id: email });
     if (account == null) throw new Error("Account does not exist.");
 
     if (password === account.recover_password) {
       const { salt, hash } = await Password.encrypt(account.recover_password);
 
       const { n } = await AccountModel.updateOne(
-        { email },
+        { id: email },
         { salt, hash, recover_password: "" }
       );
       if (n === 0) throw new Error("Account does not exist.");
     } else {
       if (account.recover_password != "") {
         const { n } = await AccountModel.updateOne(
-          { email },
+          { id: email },
           { recover_password: "" }
         );
         if (n === 0) throw new Error("Account does not exist.");

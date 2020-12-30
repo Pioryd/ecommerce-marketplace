@@ -16,16 +16,22 @@ router.post(
 );
 router.post("/items/search", use(itemController.getSearch));
 router.post(
-  "/items/selling",
-  authMiddleware.isAuth,
-  use(itemController.getSelling)
-);
-router.post(
   "/items/watching",
   authMiddleware.isAuth,
   use(itemController.getWatching)
 );
+router.post(
+  "/items/selling",
+  authMiddleware.isAuth,
+  use(itemController.getSelling)
+);
+router.post("/items/sold", authMiddleware.isAuth, use(itemController.getSold));
+router.post(
+  "/items/unsold",
+  authMiddleware.isAuth,
+  use(itemController.getUnsold)
+);
 
-router.delete("/items", authMiddleware.isAuth, use(itemController.remove));
+router.delete("/items", authMiddleware.isAuth, use(itemController.close));
 
 module.exports = router;

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const AccountSchema = new mongoose.Schema(
   {
-    email: {
+    id: {
       type: String,
       required: true,
       unique: true
@@ -18,8 +18,7 @@ const AccountSchema = new mongoose.Schema(
     recover_password: {
       type: String
     },
-    items_watching: [{ type: mongoose.Schema.Types.ObjectId }],
-    items_selling: [{ type: mongoose.Schema.Types.ObjectId }]
+    items_watching: [{ type: mongoose.Schema.Types.ObjectId }]
   },
   { timestamps: true }
 );
