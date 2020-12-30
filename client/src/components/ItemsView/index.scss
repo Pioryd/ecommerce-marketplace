@@ -50,17 +50,37 @@
       text-decoration: none;
     }
 
-    .q7l_watching {
+    .q7l_button {
       background-color: white;
       color: black;
       cursor: pointer;
       border: none;
       position: absolute;
+      text-decoration: none;
+    }
+
+    .q7l_watching {
+      @extend .q7l_button;
       bottom: 15px;
       right: 10px;
       font-style: italic;
-      color: black;
-      text-decoration: none;
+    }
+
+    .q7l_close {
+      @extend .q7l_button;
+      bottom: 15px;
+      right: 50%;
+      font-style: bold;
+      border: 1px solid black;
+    }
+
+    .q7l_close_confirm {
+      @extend .q7l_close;
+      left: calc(50% + 10px);
+    }
+    .q7l_close_cancel {
+      @extend .q7l_close;
+      right: calc(50% + 10px);
     }
   }
 }

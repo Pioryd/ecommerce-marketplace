@@ -15,8 +15,10 @@ function Account() {
     <Fragment>
       <Title name="Account" />
 
-      <ButtonLink to="/account/selling">Selling</ButtonLink>
       <ButtonLink to="/account/watchlist">Watchlist</ButtonLink>
+      <ButtonLink to="/account/selling">Selling</ButtonLink>
+      <ButtonLink to="/account/sold">Sold</ButtonLink>
+      <ButtonLink to="/account/unsold">Unsold</ButtonLink>
       <ButtonLink to="/account/list-item">List item</ButtonLink>
       <ButtonLink to="/account/settings">Settings</ButtonLink>
       <ButtonLink to="/" onClick={signOut}>

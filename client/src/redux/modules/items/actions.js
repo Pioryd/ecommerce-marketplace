@@ -47,6 +47,25 @@ export const toggleWatch = ({ id }) => async (dispatch, getState) => {
   }
 };
 
+export const close = ({ id }) => async (dispatch, getState) => {
+  try {
+    await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/items", {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+    );
+  } catch (err) {
+    console.error(err);
+    return err.toString();
+  }
+};
+
 export const getSearch = ({ page, sort, searchText }) => async (
   dispatch,
   getState
@@ -79,6 +98,54 @@ export const getSelling = ({ page, sort, searchText }) => async (
     const receivedData = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items/selling", {
+        method: "POST",
+        body: JSON.stringify({ page, sort, searchText }),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+    );
+
+    await dispatch({ type: "ITEMS_UPDATE", payload: receivedData });
+  } catch (err) {
+    console.error(err);
+    return err.toString();
+  }
+};
+
+export const getSold = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const receivedData = await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/items/sold", {
+        method: "POST",
+        body: JSON.stringify({ page, sort, searchText }),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+    );
+
+    await dispatch({ type: "ITEMS_UPDATE", payload: receivedData });
+  } catch (err) {
+    console.error(err);
+    return err.toString();
+  }
+};
+
+export const getUnsold = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const receivedData = await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/items/unsold", {
         method: "POST",
         body: JSON.stringify({ page, sort, searchText }),
         headers: {

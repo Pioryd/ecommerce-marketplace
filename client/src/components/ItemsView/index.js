@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import { Label } from "../Layout/Controls";
 
@@ -12,12 +12,13 @@ import * as ItemsSelector from "../../redux/modules/items/selectors";
 import * as AccountActions from "../../redux/modules/account/actions";
 import * as AccountSelector from "../../redux/modules/account/selectors";
 
+import Item from "./Item";
 import SortSearch from "./SortSearch";
 import Pagination from "./Pagination";
 
 import "./index.scss";
 
-export default function ItemsView({ searchType }) {
+export default function ItemsView({ searchType, options = {} }) {
   const query = useQuery();
   const history = useHistory();
   const location = useLocation();
@@ -39,8 +40,11 @@ export default function ItemsView({ searchType }) {
   const reload = () => {
     const actions = {
       general: "getSearch",
+
+      watching: "getWatching",
       selling: "getSelling",
-      watching: "getWatching"
+      sold: "getSold",
+      unsold: "getUnsold"
     };
 
     dispatch(ItemsActions.clear());
@@ -57,6 +61,11 @@ export default function ItemsView({ searchType }) {
       await dispatch(ItemsActions.toggleWatch({ id }));
       reload();
     }
+  };
+
+  const close = async (id) => {
+    await dispatch(ItemsActions.close({ id }));
+    reload();
   };
 
   const updateItemsList = () => {
@@ -94,7 +103,13 @@ export default function ItemsView({ searchType }) {
         <Label style={{ textAlign: "center" }}>loading...</Label>
       )}
       {itemsList.map((item) => (
-        <Item key={item.id} data={item} toggleWatch={toggleWatch} />
+        <Item
+          key={item.id}
+          data={item}
+          toggleWatch={toggleWatch}
+          close={close}
+          allowClose={options.allowClose}
+        />
       ))}
 
       <Pagination
@@ -103,25 +118,5 @@ export default function ItemsView({ searchType }) {
         onPageChange={(page) => setPage(page)}
       />
     </div>
-  );
-}
-
-function Item({ data, toggleWatch }) {
-  const onClick = (e) => {
-    e.preventDefault();
-    toggleWatch(data.id);
-  };
-
-  return (
-    <Link style={{ clear: "both" }} to={`/item/${data.id}`}>
-      <div className="q7l_item">
-        <div className="q7l_title">{data.title}</div>
-        <div className="q7l_expiration_date">{data.expiration_date}</div>
-        <div className="q7l_price">{data.price}zł</div>
-        <button className="q7l_watching" onClick={onClick}>
-          {data.watching === true ? "Watching" : "Add to watchlist"}
-        </button>
-      </div>
-    </Link>
   );
 }

@@ -3,12 +3,12 @@ import React, { Fragment } from "react";
 import ItemsView from "../components/ItemsView";
 import Title from "../components/Title";
 
-function AccountSelling() {
+function AccountSold() {
   return (
     <Fragment>
-      <Title name="Account - selling" />
-      <ItemsView searchType="selling" options={{ allowClose: true }} />
+      <Title name="Account - sold" />
+      <ItemsView searchType="sold" />
     </Fragment>
   );
 }
-export default AccountSelling;
+export default AccountSold;

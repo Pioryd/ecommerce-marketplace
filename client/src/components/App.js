@@ -10,6 +10,8 @@ import NotFound from "../components/NotFound";
 
 import Account from "../pages/Account";
 import AccountSelling from "../pages/AccountSelling";
+import AccountSold from "../pages/AccountSold";
+import AccountUnsold from "../pages/AccountUnsold";
 import AccountWatchlist from "../pages/AccountWatchlist";
 import AccountListItem from "../pages/AccountListItem";
 import AccountSettings from "../pages/AccountSettings";
@@ -36,6 +38,12 @@ function App() {
             exact
             path="/account/selling"
             component={AccountSelling}
+          />
+          <AccountRoute exact path="/account/sold" component={AccountSold} />
+          <AccountRoute
+            exact
+            path="/account/unsold"
+            component={AccountUnsold}
           />
           <AccountRoute
             exact
