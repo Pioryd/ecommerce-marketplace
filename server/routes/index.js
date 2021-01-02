@@ -1,1 +1,1 @@
-module.exports = [require("./account"), require("./item")];
+module.exports = [require("./account"), require("./item"), require("./cart")];

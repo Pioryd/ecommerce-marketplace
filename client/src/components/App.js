@@ -2,9 +2,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import AccountRoute from "./Routes/Account";
 
-import Navigation from "./Layout/Navigation";
-import Content from "./Layout/Content";
-import Footer from "./Layout/Footer";
+import { Navigation, Content, Footer } from "./Layout";
 
 import NotFound from "../components/NotFound";
 
@@ -16,7 +14,9 @@ import AccountWatchlist from "../pages/AccountWatchlist";
 import AccountListItem from "../pages/AccountListItem";
 import AccountSettings from "../pages/AccountSettings";
 import Items from "../pages/Items";
+import Cart from "../pages/Cart";
 import Item from "../pages/Item";
+import Order from "../pages/Order";
 import AccountSignIn from "../pages/AccountSignIn";
 
 function App() {
@@ -28,6 +28,8 @@ function App() {
           <Route exact path="/" component={Items} />
           <Route exact path="/items" component={Items} />
           <Route exact path="/item/:id" component={Item} />
+          <AccountRoute exact path="/cart" component={Cart} />
+          <AccountRoute exact path="/order" component={Order} />
           <AccountRoute exact path="/account" component={Account} />
           <AccountRoute
             exact

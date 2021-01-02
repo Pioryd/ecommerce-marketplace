@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const ItemModel = require("../models/item");
 const AccountModel = require("../models/account");
+const ItemModel = require("../models/item");
 
 exports.list = async ({ email, title, price, description }) => {
   try {
@@ -55,7 +55,7 @@ exports.setWatch = async ({ email, id, watching }) => {
     if (account == null) throw new Error("Account does not exist.");
     let { items_watching } = account;
 
-    const item = await ItemModel.findOne({ id });
+    const item = await ItemModel.findOne({ id }, { _id: 1 });
     if (item == null) throw new Error("Item does not exist.");
 
     if (watching === false) {
@@ -184,7 +184,8 @@ async function get({ findConditions, page, sort, searchText }) {
       title: result.title,
       price: result.price,
       description: result.description,
-      expirationDate: result.expiration_date
+      expirationDate: result.expiration_date,
+      stock: result.stock
     };
   }
 

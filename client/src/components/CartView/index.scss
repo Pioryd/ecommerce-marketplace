@@ -1,0 +1,132 @@
+@import "../../sass/variables";
+
+* {
+  box-sizing: border-box;
+}
+
+.y4k_disabled {
+  color: grey;
+}
+
+.y4k_button {
+  background-color: white;
+  cursor: pointer;
+  border: none;
+  position: absolute;
+  text-decoration: none;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  color: black;
+}
+
+.y4k_content {
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  .y4k_top-bar {
+    position: relative;
+    height: 70px;
+    width: auto;
+    border: 2px solid black;
+    margin: 10px 3px 20px 3px;
+
+    .y4k_subtotal {
+      position: absolute;
+      overflow: hidden;
+      display: inline-block;
+      text-overflow: ellipsis;
+      font-weight: bold;
+      top: 20px;
+      left: 10px;
+      height: 50px;
+      width: calc(100% - 30px);
+      text-decoration: none;
+    }
+
+    .y4k_checkout {
+      @extend .y4k_button;
+      top: 5px;
+      right: 10px;
+      height: 50px;
+      width: 150px;
+      line-height: 50px;
+      margin: auto;
+      text-align: center;
+      border: 1px solid black;
+    }
+  }
+
+  $item-height: 125px;
+  .y4k_item {
+    position: relative;
+    height: $item-height;
+    width: auto;
+    border: 2px solid black;
+    margin: 10px 3px 20px 3px;
+
+    .y4k_title {
+      position: absolute;
+      overflow: hidden;
+      display: inline-block;
+      text-overflow: ellipsis;
+      top: 0px;
+      left: 0px;
+      margin: 15px;
+      max-height: 50px;
+      max-width: calc(100% - 30px);
+      text-decoration: underline;
+      color: black;
+    }
+
+    .y4k_total {
+      position: absolute;
+      bottom: 25px;
+      left: 10px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .y4k_price {
+      position: absolute;
+      bottom: 5px;
+      left: 10px;
+      left: 10px;
+      font-size: 14px;
+      font-weight: normal;
+      text-decoration: none;
+    }
+
+    .y4k_quantity {
+      position: absolute;
+      bottom: 5px;
+      right: 100px;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    .y4k_remove {
+      @extend .y4k_button;
+      bottom: 15px;
+      right: 10px;
+      height: 20px;
+      min-width: 50px;
+      line-height: 15px;
+      font-size: 14px;
+      border: 1px solid black;
+      color: black;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .y4k_content {
+    .y4k_top-bar {
+      margin: 10px 150px 20px 150px;
+    }
+    .y4k_item {
+      margin: 10px 150px 20px 150px;
+    }
+  }
+}

@@ -6,6 +6,7 @@ const Token = require("../util/token");
 const Password = require("../util/password");
 
 const AccountModel = require("../models/account");
+const CartModel = require("../models/cart");
 
 exports.create = async ({ email, password }) => {
   try {
@@ -17,6 +18,12 @@ exports.create = async ({ email, password }) => {
     const { salt, hash } = await Password.encrypt(password);
 
     await AccountModel.create({ id: email, salt, hash });
+
+    await CartModel.create({
+      id: mongoose.Types.ObjectId().toString(),
+      account_id: email,
+      items: {}
+    });
   } catch (err) {
     console.log(err);
     throw new Error("Unable to create account.");

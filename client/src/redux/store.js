@@ -6,8 +6,9 @@ import authMiddleware from "./authMiddleware";
 
 import account from "./modules/account/reducer";
 import items from "./modules/items/reducer";
+import cart from "./modules/cart/reducer";
 
-const reducer = combineReducers({ account, items });
+const reducer = combineReducers({ account, items, cart });
 
 const store = createStore(
   reducer,
