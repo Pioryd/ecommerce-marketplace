@@ -83,7 +83,7 @@ export const getSearch = ({ page, sort, searchText }) => async (
       })
     );
 
-    await dispatch({ type: "ITEMS_UPDATE", payload: receivedData });
+    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -107,7 +107,7 @@ export const getSelling = ({ page, sort, searchText }) => async (
       })
     );
 
-    await dispatch({ type: "ITEMS_UPDATE", payload: receivedData });
+    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -131,7 +131,7 @@ export const getSold = ({ page, sort, searchText }) => async (
       })
     );
 
-    await dispatch({ type: "ITEMS_UPDATE", payload: receivedData });
+    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -155,7 +155,7 @@ export const getUnsold = ({ page, sort, searchText }) => async (
       })
     );
 
-    await dispatch({ type: "ITEMS_UPDATE", payload: receivedData });
+    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -179,7 +179,7 @@ export const getWatching = ({ page, sort, searchText }) => async (
       })
     );
 
-    await dispatch({ type: "ITEMS_UPDATE", payload: receivedData });
+    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
