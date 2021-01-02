@@ -12,16 +12,18 @@ exports.create = async ({ email, password }) => {
   try {
     validLoginData({ email, password });
 
-    if ((await AccountModel.findOne({ id: email })) != null)
+    const id = email;
+
+    if ((await AccountModel.findOne({ id })) != null)
       throw new Error("Account already created.");
 
     const { salt, hash } = await Password.encrypt(password);
 
-    await AccountModel.create({ id: email, salt, hash });
+    await AccountModel.create({ id, salt, hash });
 
     await CartModel.create({
       id: mongoose.Types.ObjectId().toString(),
-      account_id: email,
+      account_id: id,
       items: {}
     });
   } catch (err) {
@@ -30,16 +32,27 @@ exports.create = async ({ email, password }) => {
   }
 };
 
-exports.remove = async ({ email, password }) => {
+exports.remove = async ({ accountId, password }) => {
   try {
-    validLoginData({ email, password });
+    validLoginData({ email: accountId, password });
 
-    const account = await AccountModel.findOne({ id: email });
+    const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
 
     await Password.verify(password, account.salt, account.hash);
 
-    if ((await AccountModel.deleteOne({ id: email })).deletedCount == null)
+    if (
+      (await CartModel.deleteOne({ account_id: accountId })).deletedCount ==
+      null
+    )
+      throw new Error("No cart is deleted.");
+
+    await ItemModel.updateMany(
+      { account_id: accountId },
+      { expiration_date: new Date() }
+    );
+
+    if ((await AccountModel.deleteOne({ id: accountId })).deletedCount == null)
       throw new Error("No account is deleted.");
   } catch (err) {
     console.error(err);
@@ -47,15 +60,14 @@ exports.remove = async ({ email, password }) => {
   }
 };
 
-exports.get = async ({ email }) => {
+exports.get = async ({ accountId }) => {
   try {
-    const account = await AccountModel.findOne({ id: email });
+    const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
 
     return {
-      email: account.email,
-      itemsWatching: account.items_watching || [],
-      itemsSelling: account.items_selling || []
+      id: accountId,
+      itemsWatching: account.items_watching
     };
   } catch (err) {
     console.log(err);
@@ -63,14 +75,17 @@ exports.get = async ({ email }) => {
   }
 };
 
-exports.changePassword = async ({ email, oldPassword, newPassword }) => {
+exports.changePassword = async ({ accountId, oldPassword, newPassword }) => {
   try {
     validLoginData({ password: oldPassword });
     validLoginData({ password: newPassword });
 
     const { salt, hash } = await Password.encrypt(newPassword);
 
-    const { n } = await AccountModel.updateOne({ id: email }, { salt, hash });
+    const { n } = await AccountModel.updateOne(
+      { id: accountId },
+      { salt, hash }
+    );
     if (n === 0) throw new Error("Account does not exist.");
   } catch (err) {
     console.log(err);
@@ -84,7 +99,7 @@ exports.recover = async ({ email }) => {
 
     const recoverPassword = mongoose.mongo.ObjectId().toHexString();
     const { n } = await AccountModel.updateOne(
-      { id: email },
+      { id },
       { recover_password: recoverPassword }
     );
     if (n === 0) throw new Error("Account does not exist.");
@@ -116,21 +131,23 @@ exports.signIn = async ({ email, password }) => {
   try {
     validLoginData({ email, password });
 
-    let account = await AccountModel.findOne({ id: email });
+    const id = email;
+
+    let account = await AccountModel.findOne({ id });
     if (account == null) throw new Error("Account does not exist.");
 
     if (password === account.recover_password) {
       const { salt, hash } = await Password.encrypt(account.recover_password);
 
       const { n } = await AccountModel.updateOne(
-        { id: email },
+        { id },
         { salt, hash, recover_password: "" }
       );
       if (n === 0) throw new Error("Account does not exist.");
     } else {
       if (account.recover_password != "") {
         const { n } = await AccountModel.updateOne(
-          { id: email },
+          { id },
           { recover_password: "" }
         );
         if (n === 0) throw new Error("Account does not exist.");
@@ -140,8 +157,8 @@ exports.signIn = async ({ email, password }) => {
     }
 
     return {
-      email,
-      token: Token.generate({ email }, process.env.TOKEN_EXPIRES_IN)
+      id,
+      token: Token.generate({ id }, process.env.TOKEN_EXPIRES_IN)
     };
   } catch (err) {
     console.error(err);
@@ -149,10 +166,10 @@ exports.signIn = async ({ email, password }) => {
   }
 };
 
-exports.refreshToken = async ({ email }) => {
+exports.refreshToken = async ({ accountId }) => {
   try {
     return {
-      token: Token.generate({ email }, process.env.TOKEN_EXPIRES_IN)
+      token: Token.generate({ id: accountId }, process.env.TOKEN_EXPIRES_IN)
     };
   } catch (err) {
     console.error(err);

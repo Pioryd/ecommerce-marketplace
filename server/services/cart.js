@@ -3,36 +3,36 @@ const mongoose = require("mongoose");
 const CartModel = require("../models/cart");
 const ItemModel = require("../models/item");
 
-exports.add = async ({ email, id, quantity }) => {
+exports.add = async ({ accountId, id, quantity }) => {
   try {
     const cart = await CartModel.findOne(
-      { account_id: email },
+      { account_id: accountId },
       { _id: 0, items: 1 }
     );
     if (cart == null) throw new Error("Cart does not exist.");
 
     if (cart.items.has(id)) quantity += cart.items.get(id);
 
-    await update({ email, id, quantity });
+    await update({ accountId, id, quantity });
   } catch (err) {
     console.log(err);
     throw new Error("Unable to update cart.");
   }
 };
 
-exports.update = async ({ email, id, quantity }) => {
+exports.update = async ({ accountId, id, quantity }) => {
   try {
-    await update({ email, id, quantity });
+    await update({ accountId, id, quantity });
   } catch (err) {
     console.log(err);
     throw new Error("Unable to update cart.");
   }
 };
 
-exports.remove = async ({ email, id }) => {
+exports.remove = async ({ accountId, id }) => {
   try {
     const cart = await CartModel.findOne(
-      { account_id: email },
+      { account_id: accountId },
       { _id: 0, items: 1 }
     );
     if (cart.items == null) throw new Error("Cart does not exist.");
@@ -41,7 +41,7 @@ exports.remove = async ({ email, id }) => {
 
     {
       const { n } = await CartModel.updateOne(
-        { account_id: email },
+        { account_id: accountId },
         { items: cart.items }
       );
       if (n === 0) throw new Error("Cart does not exist.");
@@ -52,10 +52,10 @@ exports.remove = async ({ email, id }) => {
   }
 };
 
-exports.get = async ({ email }) => {
+exports.get = async ({ accountId }) => {
   try {
     const cart = await CartModel.findOne(
-      { account_id: email },
+      { account_id: accountId },
       { _id: 0, items: 1 }
     );
     if (cart == null) throw new Error("Cart does not exist.");
@@ -80,9 +80,9 @@ exports.get = async ({ email }) => {
   }
 };
 
-async function update({ email, id, quantity }) {
+async function update({ accountId, id, quantity }) {
   const cart = await CartModel.findOne(
-    { account_id: email },
+    { account_id: accountId },
     { _id: 0, items: 1 }
   );
   if (cart == null) throw new Error("Cart does not exist.");
@@ -110,7 +110,7 @@ async function update({ email, id, quantity }) {
 
   {
     const { n } = await CartModel.updateOne(
-      { account_id: email },
+      { account_id: accountId },
       { items: cart.items }
     );
     if (n === 0) throw new Error("Cart does not exist.");

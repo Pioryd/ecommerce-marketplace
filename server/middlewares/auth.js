@@ -5,17 +5,8 @@ exports.isAuth = async (req, res, next) => {
     const token = req.get("Authorization").split(" ")[1];
     if (token == null) return res.sendStatus(401);
 
-    const { email } = await Token.verify(token);
-    req.body.email = email;
-    return next();
-  } catch (err) {
-    console.error(err);
-    return res.sendStatus(403);
-  }
-};
-
-exports.isAdmin = async (req, res, next) => {
-  try {
+    const { id } = await Token.verify(token);
+    req.body.accountId = id;
     return next();
   } catch (err) {
     console.error(err);

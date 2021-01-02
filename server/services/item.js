@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 const AccountModel = require("../models/account");
 const ItemModel = require("../models/item");
 
-exports.list = async ({ email, title, price, description }) => {
+exports.list = async ({ accountId, title, price, description }) => {
   try {
     validItemData({ title, price, description });
 
-    const account = await AccountModel.findOne({ id: email });
+    const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
 
     const expirationDate = new Date();
@@ -26,7 +26,7 @@ exports.list = async ({ email, title, price, description }) => {
     account.items_selling.push(item.id);
 
     const { n } = await AccountModel.updateOne(
-      { id: email },
+      { id: accountId },
       { items_selling: account.items_selling }
     );
     if (n === 0) throw new Error("Account does not exist.");
@@ -36,10 +36,10 @@ exports.list = async ({ email, title, price, description }) => {
   }
 };
 
-exports.close = async ({ email, id }) => {
+exports.close = async ({ accountId, id }) => {
   try {
     const { n } = await ItemModel.updateOne(
-      { id, account_id: email },
+      { id, account_id: accountId },
       { expiration_date: new Date() }
     );
     if (n === 0) throw new Error("Item does not exist.");
@@ -49,9 +49,9 @@ exports.close = async ({ email, id }) => {
   }
 };
 
-exports.setWatch = async ({ email, id, watching }) => {
+exports.setWatch = async ({ accountId, id, watching }) => {
   try {
-    const account = await AccountModel.findOne({ id: email });
+    const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
     let { items_watching } = account;
 
@@ -65,7 +65,7 @@ exports.setWatch = async ({ email, id, watching }) => {
     }
 
     const { n } = await AccountModel.updateOne(
-      { id: email },
+      { id: accountId },
       { items_watching }
     );
     if (n === 0) throw new Error("Account does not exist.");
@@ -89,9 +89,9 @@ exports.getSearch = async ({ page, sort, searchText }) => {
   }
 };
 
-exports.getWatching = async ({ email, page, sort, searchText }) => {
+exports.getWatching = async ({ accountId, page, sort, searchText }) => {
   try {
-    const account = await AccountModel.findOne({ id: email });
+    const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
 
     const findConditions = {
@@ -105,12 +105,12 @@ exports.getWatching = async ({ email, page, sort, searchText }) => {
   }
 };
 
-exports.getSelling = async ({ email, page, sort, searchText }) => {
+exports.getSelling = async ({ accountId, page, sort, searchText }) => {
   try {
     const findConditions = {
       expiration_date: { $gt: new Date() },
       stock: { $gt: 0 },
-      account_id: email
+      account_id: accountId
     };
 
     return await get({ findConditions, page, sort, searchText });
@@ -120,11 +120,11 @@ exports.getSelling = async ({ email, page, sort, searchText }) => {
   }
 };
 
-exports.getSold = async ({ email, page, sort, searchText }) => {
+exports.getSold = async ({ accountId, page, sort, searchText }) => {
   try {
     const findConditions = {
       $or: [{ expiration_date: { $lte: new Date() } }, { stock: { $lte: 0 } }],
-      account_id: email
+      account_id: accountId
     };
 
     return await get({ findConditions, page, sort, searchText });
@@ -134,11 +134,11 @@ exports.getSold = async ({ email, page, sort, searchText }) => {
   }
 };
 
-exports.getUnsold = async ({ email, page, sort, searchText }) => {
+exports.getUnsold = async ({ accountId, page, sort, searchText }) => {
   try {
     const findConditions = {
       $or: [{ expiration_date: { $lte: new Date() } }, { stock: { $lte: 0 } }],
-      account_id: email
+      account_id: accountId
     };
 
     return await get({ findConditions, page, sort, searchText });

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Group, Legend, Label } from "../../components/Layout/Controls";
@@ -16,16 +16,10 @@ function Details() {
   return (
     <Group>
       <Legend>Details:</Legend>
-      {account.email == null ||
-      account.itemsWatching == null ||
-      account.itemsSelling == null ? (
+      {account.id == null ? (
         "loading..."
       ) : (
-        <Fragment>
-          <Label>{"Email: " + account.email}</Label>
-          <Label>{"Watching: " + account.itemsWatching.length}</Label>
-          <Label>{"Selling: " + account.itemsSelling.length}</Label>
-        </Fragment>
+        <Label>{"Email: " + account.id}</Label>
       )}
     </Group>
   );
