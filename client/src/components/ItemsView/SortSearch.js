@@ -4,7 +4,7 @@ import { Select } from "../Layout/Controls";
 
 import "./sortSearch.scss";
 
-export default function Sort({ sort, onSortChange, onSearch }) {
+export default function Sort({ options, sort, update }) {
   const [search, setSearch] = useState("");
 
   return (
@@ -15,21 +15,25 @@ export default function Sort({ sort, onSortChange, onSearch }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") onSearch(search);
+            if (e.key === "Enter") update({ searchText: search });
           }}
         />
-        <button className="z2h_button" onClick={() => onSearch(search)}>
+        <button
+          className="z2h_button"
+          onClick={() => update({ searchText: search })}
+        >
           Search
         </button>
       </div>
 
       <div className="z2h_sort">
-        <Select value={sort} onChange={(e) => onSortChange(e.target.value)}>
+        <Select value={sort} onChange={(e) => update({ sort: e.target.value })}>
           <option value="">Select sort</option>
-          <option value="priceAsc">Price: low to hight</option>
-          <option value="priceDesc">Price: hight to low</option>
-          <option value="dateAsc">Date: old to new</option>
-          <option value="dateDesc">Date: new to old</option>
+          {Object.keys(options).map((option) => (
+            <option key={option} value={option}>
+              {options[option]}
+            </option>
+          ))}
         </Select>
       </div>
     </div>

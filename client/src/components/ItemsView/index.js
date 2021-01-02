@@ -1,10 +1,10 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { Label } from "../Layout/Controls";
 
-import useQuery from "../../hooks/useQuery";
+import usePaginationAndSortSearch from "./usePaginationAndSortSearch";
 
 import * as ItemsActions from "../../redux/modules/items/actions";
 import * as ItemsSelector from "../../redux/modules/items/selectors";
@@ -18,10 +18,17 @@ import Pagination from "./Pagination";
 
 import "./index.scss";
 
+const SORT_OPTIONS = {
+  priceAsc: "Price: low to hight",
+  priceDesc: "Price: hight to low",
+  dateAsc: "Date: old to new",
+  dateDesc: "Date: new to old"
+};
+
 export default function ItemsView({ searchType, options = {} }) {
-  const query = useQuery();
+  const { sort, page, searchText, update } = usePaginationAndSortSearch();
+
   const history = useHistory();
-  const location = useLocation();
 
   const dispatch = useDispatch();
 
@@ -32,10 +39,6 @@ export default function ItemsView({ searchType, options = {} }) {
   );
 
   const [itemsList, setItemsList] = useState([]);
-
-  const [sort, setSort] = useState("priceAsc");
-  const [page, setPage] = useState(1);
-  const [searchText, setSearchText] = useState("");
 
   const reload = () => {
     const actions = {
@@ -50,8 +53,6 @@ export default function ItemsView({ searchType, options = {} }) {
     dispatch(ItemsActions.clear());
     dispatch(ItemsActions[actions[searchType]]({ page, sort, searchText }));
     dispatch(AccountActions.get());
-
-    history.push(`${location.pathname}?sort=${sort}&page=${page}`);
   };
 
   const toggleWatch = async (id) => {
@@ -86,18 +87,12 @@ export default function ItemsView({ searchType, options = {} }) {
     setItemsList(list);
   };
 
-  useEffect(() => {
-    setPage(query.get("page") || 1);
-    setSort(query.get("sort") || "dateAsc");
-  }, [query]);
-
-  useEffect(() => reload(), [history, dispatch, page, sort]);
-
   useEffect(() => updateItemsList(), [items, account]);
+  useEffect(() => reload(), [page, sort, searchText]);
 
   return (
-    <div className="q7l_auctions">
-      <SortSearch sort={sort} onSortChange={setSort} onSearch={setSearchText} />
+    <div className="q7l_content">
+      <SortSearch options={SORT_OPTIONS} sort={sort} update={update} />
 
       {totalPages == null && (
         <Label style={{ textAlign: "center" }}>loading...</Label>
@@ -115,7 +110,7 @@ export default function ItemsView({ searchType, options = {} }) {
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
-        onPageChange={(page) => setPage(page)}
+        update={update}
       />
     </div>
   );
