@@ -1,4 +1,4 @@
-import handleRespons from "../../util/handleRespons";
+import handleRespons from "../../handleRespons";
 
 export const list = ({ title, price, description }) => async (
   dispatch,

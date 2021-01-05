@@ -12,5 +12,10 @@ router.post("/cart", authMiddleware.isAuth, use(cartController.add));
 router.put("/cart", authMiddleware.isAuth, use(cartController.update));
 router.get("/cart", authMiddleware.isAuth, use(cartController.get));
 router.post("/cart/remove", authMiddleware.isAuth, use(cartController.remove));
+router.post(
+  "/cart/transaction",
+  authMiddleware.isAuth,
+  use(cartController.transaction)
+);
 
 module.exports = router;

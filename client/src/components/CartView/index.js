@@ -24,7 +24,7 @@ export default function CartView() {
 
   const [updating, setUpdating] = useState(false);
 
-  const updateSubtotal = (quantity) => {
+  const updateSubtotal = () => {
     if (items == null) return;
 
     let totalPrice = 0;
@@ -63,6 +63,7 @@ export default function CartView() {
 
   const updateQuantity = async (id, quantity) => {
     setUpdating(true);
+
     await dispatch(CartActions.update({ id, quantity }));
     await dispatch(CartActions.get());
 
@@ -91,7 +92,7 @@ export default function CartView() {
             Go to checkout:
           </label>
         ) : (
-          <Link to="/order" className="y4k_checkout">
+          <Link to="/checkout" className="y4k_checkout">
             Go to checkout
           </Link>
         )}
@@ -102,7 +103,7 @@ export default function CartView() {
       ) : (
         Object.values(items).map((item) => (
           <Item
-            key={item.id}
+            key={item.id + item.quantity}
             data={item}
             updating={updating}
             onRemove={remove}

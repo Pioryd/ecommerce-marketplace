@@ -54,7 +54,6 @@ export default function Item({ data, updating, onRemove, onUpdateQuantity }) {
       >
         remove
       </button>
-      {/* )} */}
     </div>
   );
 }

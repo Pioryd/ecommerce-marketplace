@@ -23,11 +23,13 @@ export default function Item() {
 
   const buy = () => {
     dispatch(CartActions.add({ id, quantity }));
-    history.push("/order");
+    dispatch(CartActions.get());
+    history.push("/checkout");
   };
 
   const addToCart = () => {
     dispatch(CartActions.add({ id, quantity }));
+    dispatch(CartActions.get());
     history.push("/cart");
   };
 

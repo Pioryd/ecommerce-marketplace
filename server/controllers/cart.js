@@ -19,3 +19,8 @@ exports.remove = async (req, res) => {
   await CartService.remove(req.body);
   res.json({});
 };
+
+exports.transaction = async (req, res) => {
+  await CartService.transaction(req.body);
+  res.json({});
+};

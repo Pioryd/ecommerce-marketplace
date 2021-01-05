@@ -16,7 +16,10 @@ import AccountSettings from "../pages/AccountSettings";
 import Items from "../pages/Items";
 import Cart from "../pages/Cart";
 import Item from "../pages/Item";
-import Order from "../pages/Order";
+import Checkout from "../pages/Checkout";
+import CheckoutSuccess from "../pages/CheckoutSuccess";
+import CheckoutFailure from "../pages/CheckoutFailure";
+
 import AccountSignIn from "../pages/AccountSignIn";
 
 function App() {
@@ -29,7 +32,17 @@ function App() {
           <Route exact path="/items" component={Items} />
           <Route exact path="/item/:id" component={Item} />
           <AccountRoute exact path="/cart" component={Cart} />
-          <AccountRoute exact path="/order" component={Order} />
+          <AccountRoute exact path="/checkout" component={Checkout} />
+          <AccountRoute
+            exact
+            path="/checkout-success"
+            component={CheckoutSuccess}
+          />
+          <AccountRoute
+            exact
+            path="/checkout-failure"
+            component={CheckoutFailure}
+          />
           <AccountRoute exact path="/account" component={Account} />
           <AccountRoute
             exact

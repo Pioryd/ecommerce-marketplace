@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
-const isEmail = require("validator/lib/isEmail");
-const isStrongPassword = require("validator/lib/isStrongPassword");
+const { validLoginData } = require("../util/validate");
 const Token = require("../util/token");
 const Password = require("../util/password");
 
@@ -176,26 +175,3 @@ exports.refreshToken = async ({ accountId }) => {
     throw new Error("Unable to sign in.");
   }
 };
-
-function validLoginData(dataToValid) {
-  const { email, password } = dataToValid;
-
-  if ("email" in dataToValid)
-    if (email == null || !isEmail(email)) throw new Error("Wrong email.");
-
-  const passwordOptions = {
-    minLength: 6,
-    minLowercase: 0,
-    minUppercase: 0,
-    minNumbers: 0,
-    minSymbols: 0
-  };
-  if ("password" in dataToValid) {
-    if (password == null || !isStrongPassword(password, passwordOptions))
-      throw new Error(
-        "Wrong password. Password must have at least " +
-          passwordOptions.minLength +
-          " characters."
-      );
-  }
-}

@@ -19,10 +19,13 @@
 .a4t_label,
 .a4t_info,
 .a4t_input,
+.a4t_radio-group,
 .a4t_select,
 .a4t_textarea {
+  position: relative;
   width: 100%;
   height: 100%;
+  min-height: 20px;
   display: block;
 }
 
@@ -70,4 +73,14 @@
   color: white;
   padding: 5px;
   padding-bottom: 10px;
+}
+
+.a4t_radio-input {
+  position: absolute;
+  left: 0;
+}
+
+.a4t_radio-label {
+  position: absolute;
+  left: 30px;
 }

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import "./index.scss";
 
+import * as CartActions from "../../../redux/modules/cart/actions";
 import * as CartSelector from "../../../redux/modules/cart/selectors";
 
 const LOGO = "e-commerce";
 
 function Navigation() {
+  const dispatch = useDispatch();
+
   const [itemsCount, setItemsCount] = useState(0);
 
   const items = useSelector(CartSelector.getItems());
@@ -21,6 +24,7 @@ function Navigation() {
   };
 
   useEffect(() => updateItemsCount(), [items]);
+  useEffect(() => dispatch(CartActions.get()), []);
 
   return (
     <div className="navbar">

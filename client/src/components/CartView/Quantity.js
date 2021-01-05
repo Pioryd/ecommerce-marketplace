@@ -25,7 +25,9 @@ export default function Quantity({
     const keys = [];
     for (let i = 1; i <= 10 && i <= stock; i++) keys.push(i);
     setSelectKeys(keys);
-  }, [quantity]);
+
+    setUpdatedQuantity(quantity);
+  }, [quantity, updating]);
 
   return (
     <div className={className}>

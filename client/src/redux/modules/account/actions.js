@@ -1,11 +1,9 @@
-import isEmail from "validator/lib/isEmail";
-import isStrongPassword from "validator/lib/isStrongPassword";
-
-import handleRespons from "../../util/handleRespons";
+import { signInData } from "../../../util/validate";
+import handleRespons from "../../handleRespons";
 
 export const signIn = ({ email, password }) => async (dispatch, getState) => {
   try {
-    validLoginData({ email, password });
+    signInData({ email, password });
 
     const receivedData = await handleRespons(
       dispatch,
@@ -26,7 +24,7 @@ export const signIn = ({ email, password }) => async (dispatch, getState) => {
 
 export const create = ({ email, password }) => async (dispatch, getState) => {
   try {
-    validLoginData({ email, password });
+    signInData({ email, password });
 
     const receivedData = await handleRespons(
       dispatch,
@@ -47,7 +45,7 @@ export const create = ({ email, password }) => async (dispatch, getState) => {
 
 export const recover = ({ email }) => async (dispatch, getState) => {
   try {
-    validLoginData({ email });
+    signInData({ email });
 
     await handleRespons(
       dispatch,
@@ -67,7 +65,7 @@ export const remove = ({ password }) => async (dispatch, getState) => {
   try {
     await checkSignedIn(getState, dispatch);
 
-    validLoginData({ password });
+    signInData({ password });
 
     await handleRespons(
       dispatch,
@@ -93,9 +91,9 @@ export const update = (data) => async (dispatch, getState) => {
   try {
     await checkSignedIn(getState, dispatch);
 
-    if ("password" in data) validLoginData({ password: data.password });
-    if ("oldPassword" in data) validLoginData({ password: data.oldPassword });
-    if ("newPassword" in data) validLoginData({ password: data.newPassword });
+    if ("password" in data) signInData({ password: data.password });
+    if ("oldPassword" in data) signInData({ password: data.oldPassword });
+    if ("newPassword" in data) signInData({ password: data.newPassword });
 
     const receivedData = await handleRespons(
       dispatch,
@@ -142,8 +140,8 @@ export const signOut = () => async (dispatch) => {
     localStorage.removeItem("token");
 
     dispatch({ type: "ACCOUNT_RESET" });
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -173,27 +171,4 @@ export const refreshToken = () => async (dispatch, getState) => {
 async function checkSignedIn(getState, dispatch) {
   if (getState().account.token == null)
     throw new Error("Account is not signed in.");
-}
-
-function validLoginData(dataToValid) {
-  const { email, password } = dataToValid;
-
-  if ("email" in dataToValid)
-    if (email == null || !isEmail(email)) throw new Error("Wrong email.");
-
-  const passwordOptions = {
-    minLength: 6,
-    minLowercase: 0,
-    minUppercase: 0,
-    minNumbers: 0,
-    minSymbols: 0
-  };
-  if ("password" in dataToValid) {
-    if (password == null || !isStrongPassword(password, passwordOptions))
-      throw new Error(
-        "Wrong password. Password must have at least " +
-          passwordOptions.minLength +
-          " characters."
-      );
-  }
 }
