@@ -112,7 +112,6 @@ async function update({ accountId, id, quantity }) {
   if (item == null) throw new Error("Item does not exist.");
 
   if (quantity <= 0) throw new Error(`Quantity must be greater then 0.`);
-
   if (item.stock < quantity) {
     throw new Error(
       `Quantity[${quantity}] is bigger then item[${id}] stock[${item.stock}]`
@@ -137,88 +136,104 @@ async function update({ accountId, id, quantity }) {
     if (n === 0) throw new Error("Cart does not exist.");
   }
 }
-exports.transaction = async ({
-  accountId,
-  name,
-  street1,
-  street2,
-  city,
-  state,
-  postalCode,
-  phone,
-  payWith
-}) => {
+exports.transaction = async ({ accountId, shipping, id, quantity }) => {
   try {
-    validate.transaction({
-      name,
-      street1,
-      street2,
-      city,
-      state,
-      postalCode,
-      phone,
-      payWith
-    });
+    validate.shipping(shipping);
 
-    const cart = await CartModel.findOne(
-      { account_id: accountId },
-      { _id: 0, items: 1 }
-    );
-    if (cart.items == null) throw new Error("Cart does not exist.");
-
-    if (cart.items.size === 0) throw new Error("Cart does not have items.");
-
-    const results = await ItemModel.find({
-      id: { $in: Array.from(cart.items, ([id, quantity]) => id) }
-    });
-
-    if (cart.items.size !== results.length)
-      throw new Error("Not found all items from cart.");
-
-    for (const result of results) {
-      if (cart.items.get(result.id) > result.stock)
-        throw new Error("Item does not have enough stock.");
+    if (id != null && quantity != null) {
+      await transactionNotFromCart({ accountId, shipping, id, quantity });
+    } else {
+      await transactionFromCart({ accountId, shipping });
     }
-
-    for (const result of results) {
-      const stock = result.stock - cart.items.get(result.id);
-      const updateQuery = { stock };
-      if (stock === 0) updateQuery.expiration_date = new Date();
-
-      const { n } = await ItemModel.updateOne(
-        { id: result.id, account_id: accountId },
-        updateQuery
-      );
-      if (n === 0)
-        throw new Error(
-          "Item does not exist. Results: " + JSON.stringify(results, null, 2)
-        );
-    }
-
-    await TransactionModel.create({
-      id: mongoose.Types.ObjectId().toString(),
-      date: new Date(),
-      buyer_account_id: accountId,
-      items: cart.items,
-      shipping: {
-        name,
-        street_1: street1,
-        street_2: street2,
-        city,
-        state,
-        postal_code: postalCode,
-        phone,
-        pay_with: payWith
-      }
-    });
-
-    const { n } = await CartModel.updateOne(
-      { account_id: accountId },
-      { items: {} }
-    );
-    if (n === 0) throw new Error("Cart does not exist.");
   } catch (err) {
     console.log(err);
     throw new Error("Unable to make transaction.");
   }
 };
+
+async function transactionNotFromCart({ accountId, shipping, id, quantity }) {
+  const item = await ItemModel.findOne({ id }, { _id: 0, stock: 1 });
+  if (item == null) throw new Error("Item does not exist.");
+
+  if (quantity > item.stock)
+    throw new Error("Item does not have enough stock.");
+
+  await updateItem(id, item.stock, quantity);
+
+  const items = new Map();
+  items.set(id, quantity);
+
+  await TransactionModel.create({
+    id: mongoose.Types.ObjectId().toString(),
+    date: new Date(),
+    buyer_account_id: accountId,
+    items,
+    shipping: {
+      name: shipping.name,
+      street_1: shipping.street1,
+      street_2: shipping.street2,
+      city: shipping.city,
+      state: shipping.state,
+      postal_code: shipping.postalCode,
+      phone: shipping.phone,
+      pay_with: shipping.payWith
+    }
+  });
+}
+
+async function transactionFromCart({ accountId, shipping }) {
+  const cart = await CartModel.findOne(
+    { account_id: accountId },
+    { _id: 0, items: 1 }
+  );
+  if (cart.items == null) throw new Error("Cart does not exist.");
+
+  if (cart.items.size === 0) throw new Error("Cart does not have items.");
+
+  const results = await ItemModel.find({
+    id: { $in: Array.from(cart.items, ([id, quantity]) => id) }
+  });
+
+  if (cart.items.size !== results.length)
+    throw new Error("Not found all items from cart.");
+
+  for (const result of results) {
+    if (cart.items.get(result.id) > result.stock)
+      throw new Error("Item does not have enough stock.");
+  }
+
+  for (const result of results)
+    await updateItem(result.id, result.stock, cart.items.get(result.id));
+
+  await TransactionModel.create({
+    id: mongoose.Types.ObjectId().toString(),
+    date: new Date(),
+    buyer_account_id: accountId,
+    items: cart.items,
+    shipping: {
+      name: shipping.name,
+      street_1: shipping.street1,
+      street_2: shipping.street2,
+      city: shipping.city,
+      state: shipping.state,
+      postal_code: shipping.postalCode,
+      phone: shipping.phone,
+      pay_with: shipping.payWith
+    }
+  });
+
+  const { n } = await CartModel.updateOne(
+    { account_id: accountId },
+    { items: {} }
+  );
+  if (n === 0) throw new Error("Cart does not exist.");
+}
+
+async function updateItem(id, stock, quantity) {
+  stock = stock - quantity;
+  const updateQuery = { stock };
+  if (stock === 0) updateQuery.expiration_date = new Date();
+
+  const { n } = await ItemModel.updateOne({ id }, updateQuery);
+  if (n === 0) throw new Error(`Item[${id}] does not exist.`);
+}

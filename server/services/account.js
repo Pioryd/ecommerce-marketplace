@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
-const { validLoginData } = require("../util/validate");
+const validate = require("../util/validate");
 const Token = require("../util/token");
 const Password = require("../util/password");
 
@@ -9,7 +9,7 @@ const CartModel = require("../models/cart");
 
 exports.create = async ({ email, password }) => {
   try {
-    validLoginData({ email, password });
+    validate.signIn({ email, password });
 
     const id = email;
 
@@ -33,7 +33,7 @@ exports.create = async ({ email, password }) => {
 
 exports.remove = async ({ accountId, password }) => {
   try {
-    validLoginData({ email: accountId, password });
+    validate.signIn({ email: accountId, password });
 
     const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
@@ -76,8 +76,8 @@ exports.get = async ({ accountId }) => {
 
 exports.changePassword = async ({ accountId, oldPassword, newPassword }) => {
   try {
-    validLoginData({ password: oldPassword });
-    validLoginData({ password: newPassword });
+    validate.signIn({ password: oldPassword });
+    validate.signIn({ password: newPassword });
 
     const { salt, hash } = await Password.encrypt(newPassword);
 
@@ -94,7 +94,7 @@ exports.changePassword = async ({ accountId, oldPassword, newPassword }) => {
 
 exports.recover = async ({ email }) => {
   try {
-    validLoginData({ email });
+    validate.signIn({ email });
 
     const recoverPassword = mongoose.mongo.ObjectId().toHexString();
     const { n } = await AccountModel.updateOne(
@@ -128,7 +128,7 @@ exports.recover = async ({ email }) => {
 
 exports.signIn = async ({ email, password }) => {
   try {
-    validLoginData({ email, password });
+    validate.signIn({ email, password });
 
     const id = email;
 

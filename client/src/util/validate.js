@@ -1,6 +1,6 @@
 import validator from "validator";
 
-function signInData(dataToValid) {
+function signIn(dataToValid) {
   const { email, password } = dataToValid;
 
   if ("email" in dataToValid)
@@ -27,16 +27,18 @@ function signInData(dataToValid) {
   }
 }
 
-function transaction({
-  name,
-  street1,
-  street2,
-  city,
-  state,
-  postalCode,
-  phone,
-  payWith
-}) {
+function shipping(shipping) {
+  const {
+    name,
+    street1,
+    street2,
+    city,
+    state,
+    postalCode,
+    phone,
+    payWith
+  } = shipping;
+
   if (name.length === 0) {
     throw new Error("Name is empty.");
   }
@@ -55,9 +57,10 @@ function transaction({
   if (!validator.isMobilePhone(phone, "any")) {
     throw new Error("Phone number is wrong.");
   }
-  if (!["cashOnDelivery", "PayPal"].includes(payWith)) {
+  if (!["cashOnDelivery"].includes(payWith)) {
     throw new Error("You must select pay method.");
   }
 }
 
-export { signInData, transaction };
+const validate = { signIn, shipping };
+export default validate;

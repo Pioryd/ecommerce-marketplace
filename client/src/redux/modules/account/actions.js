@@ -1,9 +1,9 @@
-import { signInData } from "../../../util/validate";
+import validate from "../../../util/validate";
 import handleRespons from "../../handleRespons";
 
 export const signIn = ({ email, password }) => async (dispatch, getState) => {
   try {
-    signInData({ email, password });
+    validate.signIn({ email, password });
 
     const receivedData = await handleRespons(
       dispatch,
@@ -24,7 +24,7 @@ export const signIn = ({ email, password }) => async (dispatch, getState) => {
 
 export const create = ({ email, password }) => async (dispatch, getState) => {
   try {
-    signInData({ email, password });
+    validate.signIn({ email, password });
 
     const receivedData = await handleRespons(
       dispatch,
@@ -45,7 +45,7 @@ export const create = ({ email, password }) => async (dispatch, getState) => {
 
 export const recover = ({ email }) => async (dispatch, getState) => {
   try {
-    signInData({ email });
+    validate.signIn({ email });
 
     await handleRespons(
       dispatch,
@@ -65,7 +65,7 @@ export const remove = ({ password }) => async (dispatch, getState) => {
   try {
     await checkSignedIn(getState, dispatch);
 
-    signInData({ password });
+    validate.signIn({ password });
 
     await handleRespons(
       dispatch,
@@ -91,9 +91,9 @@ export const update = (data) => async (dispatch, getState) => {
   try {
     await checkSignedIn(getState, dispatch);
 
-    if ("password" in data) signInData({ password: data.password });
-    if ("oldPassword" in data) signInData({ password: data.oldPassword });
-    if ("newPassword" in data) signInData({ password: data.newPassword });
+    if ("password" in data) validate.signIn({ password: data.password });
+    if ("oldPassword" in data) validate.signIn({ password: data.oldPassword });
+    if ("newPassword" in data) validate.signIn({ password: data.newPassword });
 
     const receivedData = await handleRespons(
       dispatch,

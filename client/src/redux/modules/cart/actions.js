@@ -76,31 +76,16 @@ export const get = () => async (dispatch, getState) => {
   }
 };
 
-export const transaction = ({
-  name,
-  street1,
-  street2,
-  city,
-  state,
-  postalCode,
-  phone,
-  payWith
-}) => async (dispatch, getState) => {
+export const transaction = ({ shipping, id, quantity }) => async (
+  dispatch,
+  getState
+) => {
   try {
     await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/cart/transaction", {
         method: "POST",
-        body: JSON.stringify({
-          name,
-          street1,
-          street2,
-          city,
-          state,
-          postalCode,
-          phone,
-          payWith
-        }),
+        body: JSON.stringify({ shipping, id, quantity }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")

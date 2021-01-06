@@ -1,0 +1,163 @@
+@import "../../sass/variables";
+
+* {
+  box-sizing: border-box;
+}
+
+.h2n_disabled {
+  color: grey;
+}
+
+.h2n_button {
+  position: relative;
+  background-color: white;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  color: black;
+}
+
+.h2n_content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: auto;
+  border: 2px solid black;
+  margin: 10px 3px 20px 3px;
+
+  .h2n_row-top {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+    min-height: 25px;
+    max-height: 150px;
+    border-bottom: 1px solid black;
+
+    .h2n_col-left {
+      flex: calc(100% - 200px);
+    }
+
+    .h2n_col-right {
+      flex: 200px;
+    }
+  }
+
+  .h2n_row-center {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin-top: 25px;
+    justify-content: center;
+    align-items: center;
+
+    .h2n_col-left {
+      flex: 50%;
+      display: inline-block;
+      flex-direction: row;
+    }
+
+    .h2n_col-right {
+      flex: 50%;
+    }
+  }
+
+  .h2n_row-bottom {
+    position: relative;
+    margin-top: 25px;
+  }
+
+  .h2n_title {
+    @extend .h2n_button;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    margin-left: 10px;
+    color: black;
+  }
+
+  .h2n_toggle-watch {
+    @extend .h2n_button;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    margin: 10px 10px 20px 0px;
+    width: auto;
+    height: 25px;
+    color: black;
+    font-style: italic;
+    float: right;
+  }
+
+  .h2n_price {
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 20px;
+  }
+
+  .h2n_quantity {
+    height: 25px;
+    font-size: 16px;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 20px;
+  }
+
+  .h2n_buy,
+  .h2n_add-to-cart {
+    @extend .h2n_button;
+    height: 50px;
+    width: 150px;
+    line-height: 25px;
+    text-align: center;
+    border: 1px solid black;
+    margin: 10px 0px 0px 0px;
+  }
+
+  .h2n_description {
+    position: relative;
+    margin: 10px;
+    color: black;
+    white-space: pre-wrap;
+  }
+
+  .h2n_label {
+    font-size: 14px;
+    font-weight: normal;
+    text-decoration: none;
+    margin: 0px 0px 5px 10px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .h2n_content {
+    margin: 10px 150px 20px 150px;
+
+    .h2n_row-top {
+      flex-direction: row;
+    }
+
+    .h2n_row-center {
+      flex-direction: column;
+      .h2n_col-left,
+      .h2n_col-right {
+        display: block;
+      }
+    }
+
+    .h2n_quantity {
+      margin-bottom: 30px;
+    }
+
+    .h2n_buy,
+    .h2n_add-to-cart {
+      margin: 0px 10px 0px 0px;
+    }
+  }
+}

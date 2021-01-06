@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
-import { transaction } from "../util/validate";
-
 import { useHistory } from "react-router-dom";
+
+import validate from "../util/validate";
 
 import {
   Group,
@@ -16,16 +15,26 @@ import {
 } from "../components/Layout/Controls";
 import Title from "../components/Title";
 
+import useQuery from "../hooks/useQuery";
+
 import * as CartActions from "../redux/modules/cart/actions";
 import * as CartSelector from "../redux/modules/cart/selectors";
 
 export default function Checkout(props) {
+  const query = useQuery();
   const history = useHistory();
+
   const dispatch = useDispatch();
 
   const mounted = useRef(false);
 
-  const items = useSelector(CartSelector.getItems());
+  const cartItems = useSelector(CartSelector.getItems());
+
+  const [itemNotInCart, setItemNotInCart] = useState({
+    id: query.get("id"),
+    quantity: query.get("quantity"),
+    price: query.get("price")
+  });
 
   const [name, setName] = useState("");
   const [street1, setStreet1] = useState("");
@@ -43,11 +52,16 @@ export default function Checkout(props) {
   const [processing, setProcessing] = useState(false);
 
   const updateSubtotal = () => {
-    if (items == null) return;
-
     let totalPrice = 0;
-    for (const item of Object.values(items))
-      totalPrice += item.price * item.quantity;
+
+    if (itemNotInCart.quantity != null && itemNotInCart.price != null) {
+      totalPrice = itemNotInCart.price * itemNotInCart.quantity;
+    } else if (cartItems != null) {
+      for (const item of Object.values(cartItems))
+        totalPrice += item.price * item.quantity;
+    } else {
+      return;
+    }
 
     setSubtotal(
       new Intl.NumberFormat("en", {
@@ -60,8 +74,8 @@ export default function Checkout(props) {
   const confirm = async () => {
     setMessage(null);
 
-    try {
-      transaction({
+    const transactionData = {
+      shipping: {
         name,
         street1,
         street2,
@@ -70,7 +84,11 @@ export default function Checkout(props) {
         postalCode,
         phone,
         payWith
-      });
+      }
+    };
+
+    try {
+      validate.shipping(transactionData.shipping);
     } catch (err) {
       setMessage(err.message);
       return;
@@ -78,18 +96,12 @@ export default function Checkout(props) {
 
     setProcessing(true);
 
-    const error = await dispatch(
-      CartActions.transaction({
-        name,
-        street1,
-        street2,
-        city,
-        state,
-        postalCode,
-        phone,
-        payWith
-      })
-    );
+    if (itemNotInCart.id != null) {
+      transactionData.id = itemNotInCart.id;
+      transactionData.quantity = itemNotInCart.quantity;
+    }
+
+    const error = await dispatch(CartActions.transaction(transactionData));
 
     dispatch(CartActions.get({}));
 
@@ -101,7 +113,17 @@ export default function Checkout(props) {
     setProcessing(false);
   };
 
-  useEffect(() => updateSubtotal(), [items]);
+  useEffect(() => updateSubtotal(), [cartItems, itemNotInCart]);
+
+  useEffect(
+    () =>
+      setItemNotInCart({
+        id: query.get("id"),
+        quantity: query.get("quantity"),
+        price: query.get("price")
+      }),
+    [query]
+  );
 
   useEffect(() => {
     mounted.current = true;

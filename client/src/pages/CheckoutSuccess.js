@@ -12,7 +12,7 @@ export default function CheckoutSuccess(props) {
           The transaction was successful
         </Info>
         <ButtonLink to="/">Go back to shopping</ButtonLink>
-      </Group>{" "}
+      </Group>
     </Fragment>
   );
 }
