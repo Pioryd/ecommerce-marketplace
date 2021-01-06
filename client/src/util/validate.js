@@ -62,5 +62,13 @@ function shipping(shipping) {
   }
 }
 
-const validate = { signIn, shipping };
+function item({ title, price, stock, description }) {
+  if (title.length < 3) throw new Error("Title is too short.");
+  if (title.length > 70) throw new Error("Title is too long.");
+  if (price < 1) throw new Error("Price is too low. Minimal is 1.");
+  if (stock < 1) throw new Error("Stock is too low. Minimal is 1.");
+  if (description.length < 3) throw new Error("Description is too short.");
+}
+
+const validate = { signIn, shipping, item };
 export default validate;

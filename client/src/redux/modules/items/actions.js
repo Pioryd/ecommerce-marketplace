@@ -1,17 +1,18 @@
+import validate from "../../../util/validate";
 import handleRespons from "../../handleRespons";
 
-export const list = ({ title, price, description }) => async (
+export const list = ({ title, price, stock, description }) => async (
   dispatch,
   getState
 ) => {
   try {
-    validItemData({ title, price, description });
+    validate.item({ title, price, stock, description });
 
     await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items", {
         method: "POST",
-        body: JSON.stringify({ title, price, description }),
+        body: JSON.stringify({ title, price, stock, description }),
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -194,9 +195,3 @@ export const clear = () => async (dispatch, getState) => {
     return err.toString();
   }
 };
-
-function validItemData({ title, price, description }) {
-  if (title.length < 3) throw new Error("Title is too short.");
-  if (price <= 0) throw new Error("Price is too low.");
-  if (description.length < 3) throw new Error("Description is too short.");
-}

@@ -20,7 +20,8 @@ function AccountListItem() {
   const [message, setMessage] = useState(null);
 
   const [title, setTitle] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(1);
+  const [stock, setStock] = useState(1);
   const [description, setDescription] = useState("");
 
   const list = async () => {
@@ -31,16 +32,22 @@ function AccountListItem() {
       ItemsActions.list({
         title,
         price,
+        stock,
         description
       })
     );
 
-    // setTitle("");
-    // setPrice("");
-    // setDescription("");
+    if (error == null) {
+      setTitle("");
+      setPrice(0);
+      setStock(0);
+      setDescription("");
 
-    const successMessage = "Item listed.";
-    setMessage(error || successMessage);
+      setMessage(error || "Success: Item listed.");
+    } else {
+      setMessage("Failed: " + error);
+    }
+
     setProcessing(false);
   };
 
@@ -49,11 +56,11 @@ function AccountListItem() {
       <Title name="Account - list item" />
       <Group>
         <Label>Title</Label>
-        {message != null && <Info>{message}</Info>}
         <Input
           type="text"
           id="title"
           name="title"
+          maxlength="70"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
@@ -65,6 +72,16 @@ function AccountListItem() {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
+        <Label>Stock</Label>
+        <Input
+          type="number"
+          id="stock"
+          name="stock"
+          value={stock}
+          onChange={(e) => {
+            if (Number.isInteger(e.target.value)) setStock(e.target.value);
+          }}
+        />
         <Label>Description</Label>
         <Textarea
           type="text"
@@ -74,6 +91,7 @@ function AccountListItem() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+        {message != null && <Info>{message}</Info>}
         {processing === true ? (
           <ButtonProcessing />
         ) : (

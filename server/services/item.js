@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
 
+const validate = require("../util/validate");
+
 const AccountModel = require("../models/account");
 const ItemModel = require("../models/item");
 
-exports.list = async ({ accountId, title, price, description }) => {
+exports.list = async ({ accountId, title, price, stock, description }) => {
   try {
-    validItemData({ title, price, description });
+    validate.item({ title, price, stock, description });
 
     const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
@@ -15,21 +17,15 @@ exports.list = async ({ accountId, title, price, description }) => {
       expirationDate.getDate() + process.env.DAYS_TO_EXPIRE
     );
 
-    const item = await ItemModel.create({
+    await ItemModel.create({
       id: mongoose.Types.ObjectId().toString(),
+      account_id: accountId,
       title,
       price,
+      stock,
       description,
       expiration_date: expirationDate
     });
-
-    account.items_selling.push(item.id);
-
-    const { n } = await AccountModel.updateOne(
-      { id: accountId },
-      { items_selling: account.items_selling }
-    );
-    if (n === 0) throw new Error("Account does not exist.");
   } catch (err) {
     console.log(err);
     throw new Error("Unable to list item.");
@@ -196,10 +192,4 @@ async function get({ findConditions, page, sort, searchText }) {
     currentPage,
     sort
   };
-}
-
-function validItemData({ title, price, description }) {
-  if (title.length < 3) throw new Error("Title is too short.");
-  if (price <= 0) throw new Error("Price is too low.");
-  if (description.length < 3) throw new Error("Description is too short.");
 }
