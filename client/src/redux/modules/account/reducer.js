@@ -1,15 +1,17 @@
 import produce from "immer";
+import * as ACCOUNT from "./const";
 
 const reducer = (state = getInitialState(), { type, payload }) =>
   produce(state, (draft) => {
     switch (type) {
-      case "ACCOUNT_OVERRIDE":
-        draft = payload;
+      case ACCOUNT.UPDATE_TOKEN:
+        draft.token = payload;
         break;
-      case "ACCOUNT_UPDATE":
-        draft = Object.assign({}, draft, payload);
+      case ACCOUNT.UPDATE_DETAILS:
+        draft.id = payload.id;
+        draft.itemsWatching = payload.itemsWatching;
         break;
-      case "ACCOUNT_RESET":
+      case ACCOUNT.RESET:
         draft = getInitialState();
         break;
       default:

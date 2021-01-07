@@ -60,7 +60,7 @@ function AccountListItem() {
           type="text"
           id="title"
           name="title"
-          maxlength="70"
+          maxLength="70"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />

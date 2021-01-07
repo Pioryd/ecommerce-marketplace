@@ -1,11 +1,13 @@
 import validate from "../../../util/validate";
 import handleRespons from "../../handleRespons";
 
+import * as ACCOUNT from "./const";
+
 export const signIn = ({ email, password }) => async (dispatch, getState) => {
   try {
     validate.signIn({ email, password });
 
-    const receivedData = await handleRespons(
+    const { token } = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/accounts/sign-in", {
         method: "POST",
@@ -14,8 +16,8 @@ export const signIn = ({ email, password }) => async (dispatch, getState) => {
       })
     );
 
-    localStorage.setItem("token", receivedData.token);
-    await dispatch({ type: "ACCOUNT_OVERRIDE", payload: receivedData });
+    localStorage.setItem("token", token);
+    await dispatch({ type: ACCOUNT.UPDATE_TOKEN, payload: token });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -26,7 +28,7 @@ export const create = ({ email, password }) => async (dispatch, getState) => {
   try {
     validate.signIn({ email, password });
 
-    const receivedData = await handleRespons(
+    const { token } = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/accounts", {
         method: "POST",
@@ -35,8 +37,8 @@ export const create = ({ email, password }) => async (dispatch, getState) => {
       })
     );
 
-    localStorage.setItem("token", receivedData.token);
-    await dispatch({ type: "ACCOUNT_OVERRIDE", payload: receivedData });
+    localStorage.setItem("token", token);
+    await dispatch({ type: ACCOUNT.UPDATE_TOKEN, payload: token });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -80,7 +82,7 @@ export const remove = ({ password }) => async (dispatch, getState) => {
     );
 
     localStorage.removeItem("token");
-    await dispatch({ type: "ACCOUNT_RESET" });
+    await dispatch({ type: ACCOUNT.RESET });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -95,7 +97,7 @@ export const update = (data) => async (dispatch, getState) => {
     if ("oldPassword" in data) validate.signIn({ password: data.oldPassword });
     if ("newPassword" in data) validate.signIn({ password: data.newPassword });
 
-    const receivedData = await handleRespons(
+    await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/accounts", {
         method: "PUT",
@@ -106,8 +108,6 @@ export const update = (data) => async (dispatch, getState) => {
         }
       })
     );
-
-    await dispatch({ type: "ACCOUNT_UPDATE", payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -128,7 +128,7 @@ export const get = () => async (dispatch, getState) => {
       })
     );
 
-    await dispatch({ type: "ACCOUNT_UPDATE", payload: receivedData });
+    await dispatch({ type: ACCOUNT.UPDATE_DETAILS, payload: receivedData });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -139,7 +139,7 @@ export const signOut = () => async (dispatch) => {
   try {
     localStorage.removeItem("token");
 
-    dispatch({ type: "ACCOUNT_RESET" });
+    dispatch({ type: ACCOUNT.RESET });
   } catch (err) {
     console.log(err);
   }
@@ -149,7 +149,7 @@ export const refreshToken = () => async (dispatch, getState) => {
   try {
     await checkSignedIn(getState, dispatch);
 
-    const receivedData = await handleRespons(
+    const { token } = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/accounts/refresh-token", {
         method: "POST",
@@ -159,9 +159,9 @@ export const refreshToken = () => async (dispatch, getState) => {
       })
     );
 
-    localStorage.setItem("token", receivedData.token);
+    localStorage.setItem("token", token);
 
-    await dispatch({ type: "ACCOUNT_UPDATE", payload: receivedData });
+    await dispatch({ type: ACCOUNT.UPDATE_TOKEN, payload: token });
   } catch (err) {
     console.error(err);
     return err.toString();

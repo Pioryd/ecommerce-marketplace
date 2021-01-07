@@ -1,5 +1,6 @@
 import validate from "../../../util/validate";
 import handleRespons from "../../handleRespons";
+import * as ITEMS from "./const";
 
 export const list = ({ title, price, stock, description }) => async (
   dispatch,
@@ -67,144 +68,59 @@ export const close = ({ id }) => async (dispatch, getState) => {
   }
 };
 
-export const getSearch = ({ page, sort, searchText }) => async (
-  dispatch,
-  getState
-) => {
+export const getSearch = ({ page, sort, searchText }) => async (dispatch) => {
   try {
-    const receivedData = await handleRespons(
-      dispatch,
-      await fetch(process.env.REACT_APP_API_URL + "/items/search", {
-        method: "POST",
-        body: JSON.stringify({ page, sort, searchText }),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token")
-        }
-      })
-    );
-
-    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
+    await get("search", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
     return err.toString();
   }
 };
 
-export const getSelling = ({ page, sort, searchText }) => async (
-  dispatch,
-  getState
-) => {
+export const getSelling = ({ page, sort, searchText }) => async (dispatch) => {
   try {
-    const receivedData = await handleRespons(
-      dispatch,
-      await fetch(process.env.REACT_APP_API_URL + "/items/selling", {
-        method: "POST",
-        body: JSON.stringify({ page, sort, searchText }),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token")
-        }
-      })
-    );
-
-    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
+    try {
+      await get("selling", { page, sort, searchText }, dispatch);
+    } catch (err) {
+      console.error(err);
+      return err.toString();
+    }
   } catch (err) {
     console.error(err);
     return err.toString();
   }
 };
 
-export const getSold = ({ page, sort, searchText }) => async (
-  dispatch,
-  getState
-) => {
+export const getSold = ({ page, sort, searchText }) => async (dispatch) => {
   try {
-    const receivedData = await handleRespons(
-      dispatch,
-      await fetch(process.env.REACT_APP_API_URL + "/items/sold", {
-        method: "POST",
-        body: JSON.stringify({ page, sort, searchText }),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token")
-        }
-      })
-    );
-
-    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
+    await get("sold", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
     return err.toString();
   }
 };
 
-export const getUnsold = ({ page, sort, searchText }) => async (
-  dispatch,
-  getState
-) => {
+export const getUnsold = ({ page, sort, searchText }) => async (dispatch) => {
   try {
-    const receivedData = await handleRespons(
-      dispatch,
-      await fetch(process.env.REACT_APP_API_URL + "/items/unsold", {
-        method: "POST",
-        body: JSON.stringify({ page, sort, searchText }),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token")
-        }
-      })
-    );
-
-    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
+    await get("unsold", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
     return err.toString();
   }
 };
 
-export const getBought = ({ page, sort, searchText }) => async (
-  dispatch,
-  getState
-) => {
+export const getBought = ({ page, sort, searchText }) => async (dispatch) => {
   try {
-    const receivedData = await handleRespons(
-      dispatch,
-      await fetch(process.env.REACT_APP_API_URL + "/items/bought", {
-        method: "POST",
-        body: JSON.stringify({ page, sort, searchText }),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token")
-        }
-      })
-    );
-
-    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
+    await get("bought", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
     return err.toString();
   }
 };
 
-export const getWatching = ({ page, sort, searchText }) => async (
-  dispatch,
-  getState
-) => {
+export const getWatching = ({ page, sort, searchText }) => async (dispatch) => {
   try {
-    const receivedData = await handleRespons(
-      dispatch,
-      await fetch(process.env.REACT_APP_API_URL + "/items/watching", {
-        method: "POST",
-        body: JSON.stringify({ page, sort, searchText }),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token")
-        }
-      })
-    );
-
-    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
+    await get("watching", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -213,9 +129,29 @@ export const getWatching = ({ page, sort, searchText }) => async (
 
 export const clear = () => async (dispatch, getState) => {
   try {
-    await dispatch({ type: "ITEMS_RESET" });
+    await dispatch({ type: ITEMS.RESET });
   } catch (err) {
     console.error(err);
     return err.toString();
   }
 };
+
+async function get(type, { page, sort, searchText }, dispatch) {
+  const { items, totalItems, currentPage, totalPages } = await handleRespons(
+    dispatch,
+    await fetch(process.env.REACT_APP_API_URL + "/items/" + type, {
+      method: "POST",
+      body: JSON.stringify({ page, sort, searchText }),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    })
+  );
+
+  await dispatch({ type: ITEMS.UPDATE_ITEMS, payload: items });
+  await dispatch({
+    type: ITEMS.UPDATE_PAGINATION,
+    payload: { totalItems, currentPage, totalPages }
+  });
+}

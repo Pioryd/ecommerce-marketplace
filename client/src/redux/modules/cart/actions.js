@@ -1,4 +1,5 @@
 import handleRespons from "../../handleRespons";
+import * as CART from "./const";
 
 export const add = ({ id, quantity }) => async (dispatch, getState) => {
   try {
@@ -59,7 +60,7 @@ export const remove = ({ id }) => async (dispatch, getState) => {
 
 export const get = () => async (dispatch, getState) => {
   try {
-    const receivedData = await handleRespons(
+    const { items } = await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/cart", {
         method: "GET",
@@ -69,7 +70,7 @@ export const get = () => async (dispatch, getState) => {
       })
     );
 
-    await dispatch({ type: "CART_OVERRIDE", payload: receivedData });
+    await dispatch({ type: CART.UPDATE_ITEMS, payload: items });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -100,7 +101,7 @@ export const transaction = ({ shipping, id, quantity }) => async (
 
 export const clear = () => async (dispatch, getState) => {
   try {
-    await dispatch({ type: "CART_RESET" });
+    await dispatch({ type: CART.RESET });
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -112,7 +113,10 @@ export const setCheckoutFailure = (checkoutFailure) => async (
   getState
 ) => {
   try {
-    await dispatch({ type: "CART_UPDATE", payload: { checkoutFailure } });
+    await dispatch({
+      type: CART.UPDATE_CHECKOUT_FAILURE,
+      payload: checkoutFailure
+    });
   } catch (err) {
     console.error(err);
     return err.toString();
