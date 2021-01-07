@@ -31,6 +31,11 @@ router.post(
   authMiddleware.isAuth,
   use(itemController.getUnsold)
 );
+router.post(
+  "/items/bought",
+  authMiddleware.isAuth,
+  use(itemController.getBought)
+);
 
 router.delete("/items", authMiddleware.isAuth, use(itemController.close));
 

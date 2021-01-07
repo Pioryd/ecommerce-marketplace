@@ -51,9 +51,10 @@ export default function Quantity({
             <input
               className="c8a_number"
               value={inputValue}
-              onChange={(e) =>
-                setInputValue(Math.min(Math.max(e.target.value, 1), stock))
-              }
+              onChange={(e) => {
+                const value = Math.min(Math.max(e.target.value, 1), stock);
+                if (Number.isInteger(value)) setInputValue(value);
+              }}
               min={1}
               max={stock}
               disabled={updating}

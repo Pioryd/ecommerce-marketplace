@@ -163,6 +163,30 @@ export const getUnsold = ({ page, sort, searchText }) => async (
   }
 };
 
+export const getBought = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const receivedData = await handleRespons(
+      dispatch,
+      await fetch(process.env.REACT_APP_API_URL + "/items/bought", {
+        method: "POST",
+        body: JSON.stringify({ page, sort, searchText }),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+    );
+
+    await dispatch({ type: "ITEMS_OVERRIDE", payload: receivedData });
+  } catch (err) {
+    console.error(err);
+    return err.toString();
+  }
+};
+
 export const getWatching = ({ page, sort, searchText }) => async (
   dispatch,
   getState

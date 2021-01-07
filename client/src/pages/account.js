@@ -14,12 +14,14 @@ function Account() {
   return (
     <Fragment>
       <Title name="Account" />
-
       <ButtonLink to="/account/watchlist">Watchlist</ButtonLink>
+      <ButtonLink to="/account/bought">Bought</ButtonLink>
+      <ButtonLink to="/account/list-item" style={{ fontWeight: "bold" }}>
+        List item
+      </ButtonLink>
       <ButtonLink to="/account/selling">Selling</ButtonLink>
       <ButtonLink to="/account/sold">Sold</ButtonLink>
       <ButtonLink to="/account/unsold">Unsold</ButtonLink>
-      <ButtonLink to="/account/list-item">List item</ButtonLink>
       <ButtonLink to="/account/settings">Settings</ButtonLink>
       <ButtonLink to="/" onClick={signOut}>
         Sign out

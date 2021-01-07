@@ -64,3 +64,13 @@ exports.getUnsold = async (req, res) => {
   } = await ItemService.getUnsold(req.body);
   res.json({ items, totalItems, currentPage, totalPages });
 };
+
+exports.getBought = async (req, res) => {
+  const {
+    items,
+    totalItems,
+    currentPage,
+    totalPages
+  } = await ItemService.getBought(req.body);
+  res.json({ items, totalItems, currentPage, totalPages });
+};

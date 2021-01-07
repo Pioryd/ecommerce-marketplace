@@ -7,6 +7,7 @@ import { Navigation, Content, Footer } from "./Layout";
 import NotFound from "../components/NotFound";
 
 import Account from "../pages/Account";
+import AccountBought from "../pages/AccountBought";
 import AccountSelling from "../pages/AccountSelling";
 import AccountSold from "../pages/AccountSold";
 import AccountUnsold from "../pages/AccountUnsold";
@@ -64,6 +65,11 @@ function App() {
             exact
             path="/account/watchlist"
             component={AccountWatchlist}
+          />
+          <AccountRoute
+            exact
+            path="/account/bought"
+            component={AccountBought}
           />
           <AccountRoute
             exact

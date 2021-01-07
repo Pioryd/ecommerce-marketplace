@@ -18,7 +18,7 @@ const AccountSchema = new mongoose.Schema(
     recover_password: {
       type: String
     },
-    items_watching: [{ type: mongoose.Schema.Types.ObjectId }]
+    items_watching: [{ type: String }]
   },
   { timestamps: true }
 );

@@ -66,6 +66,13 @@
       font-style: italic;
     }
 
+    .q7l_additional-info {
+      @extend .q7l_button;
+      bottom: 25px;
+      right: calc(50% - 10px);
+      font-style: italic;
+    }
+
     .q7l_close {
       @extend .q7l_button;
       bottom: 15px;

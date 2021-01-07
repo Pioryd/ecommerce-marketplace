@@ -47,7 +47,8 @@ export default function ItemsView({ searchType, options = {} }) {
       watching: "getWatching",
       selling: "getSelling",
       sold: "getSold",
-      unsold: "getUnsold"
+      unsold: "getUnsold",
+      bought: "getBought"
     };
 
     dispatch(ItemsActions.clear());
@@ -103,7 +104,7 @@ export default function ItemsView({ searchType, options = {} }) {
           data={item}
           toggleWatch={toggleWatch}
           close={close}
-          allowClose={options.allowClose}
+          options={options}
         />
       ))}
 

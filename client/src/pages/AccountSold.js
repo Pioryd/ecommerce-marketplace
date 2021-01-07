@@ -7,7 +7,7 @@ function AccountSold() {
   return (
     <Fragment>
       <Title name="Account - sold" />
-      <ItemsView searchType="sold" />
+      <ItemsView searchType="sold" options={{ showSold: true }} />
     </Fragment>
   );
 }

@@ -3,12 +3,12 @@ import React, { Fragment } from "react";
 import ItemsView from "../components/ItemsView";
 import Title from "../components/Title";
 
-function AccountUnsold() {
+function AccountBought() {
   return (
     <Fragment>
-      <Title name="Account - unsold" />
-      <ItemsView searchType="unsold" options={{ showStock: true }} />
+      <Title name="Account - bought" />
+      <ItemsView searchType="bought" options={{ showQuantity: true }} />
     </Fragment>
   );
 }
-export default AccountUnsold;
+export default AccountBought;

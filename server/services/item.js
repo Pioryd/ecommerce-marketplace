@@ -4,6 +4,7 @@ const validate = require("../util/validate");
 
 const AccountModel = require("../models/account");
 const ItemModel = require("../models/item");
+const TransactionModel = require("../models/transaction");
 
 exports.list = async ({ accountId, title, price, stock, description }) => {
   try {
@@ -90,11 +91,24 @@ exports.getWatching = async ({ accountId, page, sort, searchText }) => {
     const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
 
-    const findConditions = {
-      id: { $in: account.items_watching }
-    };
+    const findConditions = { id: { $in: account.items_watching } };
+    const watchingData = await get({ findConditions, page, sort, searchText });
 
-    return await get({ findConditions, page, sort, searchText });
+    if (
+      account.items_watching.length !== Object.keys(watchingData.items).length
+    ) {
+      account.items_watching = account.items_watching.filter((id) =>
+        Object.keys(watchingData.items).includes(id)
+      );
+
+      const { n } = await AccountModel.updateOne(
+        { id: accountId },
+        { items_watching: account.items_watching }
+      );
+      if (n === 0) throw new Error("Account does not exist.");
+    }
+
+    return watchingData;
   } catch (err) {
     console.log(err);
     throw new Error("Unable to set watch on item.");
@@ -118,8 +132,56 @@ exports.getSelling = async ({ accountId, page, sort, searchText }) => {
 
 exports.getSold = async ({ accountId, page, sort, searchText }) => {
   try {
+    const accountItemsIdsList = [];
+    {
+      const results = await ItemModel.find(
+        { account_id: accountId },
+        { _id: -1, id: 1 }
+      );
+      for (const result of results) accountItemsIdsList.push(result.id);
+    }
+
+    const soldItemsIds = {};
+    {
+      const query = { _id: 0 };
+      const conditions = { $or: [] };
+
+      if (accountItemsIdsList.length > 0) {
+        conditions["$or"].length = accountItemsIdsList.length;
+
+        for (let i = 0; i < conditions["$or"].length; i++) {
+          conditions["$or"][i] = {};
+          conditions["$or"][i][`items.${accountItemsIdsList[i]}`] = {
+            $exists: true
+          };
+
+          query[`items.${accountItemsIdsList[i]}`] = 1;
+        }
+
+        const results = await TransactionModel.find(conditions, query);
+        for (const result of results)
+          for (const [id, quantity] of result.items.entries())
+            if (accountItemsIdsList.includes(id)) soldItemsIds[id] = quantity;
+      }
+    }
+
+    const findConditions = { id: { $in: Object.keys(soldItemsIds) } };
+    const soldData = await get({ findConditions, page, sort, searchText });
+
+    for (const item of Object.values(soldData.items))
+      item.sold = soldItemsIds[item.id];
+
+    return soldData;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Unable to set watch on item.");
+  }
+};
+
+exports.getUnsold = async ({ accountId, page, sort, searchText }) => {
+  try {
     const findConditions = {
-      $or: [{ expiration_date: { $lte: new Date() } }, { stock: { $lte: 0 } }],
+      expiration_date: { $lte: new Date() },
       account_id: accountId
     };
 
@@ -130,14 +192,27 @@ exports.getSold = async ({ accountId, page, sort, searchText }) => {
   }
 };
 
-exports.getUnsold = async ({ accountId, page, sort, searchText }) => {
+exports.getBought = async ({ accountId, page, sort, searchText }) => {
   try {
-    const findConditions = {
-      $or: [{ expiration_date: { $lte: new Date() } }, { stock: { $lte: 0 } }],
-      account_id: accountId
-    };
+    const items = {};
+    const results = await TransactionModel.find(
+      { buyer_account_id: accountId },
+      { _id: -1, items: 1 }
+    );
 
-    return await get({ findConditions, page, sort, searchText });
+    for (const result of results) {
+      for (const [id, quantities] of result.items.entries())
+        if (items[id] == null) items[id] = quantities;
+        else items[id] += quantities;
+    }
+
+    const findConditions = { id: { $in: Object.keys(items) } };
+    const boughtData = await get({ findConditions, page, sort, searchText });
+
+    for (const item of Object.values(boughtData.items))
+      item.quantity = items[item.id];
+
+    return boughtData;
   } catch (err) {
     console.log(err);
     throw new Error("Unable to set watch on item.");
