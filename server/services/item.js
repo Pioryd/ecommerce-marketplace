@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const validate = require("../util/validate");
+const Validate = require("../util/validate");
 
 const AccountModel = require("../models/account");
 const ItemModel = require("../models/item");
@@ -8,7 +8,7 @@ const TransactionModel = require("../models/transaction");
 
 exports.list = async ({ accountId, title, price, stock, description }) => {
   try {
-    validate.item({ title, price, stock, description });
+    Validate.item({ title, price, stock, description });
 
     const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
@@ -48,9 +48,11 @@ exports.close = async ({ accountId, id }) => {
 
 exports.setWatch = async ({ accountId, id, watching }) => {
   try {
-    const account = await AccountModel.findOne({ id: accountId });
-    if (account == null) throw new Error("Account does not exist.");
-    let { items_watching } = account;
+    let { items_watching } = await AccountModel.findOne(
+      { id: accountId },
+      { _id: 0, items_watching: 1 }
+    );
+    if (items_watching == null) throw new Error("Account does not exist.");
 
     const item = await ItemModel.findOne({ id }, { _id: 1 });
     if (item == null) throw new Error("Item does not exist.");
@@ -74,12 +76,8 @@ exports.setWatch = async ({ accountId, id, watching }) => {
 
 exports.getSearch = async ({ page, sort, searchText }) => {
   try {
-    const findConditions = {
-      expiration_date: { $gt: new Date() },
-      stock: { $gt: 0 }
-    };
-
-    return await get({ findConditions, page, sort, searchText });
+    const query = { expiration_date: { $gt: new Date() }, stock: { $gt: 0 } };
+    return await get({ query, page, sort, searchText });
   } catch (err) {
     console.log(err);
     throw new Error("Unable to set watch on item.");
@@ -91,24 +89,8 @@ exports.getWatching = async ({ accountId, page, sort, searchText }) => {
     const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
 
-    const findConditions = { id: { $in: account.items_watching } };
-    const watchingData = await get({ findConditions, page, sort, searchText });
-
-    if (
-      account.items_watching.length !== Object.keys(watchingData.items).length
-    ) {
-      account.items_watching = account.items_watching.filter((id) =>
-        Object.keys(watchingData.items).includes(id)
-      );
-
-      const { n } = await AccountModel.updateOne(
-        { id: accountId },
-        { items_watching: account.items_watching }
-      );
-      if (n === 0) throw new Error("Account does not exist.");
-    }
-
-    return watchingData;
+    const query = { id: { $in: account.items_watching } };
+    return await get({ query, page, sort, searchText });
   } catch (err) {
     console.log(err);
     throw new Error("Unable to set watch on item.");
@@ -117,13 +99,13 @@ exports.getWatching = async ({ accountId, page, sort, searchText }) => {
 
 exports.getSelling = async ({ accountId, page, sort, searchText }) => {
   try {
-    const findConditions = {
+    const query = {
       expiration_date: { $gt: new Date() },
       stock: { $gt: 0 },
       account_id: accountId
     };
 
-    return await get({ findConditions, page, sort, searchText });
+    return await get({ query, page, sort, searchText });
   } catch (err) {
     console.log(err);
     throw new Error("Unable to set watch on item.");
@@ -141,35 +123,36 @@ exports.getSold = async ({ accountId, page, sort, searchText }) => {
       for (const result of results) accountItemsIdsList.push(result.id);
     }
 
-    const soldItemsIds = {};
+    const soldItemsQuantities = {};
     {
-      const query = { _id: 0 };
-      const conditions = { $or: [] };
+      const query = { $or: [] };
+      const projection = { _id: 0 };
 
       if (accountItemsIdsList.length > 0) {
-        conditions["$or"].length = accountItemsIdsList.length;
+        query["$or"].length = accountItemsIdsList.length;
 
-        for (let i = 0; i < conditions["$or"].length; i++) {
-          conditions["$or"][i] = {};
-          conditions["$or"][i][`items.${accountItemsIdsList[i]}`] = {
+        for (let i = 0; i < query["$or"].length; i++) {
+          query["$or"][i] = {};
+          query["$or"][i][`items.${accountItemsIdsList[i]}`] = {
             $exists: true
           };
 
-          query[`items.${accountItemsIdsList[i]}`] = 1;
+          projection[`items.${accountItemsIdsList[i]}`] = 1;
         }
 
-        const results = await TransactionModel.find(conditions, query);
+        const results = await TransactionModel.find(query, projection);
         for (const result of results)
           for (const [id, quantity] of result.items.entries())
-            if (accountItemsIdsList.includes(id)) soldItemsIds[id] = quantity;
+            if (accountItemsIdsList.includes(id))
+              soldItemsQuantities[id] = quantity;
       }
     }
 
-    const findConditions = { id: { $in: Object.keys(soldItemsIds) } };
-    const soldData = await get({ findConditions, page, sort, searchText });
+    const query = { id: { $in: Object.keys(soldItemsQuantities) } };
+    const soldData = await get({ query, page, sort, searchText });
 
     for (const item of Object.values(soldData.items))
-      item.sold = soldItemsIds[item.id];
+      item.sold = soldItemsQuantities[item.id];
 
     return soldData;
   } catch (err) {
@@ -180,12 +163,12 @@ exports.getSold = async ({ accountId, page, sort, searchText }) => {
 
 exports.getUnsold = async ({ accountId, page, sort, searchText }) => {
   try {
-    const findConditions = {
+    const query = {
       expiration_date: { $lte: new Date() },
       account_id: accountId
     };
 
-    return await get({ findConditions, page, sort, searchText });
+    return await get({ query, page, sort, searchText });
   } catch (err) {
     console.log(err);
     throw new Error("Unable to set watch on item.");
@@ -194,20 +177,24 @@ exports.getUnsold = async ({ accountId, page, sort, searchText }) => {
 
 exports.getBought = async ({ accountId, page, sort, searchText }) => {
   try {
-    const items = {};
+    const boughtItemsQuantities = {};
     const results = await TransactionModel.find(
       { buyer_account_id: accountId },
       { _id: -1, items: 1 }
     );
 
     for (const result of results) {
-      for (const [id, quantities] of result.items.entries())
-        if (items[id] == null) items[id] = quantities;
-        else items[id] += quantities;
+      for (const [id, quantities] of result.items.entries()) {
+        if (boughtItemsQuantities[id] == null) {
+          boughtItemsQuantities[id] = quantities;
+        } else {
+          boughtItemsQuantities[id] += quantities;
+        }
+      }
     }
 
-    const findConditions = { id: { $in: Object.keys(items) } };
-    const boughtData = await get({ findConditions, page, sort, searchText });
+    const query = { id: { $in: Object.keys(items) } };
+    const boughtData = await get({ query, page, sort, searchText });
 
     for (const item of Object.values(boughtData.items))
       item.quantity = items[item.id];
@@ -219,13 +206,13 @@ exports.getBought = async ({ accountId, page, sort, searchText }) => {
   }
 };
 
-async function get({ findConditions, page, sort, searchText }) {
+async function get({ query, page, sort, searchText }) {
   page = Number(page) || 1;
 
   if (searchText != null && searchText != "")
-    findConditions["$search"] = { $search: searchText };
+    query["$search"] = { $search: searchText };
 
-  const totalItems = await ItemModel.countDocuments(findConditions).exec();
+  const totalItems = await ItemModel.countDocuments(query).exec();
 
   const totalPages = Math.max(
     1,
@@ -242,7 +229,7 @@ async function get({ findConditions, page, sort, searchText }) {
   };
   if (sortTypes[sort] == null) sort = "dateAsc";
 
-  const results = await ItemModel.find(findConditions)
+  const results = await ItemModel.find(query)
     .sort(sortTypes[sort])
     .limit(Number(process.env.ITEMS_PER_PAGE))
     .skip(Number(process.env.ITEMS_PER_PAGE * (currentPage - 1)))

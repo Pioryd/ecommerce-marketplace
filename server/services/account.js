@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
-const validate = require("../util/validate");
+
+const Validate = require("../util/validate");
 const Token = require("../util/token");
 const Password = require("../util/password");
 
@@ -9,7 +10,7 @@ const CartModel = require("../models/cart");
 
 exports.create = async ({ email, password }) => {
   try {
-    validate.signIn({ email, password });
+    Validate.signIn({ email, password });
 
     const id = email;
 
@@ -33,7 +34,7 @@ exports.create = async ({ email, password }) => {
 
 exports.remove = async ({ accountId, password }) => {
   try {
-    validate.signIn({ email: accountId, password });
+    Validate.signIn({ email: accountId, password });
 
     const account = await AccountModel.findOne({ id: accountId });
     if (account == null) throw new Error("Account does not exist.");
@@ -44,7 +45,7 @@ exports.remove = async ({ accountId, password }) => {
       (await CartModel.deleteOne({ account_id: accountId })).deletedCount ==
       null
     )
-      throw new Error("No cart is deleted.");
+      throw new Error("No cart is removed.");
 
     await ItemModel.updateMany(
       { account_id: accountId },
@@ -52,7 +53,7 @@ exports.remove = async ({ accountId, password }) => {
     );
 
     if ((await AccountModel.deleteOne({ id: accountId })).deletedCount == null)
-      throw new Error("No account is deleted.");
+      throw new Error("No account is removed.");
   } catch (err) {
     console.error(err);
     throw new Error("Unable to remove account.");
@@ -76,8 +77,8 @@ exports.get = async ({ accountId }) => {
 
 exports.changePassword = async ({ accountId, oldPassword, newPassword }) => {
   try {
-    validate.signIn({ password: oldPassword });
-    validate.signIn({ password: newPassword });
+    Validate.signIn({ password: oldPassword });
+    Validate.signIn({ password: newPassword });
 
     const { salt, hash } = await Password.encrypt(newPassword);
 
@@ -94,7 +95,7 @@ exports.changePassword = async ({ accountId, oldPassword, newPassword }) => {
 
 exports.recover = async ({ email }) => {
   try {
-    validate.signIn({ email });
+    Validate.signIn({ email });
 
     const recoverPassword = mongoose.mongo.ObjectId().toHexString();
     const { n } = await AccountModel.updateOne(
@@ -128,7 +129,7 @@ exports.recover = async ({ email }) => {
 
 exports.signIn = async ({ email, password }) => {
   try {
-    validate.signIn({ email, password });
+    Validate.signIn({ email, password });
 
     const id = email;
 

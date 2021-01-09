@@ -1,4 +1,4 @@
-import validate from "../../../util/validate";
+import Validate from "../../../util/validate";
 import handleRespons from "../../handleRespons";
 import * as ITEMS from "./const";
 
@@ -7,7 +7,7 @@ export const list = ({ title, price, stock, description }) => async (
   getState
 ) => {
   try {
-    validate.item({ title, price, stock, description });
+    Validate.item({ title, price, stock, description });
 
     await handleRespons(
       dispatch,

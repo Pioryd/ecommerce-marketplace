@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./index.scss";
 
+// options: showQuantity, showSold, showStock, allowClose
 export default function Item({ data, toggleWatch, close, options = {} }) {
   const [additionalInfo, setAdditionalInfo] = useState(null);
   const [closeStatus, setCloseStatus] = useState(0);

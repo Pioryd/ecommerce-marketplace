@@ -1,9 +1,9 @@
 const validator = require("validator");
 
-function signIn(dataToValid) {
-  const { email, password } = dataToValid;
+function signIn(data) {
+  const { email, password } = data;
 
-  if ("email" in dataToValid)
+  if ("email" in data)
     if (email == null || !validator.isEmail(email))
       throw new Error("Wrong email.");
 
@@ -14,7 +14,7 @@ function signIn(dataToValid) {
     minNumbers: 0,
     minSymbols: 0
   };
-  if ("password" in dataToValid) {
+  if ("password" in data) {
     if (
       password == null ||
       !validator.isStrongPassword(password, passwordOptions)

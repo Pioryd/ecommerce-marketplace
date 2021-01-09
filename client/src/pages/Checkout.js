@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import validate from "../util/validate";
+import Validate from "../util/validate";
 
 import {
   Group,
@@ -88,7 +88,7 @@ export default function Checkout(props) {
     };
 
     try {
-      validate.shipping(transactionData.shipping);
+      Validate.shipping(transactionData.shipping);
     } catch (err) {
       setMessage(err.message);
       return;

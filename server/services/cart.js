@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const validate = require("../util/validate");
+const Validate = require("../util/validate");
 
 const CartModel = require("../models/cart");
 const ItemModel = require("../models/item");
@@ -63,7 +63,7 @@ exports.get = async ({ accountId }) => {
     );
     if (cart == null) throw new Error("Cart does not exist.");
 
-    const results = await ItemModel.find(
+    const resultsOfClosedItems = await ItemModel.find(
       {
         id: { $in: Array.from(cart.items, ([id, quantity]) => id) },
         $or: [{ expiration_date: { $lte: new Date() } }, { stock: { $lte: 0 } }]
@@ -71,8 +71,8 @@ exports.get = async ({ accountId }) => {
       { id: 1, _id: 0 }
     );
 
-    if (results.length > 0) {
-      for (const result of results) cart.items.delete(result.id);
+    if (resultsOfClosedItems.length > 0) {
+      for (const result of resultsOfClosedItems) cart.items.delete(result.id);
 
       const { n } = await CartModel.updateOne(
         { account_id: accountId },
@@ -101,44 +101,9 @@ exports.get = async ({ accountId }) => {
   }
 };
 
-async function update({ accountId, id, quantity }) {
-  const cart = await CartModel.findOne(
-    { account_id: accountId },
-    { _id: 0, items: 1 }
-  );
-  if (cart == null) throw new Error("Cart does not exist.");
-
-  const item = await ItemModel.findOne({ id }, { _id: 0, stock: 1 });
-  if (item == null) throw new Error("Item does not exist.");
-
-  if (quantity <= 0) throw new Error(`Quantity must be greater then 0.`);
-  if (item.stock < quantity) {
-    throw new Error(
-      `Quantity[${quantity}] is bigger then item[${id}] stock[${item.stock}]`
-    );
-  }
-
-  if (cart.items.size > process.env.CART_MAX_ITEMS)
-    throw new Error("Cart is full.");
-
-  if (cart.items.size > process.env.CART_MAX_UNIQUE_ITEMS)
-    throw new Error(
-      `Cart can't take more unique items then ${process.env.CART_MAX_ITEMS}`
-    );
-
-  cart.items.set(id, quantity);
-
-  {
-    const { n } = await CartModel.updateOne(
-      { account_id: accountId },
-      { items: cart.items }
-    );
-    if (n === 0) throw new Error("Cart does not exist.");
-  }
-}
 exports.transaction = async ({ accountId, shipping, id, quantity }) => {
   try {
-    validate.shipping(shipping);
+    Validate.shipping(shipping);
 
     if (id != null && quantity != null) {
       await transactionNotFromCart({ accountId, shipping, id, quantity });
@@ -230,10 +195,45 @@ async function transactionFromCart({ accountId, shipping }) {
 }
 
 async function updateItem(id, stock, quantity) {
-  stock = stock - quantity;
-  const updateQuery = { stock };
-  if (stock === 0) updateQuery.expiration_date = new Date();
+  const updatedStock = stock - quantity;
+  if (updatedStock === 0) projection.expiration_date = new Date();
 
-  const { n } = await ItemModel.updateOne({ id }, updateQuery);
+  const { n } = await ItemModel.updateOne({ id }, { stock: updatedStock });
   if (n === 0) throw new Error(`Item[${id}] does not exist.`);
+}
+
+async function update({ accountId, id, quantity }) {
+  const cart = await CartModel.findOne(
+    { account_id: accountId },
+    { _id: 0, items: 1 }
+  );
+  if (cart == null) throw new Error("Cart does not exist.");
+
+  const item = await ItemModel.findOne({ id }, { _id: 0, stock: 1 });
+  if (item == null) throw new Error("Item does not exist.");
+
+  if (quantity <= 0) throw new Error(`Quantity must be greater then 0.`);
+  if (item.stock < quantity) {
+    throw new Error(
+      `Quantity[${quantity}] is bigger then item[${id}] stock[${item.stock}]`
+    );
+  }
+
+  if (cart.items.size > process.env.CART_MAX_ITEMS)
+    throw new Error("Cart is full.");
+
+  if (cart.items.size > process.env.CART_MAX_UNIQUE_ITEMS)
+    throw new Error(
+      `Cart can't take more unique items then ${process.env.CART_MAX_ITEMS}`
+    );
+
+  cart.items.set(id, quantity);
+
+  {
+    const { n } = await CartModel.updateOne(
+      { account_id: accountId },
+      { items: cart.items }
+    );
+    if (n === 0) throw new Error("Cart does not exist.");
+  }
 }

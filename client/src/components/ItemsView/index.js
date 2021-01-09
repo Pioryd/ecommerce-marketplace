@@ -25,6 +25,17 @@ const SORT_OPTIONS = {
   dateDesc: "Date: new to old"
 };
 
+const ACTIONS = {
+  general: "getSearch",
+  watching: "getWatching",
+  selling: "getSelling",
+  sold: "getSold",
+  unsold: "getUnsold",
+  bought: "getBought"
+};
+
+// searchType -> ACTIONS key
+// options: showQuantity, showSold, showStock, allowClose
 export default function ItemsView({ searchType, options = {} }) {
   const { sort, page, searchText, update } = usePaginationAndSortSearch();
 
@@ -41,18 +52,8 @@ export default function ItemsView({ searchType, options = {} }) {
   const [itemsList, setItemsList] = useState([]);
 
   const reload = () => {
-    const actions = {
-      general: "getSearch",
-
-      watching: "getWatching",
-      selling: "getSelling",
-      sold: "getSold",
-      unsold: "getUnsold",
-      bought: "getBought"
-    };
-
     dispatch(ItemsActions.clear());
-    dispatch(ItemsActions[actions[searchType]]({ page, sort, searchText }));
+    dispatch(ItemsActions[ACTIONS[searchType]]({ page, sort, searchText }));
     dispatch(AccountActions.get());
   };
 
