@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import "./index.scss";
 
+import * as AccountSelector from "../../../redux/modules/account/selectors";
+
 import * as CartActions from "../../../redux/modules/cart/actions";
 import * as CartSelector from "../../../redux/modules/cart/selectors";
 
@@ -14,16 +16,19 @@ function Navigation() {
 
   const [itemsCount, setItemsCount] = useState(0);
 
+  const token = useSelector(AccountSelector.getToken());
   const items = useSelector(CartSelector.getItems());
 
   const updateItemsCount = () => {
-    if (items == null) return;
     let count = 0;
-    for (const item of Object.values(items)) count += item.quantity;
+
+    if (items != null && token != null)
+      for (const item of Object.values(items)) count += item.quantity;
+
     setItemsCount(count);
   };
 
-  useEffect(() => updateItemsCount(), [items]);
+  useEffect(() => updateItemsCount(), [items, token]);
   useEffect(() => dispatch(CartActions.get()), []);
 
   return (

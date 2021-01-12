@@ -34,18 +34,21 @@ export default function Quantity({
       <div className="c8a_content">
         <label className="c8a_qty-label">Qty:</label>
         {updatedQuantity < 10 ? (
-          <select
-            className="c8a_number"
-            value={updatedQuantity}
-            onChange={(e) => setUpdatedQuantity(e.target.value)}
-            disabled={updating}
-          >
-            {selectKeys.map((key) => (
-              <option key={key} value={key}>
-                {key === 10 ? "10+" : key}
-              </option>
-            ))}
-          </select>
+          <Fragment>
+            <select
+              className="c8a_number"
+              value={updatedQuantity}
+              onChange={(e) => setUpdatedQuantity(e.target.value)}
+              disabled={updating}
+            >
+              {selectKeys.map((key) => (
+                <option key={key} value={key}>
+                  {key === 10 ? "10+" : key}
+                </option>
+              ))}
+            </select>{" "}
+            <label className="c8a_stock-label">/ {stock}</label>
+          </Fragment>
         ) : (
           <Fragment>
             <input

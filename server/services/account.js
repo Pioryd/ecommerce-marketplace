@@ -7,6 +7,7 @@ const Password = require("../util/password");
 
 const AccountModel = require("../models/account");
 const CartModel = require("../models/cart");
+const ItemModel = require("../models/item");
 
 exports.create = async ({ email, password }) => {
   try {

@@ -8,12 +8,12 @@ const authMiddleware = ({ dispatch, getState }) => (next) => (action) => {
     if (token == null) return;
     if (getState().account.token == null) return;
 
-    const token_seconds = jwt_decode(token).exp;
+    const { exp, iat } = jwt_decode(token);
     const now_seconds = Math.floor(Date.now() / 1000);
-    const diff = token_seconds - now_seconds;
 
     const leftSecondsToLogout = 300;
-    const leftSecondsToRefresh = token_seconds / 2;
+    const leftSecondsToRefresh = (exp - iat) / 2;
+    const diff = exp - now_seconds;
 
     if (diff <= leftSecondsToLogout) {
       dispatch(AccountActions.signOut());

@@ -25,7 +25,7 @@ export default function usePaginationAndSortSearch(props) {
 
   useEffect(() => {
     setPage(query.get("page") || 1);
-    setSort(query.get("sort") || "dateAsc");
+    setSort(query.get("sort") || "dateDesc");
   }, [query]);
 
   return { sort, page, searchText, update };

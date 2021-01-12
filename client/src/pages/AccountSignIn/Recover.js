@@ -46,9 +46,10 @@ export default function Recover() {
     return () => (mounted.current = false);
   });
 
+  if (process.env.REACT_APP_ACCOUNT_RECOVER_ENABLED === "false") return null;
+
   return (
     <Group id="account-recovery">
-      {message != null && <Info>{message}</Info>}
       <Legend>Account recovery</Legend>
       <Label>Email</Label>
       <Input
@@ -62,6 +63,7 @@ export default function Recover() {
         The new password will be sent to your email(login) and will be activated
         after first use during the sign in.
       </Label>
+      {message != null && <Info>{message}</Info>}
       {processing === true ? (
         <ButtonProcessing />
       ) : (

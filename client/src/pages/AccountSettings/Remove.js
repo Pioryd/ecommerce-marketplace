@@ -47,7 +47,6 @@ function Remove() {
   return (
     <Group>
       <Legend>Remove account</Legend>
-      {message != null && <Info>{message}</Info>}
       <Label>Password</Label>
       <Input
         type="password"
@@ -56,6 +55,7 @@ function Remove() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      {message != null && <Info>{message}</Info>}
       {processing === true ? (
         <ButtonProcessing />
       ) : (

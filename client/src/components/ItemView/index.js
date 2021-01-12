@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+import { Group, Label } from "../../components/Layout/Controls";
 
 import NotFound from "../NotFound";
 import Quantity from "../CartView/Quantity";
@@ -17,6 +19,10 @@ export default function Item({ id }) {
 
   const dispatch = useDispatch();
 
+  const mounted = useRef(false);
+
+  const [processing, setProcessing] = useState(false);
+
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
@@ -27,10 +33,21 @@ export default function Item({ id }) {
     history.push(`/checkout?id=${id}&price=${item.price}&quantity=${quantity}`);
   };
 
-  const addToCart = () => {
-    dispatch(CartActions.add({ id, quantity }));
-    dispatch(CartActions.get());
+  const addToCart = async () => {
     history.push("/cart");
+
+    await dispatch(CartActions.add({ id, quantity }));
+    await dispatch(CartActions.get());
+  };
+
+  const reloadItem = async () => {
+    setProcessing(true);
+
+    await dispatch(ItemsActions.getSearch({ ids: [id] }));
+
+    if (mounted.current !== true) return;
+
+    setProcessing(false);
   };
 
   useEffect(() => {
@@ -48,11 +65,23 @@ export default function Item({ id }) {
   }, [item]);
 
   useEffect(() => {
-    dispatch(ItemsActions.getSearch({ ids: [id] }));
+    reloadItem();
     return () => dispatch(ItemsActions.clear());
   }, []);
 
+  useEffect(() => {
+    mounted.current = true;
+    return () => (mounted.current = false);
+  });
+
   if (item == null) return <NotFound />;
+
+  if (processing === true)
+    return (
+      <Group>
+        <Label style={{ textAlign: "center" }}>Loading...</Label>
+      </Group>
+    );
 
   return (
     <div className="h2n_content">

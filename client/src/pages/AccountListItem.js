@@ -79,7 +79,8 @@ function AccountListItem() {
           name="stock"
           value={stock}
           onChange={(e) => {
-            if (Number.isInteger(e.target.value)) setStock(e.target.value);
+            if (Number.isInteger(Number(e.target.value)))
+              setStock(e.target.value);
           }}
         />
         <Label>Description</Label>

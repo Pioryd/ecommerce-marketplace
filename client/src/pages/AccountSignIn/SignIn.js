@@ -56,7 +56,6 @@ export default function SignIn() {
   return (
     <Group>
       <Legend>Sign in</Legend>
-      {message != null && <Info>{message}</Info>}
       <Label>Email</Label>
       <Input
         type="email"
@@ -73,14 +72,17 @@ export default function SignIn() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      {message != null && <Info>{message}</Info>}
       {processing === true ? (
         <ButtonProcessing />
       ) : (
         <Button onClick={signIn}>sign in</Button>
       )}
-      <Label>
-        <a href="#account-recovery">Forgot password?</a>
-      </Label>
+      {process.env.REACT_APP_ACCOUNT_RECOVER_ENABLED !== "false" && (
+        <Label>
+          <a href="#account-recovery">Forgot password?</a>
+        </Label>
+      )}
     </Group>
   );
 }

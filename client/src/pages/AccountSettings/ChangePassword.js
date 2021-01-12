@@ -61,7 +61,6 @@ function ChangePassword() {
   return (
     <Group>
       <Legend>Change password</Legend>
-      {message != null && <Info>{message}</Info>}
       <Label>Current password</Label>
       <Input
         type="password"
@@ -86,6 +85,7 @@ function ChangePassword() {
         value={passwordNewRepeat}
         onChange={(e) => setPasswordNewRepeat(e.target.value)}
       />
+      {message != null && <Info>{message}</Info>}
       {processing === true ? (
         <ButtonProcessing />
       ) : (

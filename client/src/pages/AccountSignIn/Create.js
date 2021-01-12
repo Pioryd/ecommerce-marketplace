@@ -55,7 +55,6 @@ export default function Create() {
   return (
     <Group>
       <Legend>Create account</Legend>
-      {messageOfCreate != null && <Info>{messageOfCreate}</Info>}
       <Label>Email</Label>
       <Input
         type="email"
@@ -80,6 +79,7 @@ export default function Create() {
         value={passwordRepeatOfCreate}
         onChange={(e) => setPasswordRepeatOfCreate(e.target.value)}
       />
+      {messageOfCreate != null && <Info>{messageOfCreate}</Info>}
       {processingOfCreate === true ? (
         <ButtonProcessing />
       ) : (

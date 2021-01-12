@@ -195,10 +195,10 @@ async function transactionFromCart({ accountId, shipping }) {
 }
 
 async function updateItem(id, stock, quantity) {
-  const updatedStock = stock - quantity;
-  if (updatedStock === 0) projection.expiration_date = new Date();
+  const update = { stock: stock - quantity };
+  if (update.stock === 0) update.expiration_date = new Date();
 
-  const { n } = await ItemModel.updateOne({ id }, { stock: updatedStock });
+  const { n } = await ItemModel.updateOne({ id }, update);
   if (n === 0) throw new Error(`Item[${id}] does not exist.`);
 }
 

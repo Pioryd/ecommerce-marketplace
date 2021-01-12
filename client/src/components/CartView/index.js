@@ -103,7 +103,7 @@ export default function CartView() {
       ) : (
         Object.values(items).map((item) => (
           <Item
-            key={item.id + item.quantity}
+            key={item.id + Math.random()}
             data={item}
             updating={updating}
             onRemove={remove}

@@ -74,9 +74,14 @@ exports.setWatch = async ({ accountId, id, watching }) => {
   }
 };
 
-exports.getSearch = async ({ page, sort, searchText }) => {
+exports.getSearch = async ({ ids, page, sort, searchText }) => {
   try {
-    const query = { expiration_date: { $gt: new Date() }, stock: { $gt: 0 } };
+    const query = {
+      expiration_date: { $gt: new Date() },
+      stock: { $gt: 0 }
+    };
+    if (ids != null) query.id = { $in: ids };
+
     return await get({ query, page, sort, searchText });
   } catch (err) {
     console.log(err);
@@ -177,12 +182,12 @@ exports.getUnsold = async ({ accountId, page, sort, searchText }) => {
 
 exports.getBought = async ({ accountId, page, sort, searchText }) => {
   try {
-    const boughtItemsQuantities = {};
     const results = await TransactionModel.find(
       { buyer_account_id: accountId },
       { _id: -1, items: 1 }
     );
 
+    const boughtItemsQuantities = {};
     for (const result of results) {
       for (const [id, quantities] of result.items.entries()) {
         if (boughtItemsQuantities[id] == null) {
@@ -193,11 +198,11 @@ exports.getBought = async ({ accountId, page, sort, searchText }) => {
       }
     }
 
-    const query = { id: { $in: Object.keys(items) } };
+    const query = { id: { $in: Object.keys(boughtItemsQuantities) } };
     const boughtData = await get({ query, page, sort, searchText });
 
     for (const item of Object.values(boughtData.items))
-      item.quantity = items[item.id];
+      item.quantity = boughtItemsQuantities[item.id];
 
     return boughtData;
   } catch (err) {
@@ -227,7 +232,7 @@ async function get({ query, page, sort, searchText }) {
     dateAsc: { expiration_date: 1 },
     dateDesc: { expiration_date: -1 }
   };
-  if (sortTypes[sort] == null) sort = "dateAsc";
+  if (sortTypes[sort] == null) sort = "dateDesc";
 
   const results = await ItemModel.find(query)
     .sort(sortTypes[sort])

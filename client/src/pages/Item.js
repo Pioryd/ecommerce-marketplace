@@ -9,7 +9,7 @@ export default function Item() {
 
   return (
     <Fragment>
-      <Title name="Cart" />
+      <Title name="Item" />
       <ItemView id={id} />
     </Fragment>
   );

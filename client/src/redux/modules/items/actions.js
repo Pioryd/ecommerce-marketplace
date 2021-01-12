@@ -68,9 +68,11 @@ export const close = ({ id }) => async (dispatch, getState) => {
   }
 };
 
-export const getSearch = ({ page, sort, searchText }) => async (dispatch) => {
+export const getSearch = ({ ids, page, sort, searchText }) => async (
+  dispatch
+) => {
   try {
-    await get("search", { page, sort, searchText }, dispatch);
+    await get("search", { ids, page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
     return err.toString();
@@ -136,12 +138,12 @@ export const clear = () => async (dispatch, getState) => {
   }
 };
 
-async function get(type, { page, sort, searchText }, dispatch) {
+async function get(type, { ids, page, sort, searchText }, dispatch) {
   const { items, totalItems, currentPage, totalPages } = await handleRespons(
     dispatch,
     await fetch(process.env.REACT_APP_API_URL + "/items/" + type, {
       method: "POST",
-      body: JSON.stringify({ page, sort, searchText }),
+      body: JSON.stringify({ ids, page, sort, searchText }),
       headers: {
         "Content-type": "application/json",
         Authorization: "Bearer " + localStorage.getItem("token")
