@@ -1,0 +1,73 @@
+# Online Marketplace (e-commerce)
+
+## Live preview: [DEMO](https://igneous-etching-301316.ew.r.appspot.com/)
+
+Use this account or create your own
+
+- **Login**: user@example.com
+- **Password**: 123123
+
+## Build with
+
+- **Server**: Express + MongoDB(Mongoose), JWT
+- **Client**: React, Redux
+
+## Core features
+
+- Sell as users
+- Buy as users
+- Cart and checkout
+- Search and sort
+- Pagination
+- SignIn/SignUp/Restore
+- Account profile:
+  - informations about items: watching, bought, selling, sold, unsold
+  - settings
+    - change password
+    - remove account
+
+## Install and run
+
+Configure **.env** files for client and server, examples bellow.
+
+**Client**
+```powershell
+npm install
+npm start
+```
+
+**Server**
+```powershell
+npm install
+npm run dev
+```
+
+## Client - example .env
+
+```environment
+REACT_APP_API_URL=http://localhost:8080
+REACT_APP_ACCOUNT_RECOVER_ENABLED=true
+```
+
+## Server - example .env
+
+```environment
+PORT=8080
+APP_NAME=Ecommerce
+DB_URL=<MONGODB_URL>
+TOKEN_SECRET=<GENERATED_SECRET_TOKEN>
+TOKEN_EXPIRES_IN=86400s
+ITEMS_PER_PAGE=10
+DAYS_TO_EXPIRE=30
+CART_MAX_UNIQUE_ITEMS=100
+PASSWORD_SALT_BYTES=16
+PASSWORD_HASH_ITERATIONS=1000
+PASSWORD_HASH_BYTES=64
+PASSWORD_HASH_DIGEST=sha512
+EMAIL_SERVICE_NAME=<SERVICE_NAME>
+EMAIL_SERVICE_HOST=<SERVICE_HOST>
+EMAIL_SERVICE_SECURE=<SERVICE_SECURE>
+EMAIL_SERVICE_PORT=<PORT>
+EMAIL_USER_NAME=<EMAIL_NAME>
+EMAIL_USER_PASSWORD=<EMAIL_PASSWORD>
+```
