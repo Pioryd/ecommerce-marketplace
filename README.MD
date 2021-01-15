@@ -10,7 +10,7 @@ Use this account or create your own
 ## Build with
 
 - **Server**: Express + MongoDB(Mongoose), JWT
-- **Client**: React, Redux
+- **Client**: React, Redux, Jest
 
 ## Core features
 
@@ -26,6 +26,12 @@ Use this account or create your own
     - change password
     - remove account
 
+## Test
+
+**Client**
+```powershell
+npm test
+```
 ## Install and run
 
 Configure **.env** files for client and server, examples bellow.
