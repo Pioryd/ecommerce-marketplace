@@ -1,5 +1,6 @@
 import Validate from "../../../util/validate";
-import handleRespons from "../../handleRespons";
+import handleRespons from "../../util/handleRespons";
+import checkSignedIn from "../../util/checkSignedIn";
 
 import * as ACCOUNT from "./const";
 
@@ -167,8 +168,3 @@ export const refreshToken = () => async (dispatch, getState) => {
     return err.toString();
   }
 };
-
-async function checkSignedIn(getState, dispatch) {
-  if (getState().account.token == null)
-    throw new Error("Account is not signed in.");
-}

@@ -1,5 +1,8 @@
 import Validate from "../../../util/validate";
-import handleRespons from "../../handleRespons";
+
+import handleRespons from "../../util/handleRespons";
+import checkSignedIn from "../../util/checkSignedIn";
+
 import * as ITEMS from "./const";
 
 export const list = ({ title, price, stock, description }) => async (
@@ -7,6 +10,8 @@ export const list = ({ title, price, stock, description }) => async (
   getState
 ) => {
   try {
+    await checkSignedIn(getState, dispatch);
+
     Validate.item({ title, price, stock, description });
 
     await handleRespons(
@@ -28,6 +33,8 @@ export const list = ({ title, price, stock, description }) => async (
 
 export const toggleWatch = ({ id }) => async (dispatch, getState) => {
   try {
+    await checkSignedIn(getState, dispatch);
+
     if (getState().account.itemsWatching == null) return;
 
     const watching = !getState().account.itemsWatching.includes(id);
@@ -51,6 +58,8 @@ export const toggleWatch = ({ id }) => async (dispatch, getState) => {
 
 export const close = ({ id }) => async (dispatch, getState) => {
   try {
+    await checkSignedIn(getState, dispatch);
+
     await handleRespons(
       dispatch,
       await fetch(process.env.REACT_APP_API_URL + "/items", {
@@ -69,7 +78,8 @@ export const close = ({ id }) => async (dispatch, getState) => {
 };
 
 export const getSearch = ({ ids, page, sort, searchText }) => async (
-  dispatch
+  dispatch,
+  getState
 ) => {
   try {
     await get("search", { ids, page, sort, searchText }, dispatch);
@@ -79,22 +89,27 @@ export const getSearch = ({ ids, page, sort, searchText }) => async (
   }
 };
 
-export const getSelling = ({ page, sort, searchText }) => async (dispatch) => {
+export const getSelling = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
   try {
-    try {
-      await get("selling", { page, sort, searchText }, dispatch);
-    } catch (err) {
-      console.error(err);
-      return err.toString();
-    }
+    await checkSignedIn(getState, dispatch);
+
+    await get("selling", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
     return err.toString();
   }
 };
 
-export const getSold = ({ page, sort, searchText }) => async (dispatch) => {
+export const getSold = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
   try {
+    await checkSignedIn(getState, dispatch);
+
     await get("sold", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
@@ -102,8 +117,13 @@ export const getSold = ({ page, sort, searchText }) => async (dispatch) => {
   }
 };
 
-export const getUnsold = ({ page, sort, searchText }) => async (dispatch) => {
+export const getUnsold = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
   try {
+    await checkSignedIn(getState, dispatch);
+
     await get("unsold", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
@@ -111,8 +131,13 @@ export const getUnsold = ({ page, sort, searchText }) => async (dispatch) => {
   }
 };
 
-export const getBought = ({ page, sort, searchText }) => async (dispatch) => {
+export const getBought = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
   try {
+    await checkSignedIn(getState, dispatch);
+
     await get("bought", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);
@@ -120,8 +145,13 @@ export const getBought = ({ page, sort, searchText }) => async (dispatch) => {
   }
 };
 
-export const getWatching = ({ page, sort, searchText }) => async (dispatch) => {
+export const getWatching = ({ page, sort, searchText }) => async (
+  dispatch,
+  getState
+) => {
   try {
+    await checkSignedIn(getState, dispatch);
+
     await get("watching", { page, sort, searchText }, dispatch);
   } catch (err) {
     console.error(err);

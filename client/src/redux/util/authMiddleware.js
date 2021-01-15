@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import * as AccountActions from "./modules/account/actions";
+import * as AccountActions from "../modules/account/actions";
 
 const authMiddleware = ({ dispatch, getState }) => (next) => (action) => {
   try {

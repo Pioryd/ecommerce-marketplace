@@ -1,4 +1,4 @@
-import * as AccountActions from "./modules/account/actions";
+import * as AccountActions from "../modules/account/actions";
 
 export default async function handleRespons(dispatch, respons) {
   if (!respons.ok) {
