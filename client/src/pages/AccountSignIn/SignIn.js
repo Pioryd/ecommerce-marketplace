@@ -47,7 +47,7 @@ export default function SignIn() {
   useEffect(() => {
     mounted.current = true;
     return () => (mounted.current = false);
-  });
+  }, []);
 
   if (account.token != null) {
     return <Redirect to="/account" exact />;

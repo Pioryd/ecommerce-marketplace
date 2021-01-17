@@ -128,12 +128,12 @@ export default function Checkout(props) {
   useEffect(() => {
     mounted.current = true;
     return () => (mounted.current = false);
-  });
+  }, []);
 
   if (processing === true)
     return (
       <Group>
-        <Label style={{ textAlign: "center" }}>Processing...</Label>{" "}
+        <Label style={{ textAlign: "center" }}>Processing...</Label>
       </Group>
     );
 

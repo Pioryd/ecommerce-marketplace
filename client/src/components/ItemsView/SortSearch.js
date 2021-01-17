@@ -11,6 +11,7 @@ export default function Sort({ options, sort, update }) {
     <div className="z2h_main-content">
       <div className="z2h_search">
         <input
+          id="searchInput"
           className="z2h_input"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -27,7 +28,11 @@ export default function Sort({ options, sort, update }) {
       </div>
 
       <div className="z2h_sort">
-        <Select value={sort} onChange={(e) => update({ sort: e.target.value })}>
+        <Select
+          id="selectSort"
+          value={sort}
+          onChange={(e) => update({ sort: e.target.value })}
+        >
           <option value="">Select sort</option>
           {Object.keys(options).map((option) => (
             <option key={option} value={option}>

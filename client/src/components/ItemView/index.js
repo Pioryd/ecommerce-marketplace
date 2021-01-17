@@ -72,7 +72,7 @@ export default function Item({ id }) {
   useEffect(() => {
     mounted.current = true;
     return () => (mounted.current = false);
-  });
+  }, []);
 
   if (item == null) return <NotFound />;
 

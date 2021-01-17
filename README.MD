@@ -51,8 +51,10 @@ npm run dev
 ## Client - example .env
 
 ```environment
+REACT_APP_NAME=ecommerce
 REACT_APP_API_URL=http://localhost:8080
 REACT_APP_ACCOUNT_RECOVER_ENABLED=true
+REACT_APP_GITHUB_URL=https://github.com/Pioryd/ecommerce
 ```
 
 ## Server - example .env

@@ -78,7 +78,7 @@ export default function CartView() {
   useEffect(() => {
     mounted.current = true;
     return () => (mounted.current = false);
-  });
+  }, []);
 
   return (
     <div className="y4k_content" style={updating ? STYLE_DISABLED : {}}>

@@ -36,6 +36,7 @@ export default function Quantity({
         {updatedQuantity < 10 ? (
           <Fragment>
             <select
+              id="selectQuantity"
               className="c8a_number"
               value={updatedQuantity}
               onChange={(e) => setUpdatedQuantity(e.target.value)}
@@ -46,12 +47,13 @@ export default function Quantity({
                   {key === 10 ? "10+" : key}
                 </option>
               ))}
-            </select>{" "}
+            </select>
             <label className="c8a_stock-label">/ {stock}</label>
           </Fragment>
         ) : (
           <Fragment>
             <input
+              id="inputQuantity"
               className="c8a_number"
               value={inputValue}
               onChange={(e) => {
@@ -65,6 +67,7 @@ export default function Quantity({
             <label className="c8a_stock-label">/ {stock}</label>
             {inputValue != quantity && ( // !=
               <button
+                id="inputButtonQuantity"
                 className="c8a_button"
                 onClick={() => setUpdatedQuantity(inputValue)}
                 disabled={updating}

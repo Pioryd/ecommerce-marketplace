@@ -14,13 +14,21 @@ export default function Pagination({ update, currentPage, totalPages }) {
 
   return (
     <Group style={{ display: "flex" }}>
-      <Button onClick={() => update({ page: pagePrev })}>prev</Button>
-      <Button onClick={() => update({ page: MIN_PAGE })}>{MIN_PAGE}</Button>
+      <Button id="pagePrevButton" onClick={() => update({ page: pagePrev })}>
+        prev
+      </Button>
+      <Button id="pageMinButton" onClick={() => update({ page: MIN_PAGE })}>
+        {MIN_PAGE}
+      </Button>
       <ButtonDisabled style={{ fontWeight: "bold" }}>
         {currentPage}
       </ButtonDisabled>
-      <Button onClick={() => update({ page: totalPages })}>{totalPages}</Button>
-      <Button onClick={() => update({ page: pageNext })}>next</Button>
+      <Button id="pageMaxButton" onClick={() => update({ page: totalPages })}>
+        {totalPages}
+      </Button>
+      <Button id="pageNextButton" onClick={() => update({ page: pageNext })}>
+        next
+      </Button>
     </Group>
   );
 }

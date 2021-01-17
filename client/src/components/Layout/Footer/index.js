@@ -7,7 +7,7 @@ function Footer() {
     <Fragment>
       <div className="footer">
         <label>Open source project.</label>
-        <a href="https://github.com/Pioryd/ecommerce">Github</a>
+        <a href={process.env.REACT_APP_GITHUB_URL}>Github</a>
       </div>
     </Fragment>
   );

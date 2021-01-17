@@ -56,7 +56,7 @@ function ChangePassword() {
   useEffect(() => {
     mounted.current = true;
     return () => (mounted.current = false);
-  });
+  }, []);
 
   return (
     <Group>

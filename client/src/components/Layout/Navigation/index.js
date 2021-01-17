@@ -9,8 +9,6 @@ import * as AccountSelector from "../../../redux/modules/account/selectors";
 import * as CartActions from "../../../redux/modules/cart/actions";
 import * as CartSelector from "../../../redux/modules/cart/selectors";
 
-const LOGO = "e-commerce";
-
 function Navigation() {
   const dispatch = useDispatch();
 
@@ -34,7 +32,7 @@ function Navigation() {
   return (
     <div className="navbar">
       <Link className="logo" to="/">
-        {LOGO}
+        {process.env.REACT_APP_NAME}
       </Link>
       <div className="links-block">
         <Link to="/cart" className="link">

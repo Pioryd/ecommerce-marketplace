@@ -44,7 +44,7 @@ export default function Recover() {
   useEffect(() => {
     mounted.current = true;
     return () => (mounted.current = false);
-  });
+  }, []);
 
   if (process.env.REACT_APP_ACCOUNT_RECOVER_ENABLED === "false") return null;
 

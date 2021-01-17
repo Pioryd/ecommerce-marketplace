@@ -62,21 +62,29 @@ export default function Item({ data, toggleWatch, close, options = {} }) {
           {data.watching === true ? "Watching" : "Add to watchlist"}
         </button>
         {additionalInfo != null && (
-          <div className="q7l_additional-info">
+          <div id="additionalInfo" className="q7l_additional-info">
             {additionalInfo.name}: {additionalInfo.value}
           </div>
         )}
         {options.allowClose === true && closeStatus === 0 && (
-          <button className="q7l_close" onClick={onClose}>
+          <button id="closeButton" className="q7l_close" onClick={onClose}>
             close
           </button>
         )}
         {options.allowClose === true && closeStatus === 1 && (
           <Fragment>
-            <button className="q7l_close_confirm" onClick={onConfirm}>
+            <button
+              id="confirmButton"
+              className="q7l_close_confirm"
+              onClick={onConfirm}
+            >
               confirm
             </button>
-            <button className="q7l_close_cancel" onClick={onCancel}>
+            <button
+              id="cancelButton"
+              className="q7l_close_cancel"
+              onClick={onCancel}
+            >
               cancel
             </button>
           </Fragment>
