@@ -37,6 +37,6 @@ const ItemSchema = new mongoose.Schema(
 );
 ItemSchema.index(
   { title: "text", description: "text" },
-  { weights: { title: 2, description: 1 } }
+  { weights: { title: 2, description: 1 }, default_language: "none" }
 );
 module.exports = mongoose.model("Item", ItemSchema);

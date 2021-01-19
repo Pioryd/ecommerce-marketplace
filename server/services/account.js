@@ -81,6 +81,10 @@ exports.changePassword = async ({ accountId, oldPassword, newPassword }) => {
     Validate.signIn({ password: oldPassword });
     Validate.signIn({ password: newPassword });
 
+    let account = await AccountModel.findOne({ id: accountId });
+    if (account == null) throw new Error("Account does not exist.");
+    await Password.verify(oldPassword, account.salt, account.hash);
+
     const { salt, hash } = await Password.encrypt(newPassword);
 
     const { n } = await AccountModel.updateOne(
@@ -100,10 +104,12 @@ exports.recover = async ({ email }) => {
 
     const recoverPassword = mongoose.mongo.ObjectId().toHexString();
     const { n } = await AccountModel.updateOne(
-      { id },
+      { id: email },
       { recover_password: recoverPassword }
     );
     if (n === 0) throw new Error("Account does not exist.");
+
+    if (process.env.EMAIL_SERVICE_HOST == null) return;
 
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_SERVICE_HOST,
@@ -137,25 +143,18 @@ exports.signIn = async ({ email, password }) => {
     let account = await AccountModel.findOne({ id });
     if (account == null) throw new Error("Account does not exist.");
 
+    const update = { recover_password: "" };
     if (password === account.recover_password) {
       const { salt, hash } = await Password.encrypt(account.recover_password);
 
-      const { n } = await AccountModel.updateOne(
-        { id },
-        { salt, hash, recover_password: "" }
-      );
-      if (n === 0) throw new Error("Account does not exist.");
+      update.salt = salt;
+      update.hash = hash;
     } else {
-      if (account.recover_password != "") {
-        const { n } = await AccountModel.updateOne(
-          { id },
-          { recover_password: "" }
-        );
-        if (n === 0) throw new Error("Account does not exist.");
-      }
-
       await Password.verify(password, account.salt, account.hash);
     }
+
+    const { n } = await AccountModel.updateOne({ id }, update);
+    if (n === 0) throw new Error("Account does not exist.");
 
     return {
       id,

@@ -11,7 +11,7 @@ export const add = ({ id, quantity }) => async (dispatch, getState) => {
 
     await handleRespons(
       dispatch,
-      await fetch(process.env.REACT_APP_API_URL + "/cart", {
+      await fetch(process.env.REACT_APP_API_URL + "/cart/add", {
         method: "POST",
         body: JSON.stringify({ id, quantity }),
         headers: {

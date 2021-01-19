@@ -215,7 +215,7 @@ async function get({ query, page, sort, searchText }) {
   page = Number(page) || 1;
 
   if (searchText != null && searchText != "")
-    query["$search"] = { $search: searchText };
+    query["$text"] = { $search: searchText };
 
   const totalItems = await ItemModel.countDocuments(query).exec();
 
