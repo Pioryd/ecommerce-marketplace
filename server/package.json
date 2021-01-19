@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --verbose --runInBand",
+    "test:watch": "jest --verbose --runInBand --watch",
     "start": "node index.js",
     "dev": "nodemon ./index.js"
   },
@@ -15,11 +16,14 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.7",
+    "mongoose": "^5.11.12",
     "nodemailer": "^6.4.17",
     "validator": "^13.5.2"
   },
   "devDependencies": {
-    "nodemon": "^1.0.0"
+    "nodemon": "^1.0.0",
+    "@types/jest": "^26.0.20",
+    "jest": "^26.6.3",
+    "supertest": "^6.1.1"
   }
 }

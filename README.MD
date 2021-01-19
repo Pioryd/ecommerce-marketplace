@@ -32,6 +32,12 @@ Use this account or create your own
 ```powershell
 npm test
 ```
+
+**Server**
+```powershell
+npm test
+```
+
 ## Install and run
 
 Configure **.env** files for client and server, examples bellow.
