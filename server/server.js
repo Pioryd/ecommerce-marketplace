@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -8,7 +9,7 @@ const routes = require("./routes");
 const app = express();
 
 async function createServer() {
-  dotenv.config();
+  dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV}`) });
 
   await mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
@@ -23,7 +24,9 @@ async function createServer() {
   app.use("/", routes);
 
   const server = app.listen(process.env.PORT, () =>
-    console.log(`Server is running on port: ${process.env.PORT}`)
+    console.log(
+      `[${process.env.NODE_ENV}]Server is running on port: ${process.env.PORT}`
+    )
   );
 
   return { app, server, mongoose };

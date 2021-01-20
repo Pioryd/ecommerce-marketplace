@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --runInBand",
-    "test:watch": "jest --verbose --runInBand --watch",
-    "start": "node index.js",
-    "dev": "nodemon ./index.js"
+    "test": "set NODE_ENV=test&&jest --verbose --runInBand",
+    "test:watch": "set NODE_ENV=test&&jest --verbose --runInBand --watch",
+    "start": "set NODE_ENV=production&&node index.js",
+    "dev": "set NODE_ENV=development&&nodemon ./index.js"
   },
   "author": "",
   "license": "ISC",
