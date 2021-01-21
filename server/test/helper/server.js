@@ -1,6 +1,8 @@
 const request = require("supertest");
 
-const { createServer } = require("../../server.js");
+const loadEnv = require("../../loaders/env");
+const loadMongoose = require("../../loaders/mongoose");
+const loadExpress = require("../../loaders/express");
 
 module.exports = {
   app: null,
@@ -8,7 +10,10 @@ module.exports = {
   server: null,
   request: null,
   async initialize() {
-    const { app, mongoose, server } = await createServer();
+    loadEnv();
+    const { mongoose } = await loadMongoose();
+    const { app, server } = await loadExpress();
+
     await mongoose.connection.db.dropDatabase();
 
     this.request = request(app);

@@ -1,3 +1,11 @@
-const { createServer } = require("./server");
+const loadEnv = require("./loaders/env");
+const loadMongoose = require("./loaders/mongoose");
+const loadExpress = require("./loaders/express");
 
-createServer();
+async function load() {
+  loadEnv();
+  await loadMongoose();
+  await loadExpress();
+}
+
+load();
