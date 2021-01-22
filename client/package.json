@@ -28,7 +28,8 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:cypress/recommended"
     ]
   },
   "browserslist": {
@@ -54,6 +55,8 @@
     "babel-jest": "^26.6.0",
     "jest": "26.6.0",
     "redux-mock-store": "^1.5.4",
-    "regenerator-runtime": "^0.13.7"
+    "regenerator-runtime": "^0.13.7",
+    "cypress": "^6.3.0",
+    "eslint-plugin-cypress": "^2.11.2"
   }
 }
