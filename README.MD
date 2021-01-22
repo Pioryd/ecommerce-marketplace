@@ -5,12 +5,14 @@
 Use this account or create your own
 
 - **Login**: user@example.com
+- **Login**: user1@example.com
 - **Password**: 123123
 
 ## Build with
 
 - **Server**: Express + MongoDB(Mongoose), JWT
 - **Client**: React, Redux, Jest
+- **Server**: Express + MongoDB(Mongoose), JWT, Jest
 
 ## Core features
 
@@ -56,6 +58,10 @@ npm run dev
 
 ## Client - example .env
 
+In client root directory create:
+
+- .env.development .env.production .env.test
+
 ```environment
 REACT_APP_NAME=ecommerce
 REACT_APP_API_URL=http://localhost:8080
@@ -65,11 +71,16 @@ REACT_APP_GITHUB_URL=https://github.com/Pioryd/ecommerce
 
 ## Server - example .env
 
+In server root directory create:
+
+- .env.development .env.production .env.test
+
 ```environment
 PORT=8080
 APP_NAME=Ecommerce
 DB_URL=<MONGODB_URL>
 TOKEN_SECRET=<GENERATED_SECRET_TOKEN>
+TOKEN_SECRET=6c21eceb5e4c753c17f3819d63d9473ece46ea9b0da13be04856eb755f6ebdcdfd8a2e8a79dcd9dcb0aa5705fb02e3eff9378cb74798031d5a528e16e6d781a6
 TOKEN_EXPIRES_IN=86400s
 ITEMS_PER_PAGE=10
 DAYS_TO_EXPIRE=30

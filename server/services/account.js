@@ -109,7 +109,8 @@ exports.recover = async ({ email }) => {
     );
     if (n === 0) throw new Error("Account does not exist.");
 
-    if (process.env.EMAIL_SERVICE_HOST == null) return;
+    if (process.env.EMAIL_SERVICE_HOST == null)
+      throw new Error("Account recover is disabled.");
 
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_SERVICE_HOST,

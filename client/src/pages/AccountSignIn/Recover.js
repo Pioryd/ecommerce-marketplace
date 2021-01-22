@@ -54,8 +54,8 @@ export default function Recover() {
       <Label>Email</Label>
       <Input
         type="email"
-        id="email"
-        name="email"
+        id="emailOfRecover"
+        name="emailOfRecover"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />

@@ -76,7 +76,9 @@ export default function SignIn() {
       {processing === true ? (
         <ButtonProcessing />
       ) : (
-        <Button onClick={signIn}>sign in</Button>
+        <Button id="signIn" onClick={signIn}>
+          sign in
+        </Button>
       )}
       {process.env.REACT_APP_ACCOUNT_RECOVER_ENABLED !== "false" && (
         <Label>
