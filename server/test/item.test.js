@@ -1,11 +1,11 @@
 const server = require("./helper/server");
 
-const AccountModel = require("../models/account");
-const ItemModel = require("../models/item");
+const AccountModel = require("../src/models/account");
+const ItemModel = require("../src/models/item");
 
-const AccountService = require("../services/account");
-const ItemService = require("../services/item");
-const CartService = require("../services/cart");
+const AccountService = require("../src/services/account");
+const ItemService = require("../src/services/item");
+const CartService = require("../src/services/cart");
 
 const SIGN_IN_1 = { email: "some_1@email.com", password: "123123" };
 const SIGN_IN_2 = { email: "some_2@email.com", password: "123123" };

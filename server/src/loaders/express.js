@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 
@@ -11,6 +12,13 @@ module.exports = async function () {
 
   app.use(cors());
   app.use("/", routes);
+
+  if (process.env.WEB_SERVER === "true") {
+    app.use(express.static(path.join(__dirname, "../..", "build")));
+    app.get("/*", (req, res) =>
+      res.sendFile(path.join(__dirname, "../..", "build", "index.html"))
+    );
+  }
 
   app.use((req, res, next) => res.status(404).send("API not found"));
   app.use((err, req, res, next) => {

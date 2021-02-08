@@ -1,6 +1,6 @@
 const server = require("./helper/server");
 
-const AccountModel = require("../models/account");
+const AccountModel = require("../src/models/account");
 
 const SIGN_IN = { email: "some@email.com", password: "123123" };
 const account = { token: "" };

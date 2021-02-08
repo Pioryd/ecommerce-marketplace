@@ -1,13 +1,13 @@
 const { LoremIpsum, getRandomIntInclusive } = require("./lorem-ipsum");
 
-const loadEnv = require("../../loaders/env");
-const loadMongoose = require("../../loaders/mongoose");
+const loadEnv = require("../../src/loaders/env");
+const loadMongoose = require("../../src/loaders/mongoose");
 
-const AccountService = require("../../services/account");
-const CartService = require("../../services/cart");
-const ItemService = require("../../services/item");
+const AccountService = require("../../src/services/account");
+const CartService = require("../../src/services/cart");
+const ItemService = require("../../src/services/item");
 
-const ItemModel = require("../../models/item");
+const ItemModel = require("../../src/models/item");
 
 const USER_1 = { email: "user1@example.com", password: "123123" };
 const USER_2 = { email: "user2@example.com", password: "123123" };

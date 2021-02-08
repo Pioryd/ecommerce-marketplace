@@ -1,8 +1,8 @@
 const request = require("supertest");
 
-const loadEnv = require("../../loaders/env");
-const loadMongoose = require("../../loaders/mongoose");
-const loadExpress = require("../../loaders/express");
+const loadEnv = require("../../src/loaders/env");
+const loadMongoose = require("../../src/loaders/mongoose");
+const loadExpress = require("../../src/loaders/express");
 
 module.exports = {
   app: null,

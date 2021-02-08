@@ -9,8 +9,8 @@ Use this account or create your own
 
 ## Build with
 
-- **Server**: Express + MongoDB(Mongoose), JWT, Jest
-- **Client**: React, Redux, Jest, Cypress
+- **Server**: Express, REST, MongoDB(Mongoose), JWT, Jest
+- **Client**: React, REST, Redux, Jest, Cypress, html/sass
 
 ## Core features
 
@@ -40,7 +40,8 @@ npm test
 
 ## Install and run
 
-Configure **.env** files for client and server, examples bellow.
+- Instal mongodb server
+- Configure **.env** files for client and server, examples bellow.
 
 **Client**
 ```powershell
@@ -76,16 +77,25 @@ In server root directory create:
 ```environment
 PORT=8080
 APP_NAME=Ecommerce
+WEB_SERVER=false
+
+# mongodb://localhost:27017/<DB_NAME>
+# mongodb+srv://<USER>:<PASSWORD>@<URL>/<DB_NAME>
 DB_URL=<MONGODB_URL>
+
 TOKEN_SECRET=6c21eceb5e4c753c17f3819d63d9473ece46ea9b0da13be04856eb755f6ebdcdfd8a2e8a79dcd9dcb0aa5705fb02e3eff9378cb74798031d5a528e16e6d781a6
 TOKEN_EXPIRES_IN=86400s
+
 ITEMS_PER_PAGE=10
 DAYS_TO_EXPIRE=30
 CART_MAX_UNIQUE_ITEMS=100
+
 PASSWORD_SALT_BYTES=16
 PASSWORD_HASH_ITERATIONS=1000
 PASSWORD_HASH_BYTES=64
 PASSWORD_HASH_DIGEST=sha512
+
+# Comment all EMAIL_* when you want to disable account recover
 EMAIL_SERVICE_NAME=<SERVICE_NAME>
 EMAIL_SERVICE_HOST=<SERVICE_HOST>
 EMAIL_SERVICE_SECURE=<SERVICE_SECURE>

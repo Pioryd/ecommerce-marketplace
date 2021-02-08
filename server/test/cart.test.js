@@ -1,10 +1,10 @@
 const server = require("./helper/server");
 
-const TransactionModel = require("../models/transaction");
+const TransactionModel = require("../src/models/transaction");
 
-const AccountService = require("../services/account");
-const ItemService = require("../services/item");
-const CartService = require("../services/cart");
+const AccountService = require("../src/services/account");
+const ItemService = require("../src/services/item");
+const CartService = require("../src/services/cart");
 
 const SHIPPING = {
   name: "some-name",
