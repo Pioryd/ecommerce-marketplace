@@ -7,7 +7,7 @@
     "test": "set NODE_ENV=test&&jest --verbose --runInBand",
     "test:watch": "set NODE_ENV=test&&jest --verbose --runInBand --watch",
     "start": "set NODE_ENV=production&&node src/index.js",
-    "dev": "set NODE_ENV=development&&nodemon ./src/index.js",
+    "dev": "set NODE_ENV=development&&nodemon --legacy-watch ./src/index.js",
     "generate-demo": "set NODE_ENV=development&&node scripts/generate-demo"
   },
   "author": "",

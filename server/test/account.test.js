@@ -80,6 +80,8 @@ describe("Account", () => {
 
   describe("POST /accounts/recover", () => {
     test("correct way", async () => {
+      if (process.env.EMAIL_SERVICE_NAME == null) return;
+
       await server.request
         .post("/accounts/recover")
         .send({ email: SIGN_IN.email })
@@ -117,6 +119,8 @@ describe("Account", () => {
     });
 
     test("use first wrong password and then old one", async () => {
+      if (process.env.EMAIL_SERVICE_NAME == null) return;
+
       await server.request
         .post("/accounts/recover")
         .send({ email: SIGN_IN.email })

@@ -26,6 +26,14 @@ Use this account or create your own
     - change password
     - remove account
 
+## Docker
+
+Replace **<prod|test|dev>** with destination build type.
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.<prod|test|dev>.yml up -d
+```
+
 ## Test
 
 **Client**

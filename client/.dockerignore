@@ -1,0 +1,6 @@
+#.dockerignore
+# NOTE! Keep file in unix style new lines
+.git
+node_modules
+build
+dist

@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: development
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27018:27017"
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge
