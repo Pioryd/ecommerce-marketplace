@@ -21,7 +21,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest --verbose",
+    "test": "jest --verbose  --watchAll=false",
     "test:watch": "npm test -- --watch",
     "eject": "react-scripts eject"
   },
