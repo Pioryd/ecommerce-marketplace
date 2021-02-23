@@ -5,7 +5,7 @@ import * as AccountSelector from "../../redux/modules/account/selectors";
 
 import AccountSignIn from "../../pages/AccountSignIn";
 
-export default function Account(props) {
+export default function AccountRoute(props) {
   const account = useSelector(AccountSelector.get());
 
   return account.token == null ? <AccountSignIn /> : <Route {...props} />;
