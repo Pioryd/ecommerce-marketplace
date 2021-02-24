@@ -6,7 +6,19 @@ services:
       target: test
     environment:
       NODE_ENV: "test"
-
+      PORT: 8080
+      APP_NAME: Ecommerce
+      DB_URL: mongodb://mongo:27017/ecommerce
+      WEB_SERVER: "false"
+      TOKEN_SECRET: 6c21eceb5e4c753c17f3819d63d9473ece46ea9b0da13be04856eb755f6ebdcdfd8a2e8a79dcd9dcb0aa5705fb02e3eff9378cb74798031d5a528e16e6d781a6
+      TOKEN_EXPIRES_IN: 86400s
+      ITEMS_PER_PAGE: 10
+      DAYS_TO_EXPIRE: 30
+      CART_MAX_UNIQUE_ITEMS: 100
+      PASSWORD_SALT_BYTES: 16
+      PASSWORD_HASH_ITERATIONS: 1000
+      PASSWORD_HASH_BYTES: 64
+      PASSWORD_HASH_DIGEST: sha512
   client:
     build:
       target: test
