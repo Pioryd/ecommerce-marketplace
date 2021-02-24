@@ -1,5 +1,7 @@
 # Online Marketplace (e-commerce)
 
+![main branch - build and test](https://github.com/Pioryd/ecommerce-marketplace/actions/workflows/docker-publish.yml/badge.svg?branch=main)
+
 ## Live preview: [DEMO](https://igneous-etching-301316.ew.r.appspot.com/)
 
 Use this account or create your own
