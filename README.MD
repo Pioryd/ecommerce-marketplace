@@ -2,7 +2,7 @@
 
 ![main branch - build and test](https://github.com/Pioryd/ecommerce-marketplace/actions/workflows/docker-publish.yml/badge.svg?branch=main)
 
-## Live preview: [DEMO](http://ec2-13-58-22-232.us-east-2.compute.amazonaws.com/ecommerce-marketplace)
+## Live preview: [DEMO](http://ec2-3-142-143-221.us-east-2.compute.amazonaws.com/ecommerce-marketplace)
 
 Use this account or create your own
 
